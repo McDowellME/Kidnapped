@@ -16,7 +16,6 @@ public class App {
         //displays splash screen
         welcome(); 
         start();
-        
     }
 
     private void start() {
@@ -27,10 +26,14 @@ public class App {
 
         while (!gameOver) {
             System.out.println(">");
-            String command = myObj.nextLine();
+            String playerCommand = myObj.nextLine(); //changed variable name from "command" to "playerCommand" for better readability
 
+            //if player inputs "quit" it will break out of the while loop and exit the game----
+            // we can integrate the "start over" logic with this, if the group decides
+            if (playerCommand == "quit"){
+                break;
+            }
         }
-
     }
 
     private void welcome(){
