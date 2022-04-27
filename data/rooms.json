@@ -1,0 +1,40 @@
+{
+  "West Hall":
+  {
+    "south": "Kitchen",
+    "east": "Parlor",
+    "item": "book",
+    "description":"This hall has a smoothly hewn natural stone floor that have been polished smooth. A mouse scutters a across the floor. There is a bookcase at the end of the hall. The air smells stale."
+  },
+  "Kitchen":
+  {
+    "south": "Parlor",
+    "item": "knife",
+    "description": "The room is covered in dust and cobwebs. Glass shards cover the floor, and the smell of rust, mildew, and spoiled food is pungent. The air is so thick you can almost taste it. Roaches run up every wall and the faint sound of rats squeaking can be heard all around. The only way out is back south towards the parlor"
+  },
+  "East Hall":
+  {
+    "north": "East Room",
+    "west": "Parlor",
+    "item": "potion"
+  },
+  "East Room":
+  {
+    "south": "East Hall",
+    "item": "note 3",
+    "description": "The room is covered in dust and cobwebs. Glass shards cover the floor. Rust, mildew, and putrid smell of rotting food is pungent. The air is so thick you can almost taste it. Roaches run up every wall and the faint sound of rats squeaking can be heard all around. The only way out is back south towards the parlor"
+  },
+  "Parlor":
+  {
+    "north": "Kitchen",
+    "east": "East Hall",
+    "west": "West Hall",
+    "south": "Basement",
+    "description": "This room is large, bleak, and cold. It is quiet and somber and you fell a chill as the darkness engulfs you. You can hear the sound of your heart beat echo throughout the room. The ceiling is a cathedral vaulted (multi-domed) and with the tattered remains of what once must have been colorful streamers hanging down. A corpse covered in webs lay against the north wall right next to the entrance of what appears to be a kitchen. To the east lies a long dark hall and the west another. The room smells of mildew and decay."
+  },
+  "Basement":
+  {
+    "north": "Parlor",
+    "description": "There is a smell of decay and mold in the room. The pitch-black atmosphere is nearly impenetrable. You stretch your eyes as wide as possible but can barely make out a feeble outline of some distant objects. There is little light except for the for a small strip below the door at the top of the stairs and a small torch which illuminates only what is in its immediate vicinity."
+  }
+}
