@@ -1,4 +1,9 @@
 package com.sprints;
 
-class Player {
+public class Player {
+    int health = 100;
+
+    public int getHealth() {
+        return health;
+    }
 }
