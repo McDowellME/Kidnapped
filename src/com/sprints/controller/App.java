@@ -30,8 +30,12 @@ public class App {
 
             //if player inputs "quit" it will break out of the while loop and exit the game----
             // we can integrate the "start over" logic with this, if the group decides
-            if (playerCommand == "quit"){
+            if (playerCommand.equals("quit")){
                 break;
+            }
+
+            if (playerCommand.equals("restart")) {
+                start();
             }
         }
     }
