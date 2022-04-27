@@ -1,0 +1,15 @@
+{
+  "go":
+  {
+    "synonyms": ["move", "run", "walk"]
+  },
+  "look":
+  {
+    "synonyms": ["see", "view", "read"]
+  },
+  "get":
+  {
+    "synonyms": ["grab", "pickup", "select"]
+  }
+
+}
