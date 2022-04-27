@@ -33,6 +33,13 @@ public class App {
 
     }
 
+
+    private void getCommands() {
+        // later use file to read synonyms of the commands
+        // help should call this method
+        System.out.println("go [direction]\nget [item]\nlook [item]\nhelp (allows you to view in game commands)");
+    }
+
     private void welcome(){
         System.out.println("Welcome to Game");
 
