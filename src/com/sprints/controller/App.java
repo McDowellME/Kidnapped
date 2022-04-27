@@ -33,7 +33,6 @@ public class App {
 
     }
 
-
     private void getCommands() {
         // later use file to read synonyms of the commands
         // help should call this method
