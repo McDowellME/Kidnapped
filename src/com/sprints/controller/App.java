@@ -34,9 +34,12 @@ public class App {
     }
 
     private void welcome(){
-        System.out.println("Welcome to Game");
+        //read from txt later
+        System.out.println("Kidnapped");
+        //read from txt later
+        System.out.println("You awake to find yourself in a twisted escape game.\n Can you gather all the clues and escape with your life in tack before time runs out?");
 
-        //To do: add instructions
+
     }
 
     private void parseInput(List<String> input) {
