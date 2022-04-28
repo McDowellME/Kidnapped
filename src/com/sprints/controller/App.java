@@ -62,6 +62,8 @@ public class App {
         txtFileReader("title.txt");
         //read from txt later
         System.out.println("You awake to find yourself in a twisted escape game.\n Can you gather all the clues and escape with your life in tact before time runs out?");
+        System.out.println("---------------------");
+        getCommands();
     }
 
     private void parseInput(List<String> input) {
