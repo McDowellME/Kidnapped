@@ -87,7 +87,15 @@ public class App {
             try {
                 //reads from commands.json file
                 FileReader commandReader = new FileReader("data/commands.json"); //
+
+                //reads from synonyms.json
+                FileReader synonymReader = new FileReader("data/synonyms.json");
+
                 JSONObject commandObj = (JSONObject) parser.parse(commandReader);
+
+                //convert the parsed json file into a JSONArray to access values
+                JSONArray synonymObj = (JSONArray) parser.parse(synonymReader);
+
                 //valid verbs array
                 JSONArray validVerbs = (JSONArray) commandObj.get("verbs");
                 //valid nouns array
@@ -101,7 +109,7 @@ public class App {
                 JSONObject room = (JSONObject) roomsObj.get(currentRoom);
 
                 // if input verb is not inside validVerbs array
-                if (!validVerbs.contains(verb)) {
+                if (synonymObj.contains(verb)) {
                     System.out.println(verb + " is not recognized verb");
                 }
                 // if input noun is not inside validNouns array
@@ -110,7 +118,7 @@ public class App {
                 }
                 // pass info playerActions function
                 else {
-                    playerActions(noun, verb, room, roomsObj, location);
+                    playerActions(noun, verb, room, roomsObj, location, synonymObj);
                 }
 
             } catch (IOException | ParseException e) {
@@ -120,18 +128,17 @@ public class App {
 
     }
 
-    private void playerActions(String noun, String verb, JSONObject room, JSONObject roomsObj, String location) {
-        switch (verb) {
-            // if verb is go pass to locationChange function
-            case "go":
-                locationChange(noun, room, roomsObj, location);
-                break;
-            case "get":
-                getItems(room);
-                break;
-            case "look":
-                look(noun, room);
-                break;
+    private void playerActions(String noun, String verb, JSONObject room, JSONObject roomsObj, String location, JSONArray synonymObj) {
+        JSONArray verbObj1 = (JSONArray) synonymObj.get(0);
+        JSONArray verbObj2 = (JSONArray) synonymObj.get(1);
+        JSONArray verbObj3 = (JSONArray) synonymObj.get(2);
+
+        if (verbObj1.contains(verb)) {
+            locationChange(noun, room, roomsObj, location);
+        }else if (verbObj2.contains(verb)) {
+            getItems(room);
+        }else {
+            look(noun, room);
         }
     }
 
