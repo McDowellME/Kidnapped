@@ -42,11 +42,13 @@ public class App {
             // we can integrate the "start over" logic with this, if the group decides
             if (playerCommand.equals("quit")) {
                 gameOver = true;
-            }else {
-                parseInput(input);
+            } else if (playerCommand.equals("restart")) {
+                // inventory = []
+                currentRoom = "Basement";
+                execute();
             }
-            if (playerCommand.equals("restart")) {
-                start();
+            else {
+                parseInput(input);
             }
         }
     }
