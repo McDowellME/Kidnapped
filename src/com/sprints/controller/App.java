@@ -38,11 +38,12 @@ public class App {
             System.out.println(">");
             String playerCommand = myObj.nextLine(); //changed variable name from "command" to "playerCommand" for better readability
             List<String> input = new ArrayList<>(Arrays.asList(playerCommand.split(" ")));
-            parseInput(input);
             //if player inputs "quit" it will break out of the while loop and exit the game----
             // we can integrate the "start over" logic with this, if the group decides
             if (playerCommand.equals("quit")) {
-                break;
+                gameOver = true;
+            }else {
+                parseInput(input);
             }
 
             if (playerCommand.equals("restart")) {
