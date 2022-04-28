@@ -128,6 +128,10 @@ public class App {
                 break;
             case "get":
                 getItems(room);
+                break;
+            case "look":
+                look(noun, room);
+                break;
         }
     }
 
@@ -149,6 +153,12 @@ public class App {
         }
         else {
             System.out.println("You cannot go that way");
+        }
+    }
+
+    private void look(String noun, JSONObject room) {
+        if (noun.equals("here")) {
+            System.out.println(room.get("description"));
         }
     }
 
