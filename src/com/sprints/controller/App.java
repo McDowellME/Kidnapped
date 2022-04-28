@@ -2,11 +2,14 @@ package com.sprints.controller;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-import org.json.simple.*;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -31,9 +34,11 @@ public class App {
         tutorial = false;
 
         while (!gameOver) {
+            showStatus();
             System.out.println(">");
             String playerCommand = myObj.nextLine(); //changed variable name from "command" to "playerCommand" for better readability
-
+            List<String> input = new ArrayList<>(Arrays.asList(playerCommand.split(" ")));
+            parseInput(input);
             //if player inputs "quit" it will break out of the while loop and exit the game----
             // we can integrate the "start over" logic with this, if the group decides
             if (playerCommand.equals("quit")) {
@@ -58,16 +63,12 @@ public class App {
         //read from txt later
         System.out.println("Kidnapped");
         //read from txt later
-        System.out.println("You awake to find yourself in a twisted escape game.\n Can you gather all the clues and escape with your life in tack before time runs out?");
-
-
+        System.out.println("You awake to find yourself in a twisted escape game.\n Can you gather all the clues and escape with your life in tact before time runs out?");
     }
 
     private void parseInput(List<String> input) {
         String noun;
         String verb;
-//        List<String> actions = new ArrayList<>(Arrays.asList("look", "get"));
-//        List<String> items = new ArrayList<>(Arrays.asList("note", "torch"));
 
         if (input.size() > 2) {
             System.out.println("Please enter a two word command");
@@ -77,28 +78,60 @@ public class App {
 
             JSONParser parser = new JSONParser();
             try {
-                FileReader reader = new FileReader(""); //
-                FileReader reader2 = new FileReader("");
-                JSONObject obj = (JSONObject) parser.parse(reader);
-                JSONObject obj2 = (JSONObject) obj.get(verb);
-                JSONObject obj3 = (JSONObject) parser.parse(reader2);
-                JSONObject obj4 = (JSONObject) obj3.get(noun);
-                String syn = (String) obj2.get("synonyms");
-                if (!obj.containsKey(verb) || (!obj2.containsValue(syn))) {
+                FileReader commandReader = new FileReader("data/commands.json"); //
+                JSONObject commandObj = (JSONObject) parser.parse(commandReader);
+                JSONArray validVerbs = (JSONArray) commandObj.get("verbs");
+                JSONArray validNouns = (JSONArray) commandObj.get("nouns");
+
+                FileReader roomReader = new FileReader("data/rooms.json"); //
+                JSONObject roomObj = (JSONObject) parser.parse(roomReader);
+                JSONObject room = (JSONObject) roomObj.get(currentRoom);
+
+
+                if (!validVerbs.contains(verb)) {
                     System.out.println(verb + " is not recognized verb");
                 }
-                if (!obj3.containsKey(noun)) {
-                    System.out.println(noun + " is not a recognized noun!");
+                if (!validNouns.contains(noun)) {
+                    System.out.println(noun + " is not recognized noun");
                 }
+                else {
+                    playerActions(noun, verb, room);
+                }
+
             } catch (IOException | ParseException e) {
                 System.out.println(e);
             }
         }
+
     }
 
-        private static void showStatus () {
+    private void playerActions(String noun, String verb, JSONObject room) {
+        switch (verb) {
+            case "go":
+                locationChange(noun, room);
+                break;
+            case "get":
+                getItems(noun, room);
+        }
+    }
+
+    private void getItems(String noun, JSONObject room) {
+        if (room.containsKey("item")) {
+            System.out.println(room.get("item") + " picked up");
+        }
+        else {
+            System.out.println("There is no item in this room");
+        }
+    }
+
+    private void locationChange(String noun, JSONObject room) {
+        currentRoom = (String) room.get(noun);
+    }
+
+
+    private static void showStatus () {
             System.out.println("---------------------------");
-            System.out.println("You are in the" + currentRoom);
+            System.out.println("You are in the " + currentRoom);
             System.out.println("-----------------------------");
         }
     }

@@ -1,0 +1,4 @@
+{
+  "verbs": ["go", "look", "get"],
+  "nouns": ["north", "south", "east", "west", "knife", "note"]
+}
