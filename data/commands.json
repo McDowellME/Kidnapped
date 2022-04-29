@@ -1,4 +1,5 @@
 {
-  "verbs": ["go", "look", "get"],
-  "nouns": ["north", "south", "east", "west", "knife", "note", "room", "west hall", "east hall", "here", "east room","parlor", "basement"]
+  "verbs": ["go", "look", "get", "walk", "move", "run", "walk", "grab", "pickup", "select", "see", "view", "read"],
+  "nouns": ["north", "south", "east", "west", "knife", "note", "room", "west hall", "east hall", "here", "east room","parlor", "basement", "bookcase"],
+  "items": ["bookcase", "note"]
 }

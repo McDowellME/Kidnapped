@@ -3,7 +3,9 @@
   {
     "south": "kitchen",
     "east": "parlor",
-    "item": "book",
+    "item": {
+              "bookcase": {"description" :  "The books here are tattered and covered in dust, except for a select few."}
+    },
     "description":"This hall has a smoothly hewn natural stone floor that have been polished smooth. A mouse scutters a across the floor. There is a bookcase at the end of the hall. The air smells stale."
   },
   "kitchen":

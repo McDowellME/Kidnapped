@@ -16,6 +16,7 @@ import org.json.simple.parser.ParseException;
 
 public class App {
     public static String currentRoom = "basement";
+    public static List<String> inventory = new ArrayList<>();;
     private boolean tutorial = true;
     private boolean gameOver = false;
 
@@ -96,6 +97,8 @@ public class App {
                 //convert the parsed json file into a JSONArray to access values
                 JSONArray synonymObj = (JSONArray) parser.parse(synonymReader);
 
+                //valid items array
+                JSONArray validItems = (JSONArray) commandObj.get("items");
                 //valid verbs array
                 JSONArray validVerbs = (JSONArray) commandObj.get("verbs");
                 //valid nouns array
@@ -108,8 +111,10 @@ public class App {
                 // individual room
                 JSONObject room = (JSONObject) roomsObj.get(currentRoom);
 
+//                JSONObject items = (JSONObject) room.get("item");
+
                 // if input verb is not inside validVerbs array
-                if (synonymObj.contains(verb)) {
+                if (synonymObj.contains(verb) || !validVerbs.contains(verb)) {
                     System.out.println(verb + " is not recognized verb");
                 }
                 // if input noun is not inside validNouns array
@@ -118,7 +123,7 @@ public class App {
                 }
                 // pass info playerActions function
                 else {
-                    playerActions(noun, verb, room, roomsObj, location, synonymObj);
+                    playerActions(noun, verb, room, roomsObj, location, synonymObj, validItems);
                 }
 
             } catch (IOException | ParseException e) {
@@ -128,7 +133,7 @@ public class App {
 
     }
 
-    private void playerActions(String noun, String verb, JSONObject room, JSONObject roomsObj, String location, JSONArray synonymObj) {
+    private void playerActions(String noun, String verb, JSONObject room, JSONObject roomsObj, String location, JSONArray synonymObj, JSONArray validItems) {
         JSONArray verbObj1 = (JSONArray) synonymObj.get(0);
         JSONArray verbObj2 = (JSONArray) synonymObj.get(1);
         JSONArray verbObj3 = (JSONArray) synonymObj.get(2);
@@ -136,15 +141,17 @@ public class App {
         if (verbObj1.contains(verb)) {
             locationChange(noun, room, roomsObj, location);
         }else if (verbObj2.contains(verb)) {
-            getItems(room);
-        }else {
-            look(noun, room);
+            getItems(noun, room, validItems);
+        }else if (verbObj3.contains(verb)) {
+            look(noun, room, validItems);
         }
     }
 
-    private void getItems(JSONObject room) {
-        if (room.containsKey("item")) {
-            System.out.println(room.get("item") + " picked up");
+    private void getItems(String noun, JSONObject room, JSONArray validItems) {
+        JSONObject items = (JSONObject) room.get("item");
+        if (validItems.contains(noun) && items.containsKey(noun)) {
+            System.out.println(noun + " picked up");
+            inventory.add(noun);
         }
         else {
             System.out.println("There is no item in this room");
@@ -163,15 +170,21 @@ public class App {
         }
     }
 
-    private void look(String noun, JSONObject room) {
+    private void look(String noun, JSONObject room, JSONArray validItems) {
         if (noun.equals("here")) {
             System.out.println(room.get("description"));
+        }
+        if(validItems.contains(noun) && room.containsKey("item")){
+            JSONObject items = (JSONObject) room.get("item");
+            JSONObject item = (JSONObject) items.get(noun);
+            System.out.println(item.get("description"));
         }
     }
 
     private static void showStatus () {
         System.out.println("---------------------------");
         System.out.println("You are in the " + currentRoom);
+        System.out.println("Inventory:" + inventory);
         System.out.println("-----------------------------");
     }
 
