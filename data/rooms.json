@@ -11,19 +11,25 @@
   "kitchen":
   {
     "south": "parlor",
-    "item": "knife",
+    "item": {
+      "knife": {"description" :  "Rusted but sharp. Could potentially be used as a weapon."}, "note": {"description":  "..."}
+    },
     "description": "The room is covered in dust and cobwebs. Glass shards cover the floor, and the smell of rust, mildew, and spoiled food is pungent. The air is so thick you can almost taste it. Roaches run up every wall and the faint sound of rats squeaking can be heard all around. The only way out is back south towards the parlor"
   },
   "east hall":
   {
     "north": "east room",
     "west": "parlor",
-    "item": "potion"
+    "item": {
+      "potion" : "Use this potion increases health by 20HP."
+    }
   },
   "east room":
   {
     "south": "east hall",
-    "item": "note 3",
+    "item": {
+      "note" : {"description":  "3"}
+    },
     "description": "The room is covered in dust and cobwebs. Glass shards cover the floor. Rust, mildew, and putrid smell of rotting food is pungent. The air is so thick you can almost taste it. Roaches run up every wall and the faint sound of rats squeaking can be heard all around. The only way out is back south towards the parlor"
   },
   "parlor":
@@ -37,7 +43,9 @@
   "basement":
   {
     "north": "parlor",
+    "item": {
+      "note": {"description" : ""}
+    },
     "description": "There is a smell of decay and mold in the room. The pitch-black atmosphere is nearly impenetrable. You stretch your eyes as wide as possible but can barely make out a feeble outline of some distant objects. There is little light except for the for a small strip below the door at the top of the stairs and a small torch which illuminates only what is in its immediate vicinity."
   }
-
 }

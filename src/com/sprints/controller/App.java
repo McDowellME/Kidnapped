@@ -1,5 +1,6 @@
 package com.sprints.controller;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -22,13 +23,13 @@ public class App {
 
     Scanner myObj = new Scanner(System.in);
 
-    public void execute() throws IOException {
+    public void execute() throws IOException, ParseException {
         //displays splash screen
         welcome();
         start();
     }
 
-    private void start() {
+    private void start() throws IOException, ParseException {
 
         // possible start tutorial here where player prompted to look, get, and move
         // standard gave play starts after tutorial portion ends
@@ -181,10 +182,21 @@ public class App {
         }
     }
 
-    private static void showStatus () {
+    private static void showStatus () throws IOException, ParseException {
+        JSONParser parser = new JSONParser();
+        FileReader roomReader = new FileReader("data/rooms.json");
+        JSONObject roomsObj = (JSONObject) parser.parse(roomReader);
+        JSONObject room = (JSONObject) roomsObj.get(currentRoom);
+
+
         System.out.println("---------------------------");
         System.out.println("You are in the " + currentRoom);
         System.out.println("Inventory:" + inventory);
+        if (room.containsKey("item")) {
+            JSONObject items = (JSONObject) room.get("item");
+            Set<String> roomItems = items.keySet();
+            System.out.println("You see a " + roomItems);
+        }
         System.out.println("-----------------------------");
     }
 
