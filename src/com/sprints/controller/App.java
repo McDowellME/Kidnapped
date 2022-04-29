@@ -36,11 +36,12 @@ public class App {
         tutorial = false;
 
         while (!gameOver) {
+
             showStatus();
             System.out.printf(">");
             String playerCommand = myObj.nextLine().toLowerCase(); //changed variable name from "command" to "playerCommand" for better readability
             List<String> input = new ArrayList<>(Arrays.asList(playerCommand.split(" ")));
-            parseInput(input);
+
             //if player inputs "quit" it will break out of the while loop and exit the game----
             // we can integrate the "start over" logic with this, if the group decides
             if (playerCommand.equals("quit")) {
@@ -48,8 +49,12 @@ public class App {
             }
 
             if (playerCommand.equals("restart")) {
+                currentRoom = "basement";
+                inventory.clear();
                 start();
             }
+            parseInput(input);
+
         }
     }
 
@@ -146,6 +151,9 @@ public class App {
         }else if (verbObj3.contains(verb)) {
             look(noun, room, validItems);
         }
+    }
+    private void restart(){
+
     }
 
     private void getItems(String noun, JSONObject room, JSONArray validItems) {
