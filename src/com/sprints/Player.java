@@ -51,6 +51,9 @@ public class Player {
             System.out.println(noun + " picked up");
             inventory.add(noun);
         }
+        if (inventory.contains(noun)) { //
+            room.remove("item");
+        }
         else {
             System.out.println("There is no item in this room");
         }

@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import com.apps.util.Console;
 import com.sprints.Player;
 import com.sprints.TextParser;
 import org.json.simple.JSONObject;
@@ -37,20 +38,14 @@ public class App {
             String playerCommand = myObj.nextLine();
 
             //if player inputs "quit" it will break out of the while loop and exit the game----
-            if ("quit".equals(playerCommand)) {
-                System.out.println("Are you sure you want to quit?");
-                String q = myObj.nextLine();
-                if ("yes".equals(q)) {
-                    System.out.println("quiting the game...");
-                    TimeUnit.SECONDS.sleep(2);
-                    gameOver = true;
-                    System.exit(0);
-                }
+            if ("quit".equals(playerCommand) || ("q".equals(playerCommand))) {
+                quit();
             }
 
             if ("restart".equals(playerCommand)) {
                 restart();
             }
+            Console.clear(); //Clear function coming from external jar
             parser.playerInput(playerCommand);
         }
     }
@@ -78,12 +73,41 @@ public class App {
         Player.getInstance().getInventory().clear();
         start();
     }
+    private void quit() throws IOException, ParseException, InterruptedException {
+        System.out.println("Are you sure you want to quit?");
+        String q = myObj.nextLine();
+        if ("yes".equals(q)) {
+            System.out.println("quiting the game...");
+            TimeUnit.SECONDS.sleep(2);
+            gameOver = true;
+            System.exit(0);
+        }
+        if ("no".equals(q)) {
+            showStatus();
+        }
+    }
 
     // used to display status (current room, inventory, room description, etc)
     private static void showStatus () throws IOException, ParseException {
         JSONParser parser = new JSONParser();
         JSONObject roomsObj = (JSONObject) parser.parse(new InputStreamReader(App.class.getResourceAsStream("/rooms.json")));
         JSONObject room = (JSONObject) roomsObj.get(Player.getInstance().getCurrentRoom());
+
+        switch (Player.getInstance().getCurrentRoom()){
+            case "basement" :
+                txtFileReader("/basement.txt");
+                break;
+            case "parlor" :
+                txtFileReader("/parlor.txt");
+                break;
+            case "east hall":
+            case "west hall":
+                txtFileReader("/hallway.txt");
+                break;
+            case "kitchen":
+                txtFileReader("/kitchen.txt");
+                break;
+        }
 
         System.out.println("---------------------------");
         System.out.println("You are in the " + Player.getInstance().getCurrentRoom());
