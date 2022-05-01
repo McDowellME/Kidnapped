@@ -1,31 +1,35 @@
 package com.sprints;
 
-import com.sprints.controller.App;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
 class OurJSONParser {
 
+    // ******** Class Singleton **********
     private static OurJSONParser ourParser = null;
 
+    // ******** Constants **********
     private static final String COMMANDS = "/commands.json";
     private static final String ROOMS = "/rooms.json";
     private static final String SYN = "/synonyms.json";
 
+    // ******** Fields **********
     private JSONParser jsonParser = new JSONParser();
     private JSONObject roomsJSON;
     private JSONObject commandJSON;
     private JSONArray synJSON;
     private List<String> commands;
 
+    // ******** Singleton Instantiation **********
+    /* we do not want to instantiate multiple.
+    static allows us to use through entire app where needed.*/
     public static OurJSONParser instantiate() {
         if (ourParser == null) {
             try {
@@ -39,6 +43,8 @@ class OurJSONParser {
         return ourParser;
     }
 
+    //******** CTOR **********
+    // read JSON info as streams and parse
     private OurJSONParser() throws IOException, ParseException {
         commandJSON = (JSONObject) jsonParser.parse(new InputStreamReader(OurJSONParser.class.getResourceAsStream(COMMANDS)));
         roomsJSON = (JSONObject) jsonParser.parse(new InputStreamReader(OurJSONParser.class.getResourceAsStream(ROOMS)));
@@ -46,12 +52,15 @@ class OurJSONParser {
         commands = new ArrayList<>();
     }
 
+    // ******** Business Methods **********
     public List<String> commandParser(String noun, String verb) {
+        // clear commands list to ensure there's only ever a singular set of commands present
         commands.clear();
+        // access out valid verbs, nouns, and items arrays inside commands.json
         JSONArray verbs = (JSONArray) commandJSON.get("verbs");
         JSONArray nouns = (JSONArray) commandJSON.get("nouns");
         JSONArray items = (JSONArray) commandJSON.get("items");
-        JSONObject room = (JSONObject) roomsJSON.get(App.currentRoom);
+        JSONObject room = (JSONObject) roomsJSON.get(Player.getInstance().getCurrentRoom());
 
         if (!verbs.contains(verb) && !nouns.contains(noun)) {
             System.out.println(verb + " " + noun + " is not a valid command");
@@ -61,7 +70,7 @@ class OurJSONParser {
             commands.add(noun);
         }
 
-        App.playerActions(commands.get(0), commands.get(1), room, roomsJSON, synJSON, items);
+        Player.getInstance().playerActions(commands.get(0), commands.get(1), room, roomsJSON, synJSON, items);
         return commands;
     }
 
