@@ -43,7 +43,6 @@ public class TextParser {
         while (tokenizer.hasMoreTokens()) {
             tokens.add(tokenizer.nextToken());
         }
-
         return tokens;
     }
 

@@ -38,12 +38,11 @@ class OurJSONParser {
         }
         return ourParser;
     }
-    //
+
     private OurJSONParser() throws IOException, ParseException {
         commandJSON = (JSONObject) jsonParser.parse(new InputStreamReader(OurJSONParser.class.getResourceAsStream(COMMANDS)));
         roomsJSON = (JSONObject) jsonParser.parse(new InputStreamReader(OurJSONParser.class.getResourceAsStream(ROOMS)));
         synJSON = (JSONArray) jsonParser.parse(new InputStreamReader(OurJSONParser.class.getResourceAsStream(SYN)));
-        System.out.println(synJSON);
         commands = new ArrayList<>();
     }
 
