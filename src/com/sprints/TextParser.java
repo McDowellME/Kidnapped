@@ -8,21 +8,12 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class TextParser {
-    private JSONArray validVerbs;
-    private JSONArray validNouns;
-    private JSONArray validItems;
+    // ********** Fields **********
     private List<String> inputCommand;
-    private List<String> validCommand;
-    private List<JSONArray> commands;
 
-    public TextParser() {
-        validCommand = new ArrayList<>();
-    }
-
-    public List<String> getValidCommand() {
-        return validCommand;
-    }
-
+    // ******** Business Methods **********
+    /* checks input and passes to Tokenizer to break apart, then pass to parseInput
+    method to separate verb and noun */
     public void playerInput(String input) {
         String in = input.trim().toLowerCase();
 
@@ -35,6 +26,7 @@ public class TextParser {
         }
     }
 
+    // split input into tokens
     private List<String> commandTokenizer(String in) {
         List<String> tokens = new ArrayList<>();
         StringTokenizer tokenizer = new StringTokenizer(in);
@@ -46,6 +38,7 @@ public class TextParser {
         return tokens;
     }
 
+    // separate verbs and nouns, passing them to JSON command parser
     private void parseInput(List<String> inputCommand) {
         String verb;
         String noun;
