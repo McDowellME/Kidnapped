@@ -3,8 +3,10 @@ package com.sprints.controller;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -62,7 +64,7 @@ public class App {
     }
 
     private void welcome() throws IOException {
-        txtFileReader("title.txt");
+        txtFileReader("/title.txt");
         //read from txt later
         System.out.println("You awake to find yourself in a twisted escape game.\n Can you gather all the clues and escape with your life in tact before time runs out?");
         System.out.println("---------------------");
@@ -125,8 +127,7 @@ public class App {
 
     private static void showStatus () throws IOException, ParseException {
         JSONParser parser = new JSONParser();
-        FileReader roomReader = new FileReader("data/rooms.json");
-        JSONObject roomsObj = (JSONObject) parser.parse(roomReader);
+        JSONObject roomsObj = (JSONObject) parser.parse(new InputStreamReader(App.class.getResourceAsStream("/rooms.json")));
         JSONObject room = (JSONObject) roomsObj.get(currentRoom);
 
 
@@ -141,14 +142,14 @@ public class App {
         System.out.println("-----------------------------");
     }
 
-    private String txtFileReader (String filename) throws IOException {
-        if (Files.exists(Path.of("data/text_file/"+ filename))) {
-            String file = Files.readString(Path.of("data/text_file/" + filename));
-            System.out.println("\u001B[31m" + file + "\u001B[37m");
-
-            return file;
-        } else {
-            throw new IOException("Please verify welcome.txt location");
+    private static void txtFileReader(String filename) throws IOException {
+        try (var in = App.class.getResourceAsStream(filename)) {
+            Scanner scanner = new Scanner(in, StandardCharsets.UTF_8);
+            while ( scanner.hasNextLine() ){
+                System.out.println("\u001B[31m " + scanner.nextLine() + "\u001B[37m");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Uncaught", e);
         }
     }
 }
