@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import com.apps.util.Console;
+import com.sprints.Game;
 import com.sprints.Player;
 import com.sprints.TextParser;
 import org.json.simple.JSONObject;
@@ -19,7 +20,6 @@ public class App {
     // ******** Fields **********
     private boolean gameOver = false;
     private TextParser parser = new TextParser();
-
     // instantiate scanner to read console input
     Scanner myObj = new Scanner(System.in);
 
@@ -67,14 +67,14 @@ public class App {
     }
 
     // restart our game
-    private void restart() throws IOException, ParseException, InterruptedException {
+    void restart() throws IOException, ParseException, InterruptedException {
         System.out.println("Restarting game...");
         TimeUnit.SECONDS.sleep(2);
         Player.getInstance().setCurrentRoom("basement");
         Player.getInstance().getInventory().clear();
         start();
     }
-    private void quit() throws IOException, ParseException, InterruptedException {
+    void quit() throws IOException, ParseException, InterruptedException {
         System.out.println("Are you sure you want to quit?");
         String q = myObj.nextLine();
         if ("yes".equals(q)) {
@@ -135,5 +135,9 @@ public class App {
         } catch (IOException e) {
             throw new RuntimeException("Uncaught", e);
         }
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
     }
 }
