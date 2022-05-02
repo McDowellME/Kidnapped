@@ -9,8 +9,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-class OurJSONParser {
+public class OurJSONParser {
 
     // ******** Class Singleton **********
     private static OurJSONParser ourParser = null;
@@ -21,8 +22,19 @@ class OurJSONParser {
     private static final String SYN = "/synonyms.json";
 
     // ******** Fields **********
-    private JSONParser jsonParser = new JSONParser();
-    private JSONObject roomsJSON;
+    private static JSONParser jsonParser = new JSONParser();
+    private static JSONObject roomsJSON;
+
+    static {
+        try {
+            roomsJSON = (JSONObject) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(ROOMS))));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
     private JSONObject commandJSON;
     private JSONArray synJSON;
     private List<String> commands;
@@ -43,12 +55,16 @@ class OurJSONParser {
         return ourParser;
     }
 
+    public static JSONObject getRoomsJSON() {
+        return roomsJSON;
+    }
+
     //******** CTOR **********
     // read JSON info as streams and parse
     private OurJSONParser() throws IOException, ParseException {
-        commandJSON = (JSONObject) jsonParser.parse(new InputStreamReader(OurJSONParser.class.getResourceAsStream(COMMANDS)));
-        roomsJSON = (JSONObject) jsonParser.parse(new InputStreamReader(OurJSONParser.class.getResourceAsStream(ROOMS)));
-        synJSON = (JSONArray) jsonParser.parse(new InputStreamReader(OurJSONParser.class.getResourceAsStream(SYN)));
+        commandJSON = (JSONObject) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(COMMANDS))));
+//        roomsJSON = (JSONObject) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(ROOMS))));
+        synJSON = (JSONArray) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(SYN))));
         commands = new ArrayList<>();
     }
 

@@ -1,5 +1,6 @@
 package com.sprints;
 
+import com.apps.util.Console;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -50,13 +51,15 @@ public class Player {
         if (validItems.contains(noun) && items.containsKey(noun)) {
             System.out.println(noun + " picked up");
             inventory.add(noun);
+            items.remove(noun);
         }
-        if (inventory.contains(noun)) { //
-            room.remove("item");
+
+        if (!items.containsKey(noun)){
+
         }
-        else {
-            System.out.println("There is no item in this room");
-        }
+//        else {
+//            System.out.println("There is no item in this room");
+//        }
     }
 
     // change player location

@@ -12,6 +12,7 @@ import com.sprints.TextParser;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import com.sprints.OurJSONParser;
 
 
 public class App {
@@ -89,9 +90,11 @@ public class App {
 
     // used to display status (current room, inventory, room description, etc)
     private static void showStatus () throws IOException, ParseException {
-        JSONParser parser = new JSONParser();
-        JSONObject roomsObj = (JSONObject) parser.parse(new InputStreamReader(App.class.getResourceAsStream("/rooms.json")));
-        JSONObject room = (JSONObject) roomsObj.get(Player.getInstance().getCurrentRoom());
+//        JSONParser parser = new JSONParser();
+//        JSONObject roomsObj = (JSONObject) parser.parse(new InputStreamReader(App.class.getResourceAsStream("/rooms.json")));
+        JSONObject roomObj = OurJSONParser.getRoomsJSON();
+        JSONObject room = (JSONObject) roomObj.get(Player.getInstance().getCurrentRoom());
+        JSONObject items = (JSONObject) room.get("item");
 
         switch (Player.getInstance().getCurrentRoom()){
             case "basement" :
@@ -114,11 +117,12 @@ public class App {
         System.out.println(room.get("description"));
         System.out.println("Inventory:" + Player.getInstance().getInventory());
         if (room.containsKey("item")) {
-            JSONObject items = (JSONObject) room.get("item");
+//            JSONObject items = (JSONObject) room.get("it);
             Set<String> roomItems = items.keySet();
             System.out.println("You see a " + roomItems);
         }
         System.out.println("-----------------------------");
+
     }
 
     // read text files
