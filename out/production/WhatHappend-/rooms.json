@@ -41,12 +41,14 @@
     "east": "east hall",
     "west": "west hall",
     "south": "basement",
+    "item": {},
     "description": "This room is large, bleak, and cold. It is quiet and somber and you fell a chill as the darkness engulfs you. You can hear the sound of your heart beat echo throughout the room. The ceiling is a cathedral vaulted (multi-domed) and with the tattered remains of what once must have been colorful streamers hanging down. A corpse covered in webs lay against the north wall right next to the entrance of what appears to be a kitchen. To the east lies a long dark hall and the west another. The room smells of mildew and decay."
   },
   "basement":
   {
     "north": "parlor",
     "item": {
+      "torch": {"equipped" : false},
       "note": {"description" : "..."}
     },
     "description": "There is a smell of decay and mold in the room. The pitch-black atmosphere is nearly impenetrable. You stretch your eyes as wide as possible but can barely make out a feeble outline of some distant objects. There is little light except for the for a small strip below the door at the top of the stairs and a small torch which illuminates only what is in its immediate vicinity."

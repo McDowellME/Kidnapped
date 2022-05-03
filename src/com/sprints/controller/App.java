@@ -2,15 +2,17 @@ package com.sprints.controller;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+//import com.apps.util.Console;
 import com.apps.util.Console;
 import com.sprints.Player;
 import com.sprints.TextParser;
 import com.sprints.TimeElapsed;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.ParseException;
+//import org.json.simple.parser.ParseException;
 import com.sprints.OurJSONParser;
 
 
@@ -44,7 +46,8 @@ public class App {
             if ("restart".equals(playerCommand)) {
                 restart();
             }
-            Console.clear(); //Clear function coming from external jar
+            //Clear function coming from external jar
+            Console.clear();
             parser.playerInput(playerCommand);
         }
     }
@@ -94,25 +97,33 @@ public class App {
         JSONObject room = (JSONObject) roomObj.get(Player.getInstance().getCurrentRoom());
         JSONObject items = (JSONObject) room.get("item");
 
-        switch (Player.getInstance().getCurrentRoom()){
-            case "basement" :
-                txtFileReader("/basement.txt");
-                break;
-            case "parlor" :
-                txtFileReader("/parlor.txt");
-                break;
-            case "east hall":
-            case "west hall":
-                txtFileReader("/hallway.txt");
-                break;
-            case "kitchen":
-                txtFileReader("/kitchen.txt");
-                break;
-        }
-
         System.out.println("---------------------------");
         System.out.println("You are in the " + Player.getInstance().getCurrentRoom());
-        System.out.println(room.get("description"));
+        if (Player.getInstance().getCurrentRoom() == "basement") {
+            txtFileReader("/basement.txt");
+        }
+
+        if (Player.getInstance().isItemEquipped()) {
+            switch (Player.getInstance().getCurrentRoom()){
+//                case "basement" :
+//                    txtFileReader("/basement.txt");
+//                    break;
+                case "parlor" :
+                    txtFileReader("/parlor.txt");
+                    break;
+                case "east hall":
+                case "west hall":
+                    txtFileReader("/hallway.txt");
+                    break;
+                case "kitchen":
+                    txtFileReader("/kitchen.txt");
+                    break;
+            }
+            System.out.println(room.get("description"));
+        } else {
+            System.out.println("Too dark to see everything here, you need some light equipped");
+        }
+
         System.out.println("Inventory:" + Player.getInstance().getInventory());
         if (room.containsKey("item")) {
 //            JSONObject items = (JSONObject) room.get("it);

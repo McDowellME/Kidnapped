@@ -22,7 +22,7 @@ public class AppTest {
     App testApp = new App();
 
     @Test
-    public void testRestartShouldSetDefaultValues() throws IOException, ParseException, InterruptedException {
+    public void testRestartShouldSetDefaultValues() throws IOException, ParseException, InterruptedException, java.text.ParseException {
         Player p1 = Player.getInstance();
         p1.setCurrentRoom("kitchen");
         testApp.restart();
@@ -31,7 +31,7 @@ public class AppTest {
     }
 
     @Test
-    public void testQuitShouldSetGameOverTrue() throws IOException, ParseException, InterruptedException {
+    public void testQuitShouldSetGameOverTrue() throws IOException, ParseException, InterruptedException, java.text.ParseException {
         testApp.quit();
         assertTrue(testApp.isGameOver());
     }

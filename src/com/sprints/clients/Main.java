@@ -6,7 +6,7 @@ import org.json.simple.parser.ParseException;
 import java.io.IOException;
 
 class Main {
-    public static void main(String[] args) throws IOException, ParseException, InterruptedException {
+    public static void main(String[] args) throws IOException, ParseException, InterruptedException, java.text.ParseException {
         App app = new App();
         app.execute();
     }
