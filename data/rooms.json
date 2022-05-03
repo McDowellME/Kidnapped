@@ -41,6 +41,7 @@
     "east": "east hall",
     "west": "west hall",
     "south": "basement",
+    "item": {},
     "description": "This room is large, bleak, and cold. It is quiet and somber and you fell a chill as the darkness engulfs you. You can hear the sound of your heart beat echo throughout the room. The ceiling is a cathedral vaulted (multi-domed) and with the tattered remains of what once must have been colorful streamers hanging down. A corpse covered in webs lay against the north wall right next to the entrance of what appears to be a kitchen. To the east lies a long dark hall and the west another. The room smells of mildew and decay."
   },
   "basement":
