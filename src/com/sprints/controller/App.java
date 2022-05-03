@@ -1,17 +1,15 @@
 package com.sprints.controller;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import com.apps.util.Console;
-import com.sprints.Game;
 import com.sprints.Player;
 import com.sprints.TextParser;
+import com.sprints.TimeElapsed;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import com.sprints.OurJSONParser;
 
@@ -121,6 +119,7 @@ public class App {
             Set<String> roomItems = items.keySet();
             System.out.println("You see a " + roomItems);
         }
+        System.out.println(TimeElapsed.getInstance().getTime());
         System.out.println("-----------------------------");
 
     }

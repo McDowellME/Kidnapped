@@ -46,7 +46,7 @@ public class Player {
     }
 
     // pick up items
-    private void getItems(String noun, JSONObject room, JSONArray validItems) {
+    void getItems(String noun, JSONObject room, JSONArray validItems) {
         JSONObject items = (JSONObject) room.get("item");
         if (validItems.contains(noun) && items.containsKey(noun)) {
             System.out.println(noun + " picked up");
@@ -63,7 +63,7 @@ public class Player {
     }
 
     // change player location
-    private void locationChange(String noun, JSONObject room, JSONObject roomsObj) {
+    void locationChange(String noun, JSONObject room, JSONObject roomsObj) {
         if (noun.split(" ").length == 2) {;
             if (roomsObj.containsKey(noun)) {
                setCurrentRoom(noun);
