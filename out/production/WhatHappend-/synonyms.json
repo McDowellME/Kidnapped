@@ -1,0 +1,21 @@
+[
+  [
+    "go",
+    "move",
+    "run",
+    "walk"
+  ],
+  [
+    "get",
+    "grab",
+    "pickup",
+    "select",
+    "obtain"
+  ],
+  [
+    "look",
+    "see",
+    "view",
+    "read"
+  ]
+]
