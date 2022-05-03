@@ -6,7 +6,6 @@ import java.text.ParseException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-//import com.apps.util.Console;
 import com.apps.util.Console;
 import com.sprints.Player;
 import com.sprints.TextParser;
@@ -39,12 +38,16 @@ public class App {
             String playerCommand = myObj.nextLine();
 
             //if player inputs "quit" it will break out of the while loop and exit the game----
-            if ("quit".equals(playerCommand) || ("q".equals(playerCommand))) {
+            if ("quit game".equals(playerCommand) || ("q".equals(playerCommand))) {
                 quit();
             }
 
             if ("restart".equals(playerCommand)) {
                 restart();
+            }
+
+            if ("help me".equals(playerCommand)) {
+                getCommands();
             }
             //Clear function coming from external jar
             Console.clear();
@@ -55,7 +58,7 @@ public class App {
     // shows available commands
     private void getCommands() {
         // help should call this method
-        System.out.println("go [direction]\nget [item]\nlook [item]\nhelp (allows you to view in game commands)");
+        System.out.println("go [direction]\nget [item]\nlook [item]\nequip [item]\nhelp (allows you to view in game commands)");
     }
 
     // welcomes to game by displaying ascii and break description of game
@@ -84,7 +87,7 @@ public class App {
             gameOver = true;
             System.exit(0);
         }
-        if ("no".equals(q)) {
+        else {
             showStatus();
         }
     }
