@@ -15,6 +15,7 @@ public class Player {
     private String currentRoom = "basement";
     private int health = 100;
     private List<String> inventory = new ArrayList<>();
+    private boolean itemEquipped = false;
 
     // ******** Business Methods **********
     /* we do not want to instantiate multiple.
@@ -34,6 +35,8 @@ public class Player {
         JSONArray verbObj1 = (JSONArray) synonymObj.get(0); // go
         JSONArray verbObj2 = (JSONArray) synonymObj.get(1); // get
         JSONArray verbObj3 = (JSONArray) synonymObj.get(2); // look
+        JSONArray verbObj4 = (JSONArray) synonymObj.get(3); // equip
+        JSONArray verbObj5 = (JSONArray) synonymObj.get(4); // drop
 
         // pass to function depending on which synonym array verb belongs to
         if (verbObj1.contains(verb)) {
@@ -42,11 +45,15 @@ public class Player {
             getItems(noun, room, validItems);
         }else if (verbObj3.contains(verb)) {
             look(noun, room, validItems);
+        }else if (verbObj4.contains(verb)) {
+            equip(noun, room, validItems);
+        }else if (verbObj5.contains(verb)) {
+            dropItems(noun, room, validItems);
         }
     }
 
     // pick up items
-    private void getItems(String noun, JSONObject room, JSONArray validItems) {
+    void getItems(String noun, JSONObject room, JSONArray validItems) {
         JSONObject items = (JSONObject) room.get("item");
         if (validItems.contains(noun) && items.containsKey(noun)) {
             System.out.println(noun + " picked up");
@@ -62,8 +69,43 @@ public class Player {
 //        }
     }
 
+    private void dropItems(String noun, JSONObject room, JSONArray validItems) {
+        JSONObject items = (JSONObject) room.get("item");
+        JSONObject itemDescription = (JSONObject) items.get(noun);
+        if (validItems.contains(noun) && !items.containsKey(noun)) {
+            System.out.println(noun + " dropped");
+            inventory.remove(noun);
+            items.put(noun, itemDescription);
+        }
+        if (noun.equals("torch")) {
+            itemEquipped = false;
+        }
+
+//        if (!items.containsKey(noun)){
+//
+//        }
+//        else {
+//            System.out.println("There is no item in this room");
+//        }
+    }
+
+    void equip(String noun, JSONObject room, JSONArray validItems) {
+        boolean hasItem = false;
+        JSONObject items = (JSONObject) room.get("item");
+        JSONObject equipment = (JSONObject) items.get("torch");
+        if (!inventory.contains("torch")) {
+            System.out.println("You must get the torch to use it!");
+        }
+        hasItem = true;
+        if (hasItem) {
+            System.out.println("Torch equipped");
+            itemEquipped = true;
+        }
+    }
+
+
     // change player location
-    private void locationChange(String noun, JSONObject room, JSONObject roomsObj) {
+    void locationChange(String noun, JSONObject room, JSONObject roomsObj) {
         if (noun.split(" ").length == 2) {;
             if (roomsObj.containsKey(noun)) {
                setCurrentRoom(noun);
@@ -82,8 +124,11 @@ public class Player {
 
     // look at room and items in room
     private void look(String noun, JSONObject room, JSONArray validItems) {
-        if (noun.equals("here")) {
+        if (noun.equals("here") && itemEquipped) {
             System.out.println(room.get("description"));
+        }
+        else {
+            System.out.println("Too dark to see, you need some light");
         }
         if(validItems.contains(noun) && room.containsKey("item")){
             JSONObject items = (JSONObject) room.get("item");
