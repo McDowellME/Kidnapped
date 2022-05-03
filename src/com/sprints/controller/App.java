@@ -96,7 +96,7 @@ public class App {
     private static void showStatus () throws IOException, ParseException {
 //        JSONParser parser = new JSONParser();
 //        JSONObject roomsObj = (JSONObject) parser.parse(new InputStreamReader(App.class.getResourceAsStream("/rooms.json")));
-        JSONObject roomObj = OurJSONParser.getRoomsJSON();
+        JSONObject roomObj = OurJSONParser.instantiate().getRoomsJSON();
         JSONObject room = (JSONObject) roomObj.get(Player.getInstance().getCurrentRoom());
         JSONObject items = (JSONObject) room.get("item");
 

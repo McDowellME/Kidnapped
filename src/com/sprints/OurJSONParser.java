@@ -19,24 +19,16 @@ public class OurJSONParser {
     // ******** Constants **********
     private static final String COMMANDS = "/commands.json";
     private static final String ROOMS = "/rooms.json";
+    private static final String INVENTORY = "/inventory.json";
     private static final String SYN = "/synonyms.json";
 
     // ******** Fields **********
     private static JSONParser jsonParser = new JSONParser();
     private static JSONObject roomsJSON;
 
-    static {
-        try {
-            roomsJSON = (JSONObject) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(ROOMS))));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
-
     private JSONObject commandJSON;
     private JSONArray synJSON;
+    private JSONObject inventoryJSON;
     private List<String> commands;
 
     // ******** Singleton Instantiation **********
@@ -63,7 +55,8 @@ public class OurJSONParser {
     // read JSON info as streams and parse
     private OurJSONParser() throws IOException, ParseException {
         commandJSON = (JSONObject) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(COMMANDS))));
-//        roomsJSON = (JSONObject) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(ROOMS))));
+        roomsJSON = (JSONObject) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(ROOMS))));
+        inventoryJSON = (JSONObject) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(INVENTORY))));
         synJSON = (JSONArray) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(SYN))));
         commands = new ArrayList<>();
     }
@@ -86,38 +79,7 @@ public class OurJSONParser {
             commands.add(noun);
         }
 
-        Player.getInstance().playerActions(commands.get(0), commands.get(1), room, roomsJSON, synJSON, items);
+        Player.getInstance().playerActions(commands.get(0), commands.get(1), room, roomsJSON, synJSON, items, inventoryJSON);
         return commands;
     }
-
-//   public List<Location> locationCreator(String file, String noun) {
-//        List<Location> locations = new ArrayList<>();
-//
-//        try {
-////            InputStream in = getFileFromData(file);
-////            InputStreamReader reader = new InputStreamReader(in);
-////            roomsJSON = (JSONArray) jsonParser.parse(reader);
-//            roomsJSON = (JSONArray) jsonParser.parse(new InputStreamReader(OurJSONParser.class.getResourceAsStream(ROOMS)));
-//        }
-//        catch (Exception e) {
-//            System.out.println("Please check location of file: " + file);
-//        }
-//
-//        for (Object o : roomsJSON) {
-//            JSONObject obj = (JSONObject) o;
-//            JSONObject insideRoom = (JSONObject) obj.get(noun);
-//            JSONObject items = (JSONObject) insideRoom.get("item");
-//            Set<String> itemsSet = items.keySet();
-//            ArrayList<String> roomItems = new ArrayList<>(itemsSet);
-//            String desc = (String) insideRoom.get("description");
-//
-//
-//            Location location = new Location (noun, desc, roomItems);
-//
-//            locations.add(location);
-//
-//        }
-//        return locations;
-//   }
-
 }

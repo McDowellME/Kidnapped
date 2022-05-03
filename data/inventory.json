@@ -1,0 +1,20 @@
+{
+  "note": {
+    "description": "Your participation, willing or otherwise is greatly appreciated. Hidden around the house you will find several notes to assist in your escape. Can you find them all before the game timer reaches 0?"
+  },
+  "torch": {
+    "description": "The flame shows no signs of giving out, it may be useful"
+  },
+  "clue 1": {
+    "description": "Heavy is the head that wears the crown"
+  },
+  "clue 2": {
+    "description": "Pale skin and bright red lips curled in a grin can entertain or terrify"
+  },
+  "clue 3": {
+    "description": "By the pricking of my thumb"
+  },
+  "clue 4": {
+    "description": "Beware for I am fearless, and therefore powerful"
+  }
+}
