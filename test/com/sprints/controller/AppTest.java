@@ -16,13 +16,16 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import com.sprints.OurJSONParser;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 import static org.junit.Assert.*;
 
 public class AppTest {
     App testApp = new App();
 
     @Test
-    public void testRestartShouldSetDefaultValues() throws IOException, ParseException, InterruptedException, java.text.ParseException {
+    public void testRestartShouldSetDefaultValues() throws IOException, ParseException, InterruptedException, java.text.ParseException, UnsupportedAudioFileException, LineUnavailableException {
         Player p1 = Player.getInstance();
         p1.setCurrentRoom("kitchen");
         testApp.restart();
