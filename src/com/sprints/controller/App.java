@@ -1,6 +1,8 @@
 package com.sprints.controller;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.Time;
 import java.text.ParseException;
@@ -15,6 +17,8 @@ import org.json.simple.JSONObject;
 //import org.json.simple.parser.ParseException;
 import com.sprints.OurJSONParser;
 
+import javax.sound.sampled.*;
+
 public class App {
     // ******** Fields **********
     private boolean gameOver = false;
@@ -24,7 +28,7 @@ public class App {
 
     // ******** Business Methods **********
     // hold all methods used to run app
-    public void execute() throws IOException, ParseException, InterruptedException {
+    public void execute() throws IOException, ParseException, InterruptedException, UnsupportedAudioFileException, LineUnavailableException {
         welcome();
         pressEnterToContinue();
         Console.clear();
@@ -32,7 +36,7 @@ public class App {
     }
 
     // starts app and holds game run logic
-    private void start() throws IOException, ParseException, InterruptedException {
+    private void start() throws IOException, ParseException, InterruptedException, UnsupportedAudioFileException, LineUnavailableException {
         while (!gameOver) {
             showStatus();
 
@@ -52,7 +56,7 @@ public class App {
             //Clear function coming from external jar
             parser.playerInput(playerCommand);
             Thread.sleep(1000);
-            Console.clear();
+            com.apps.util.Console.clear();
         }
     }
 
@@ -63,7 +67,7 @@ public class App {
     }
 
     // welcomes to game by displaying ascii and break description of game
-    private void welcome() throws IOException, InterruptedException {
+    private void welcome() throws IOException, InterruptedException, UnsupportedAudioFileException, LineUnavailableException {
         txtFileReader("/title.txt");
         pressEnterToContinue();
         Console.clear();
@@ -73,10 +77,11 @@ public class App {
         Console.blankLines(2);
         System.out.println("-----------------------------");
         getCommands();
+        playSound("/Sound.wav");
     }
 
     // restart our game
-    void restart() throws IOException, ParseException, InterruptedException {
+    void restart() throws IOException, ParseException, InterruptedException, UnsupportedAudioFileException, LineUnavailableException {
         System.out.println("Are you sure you want to restart?");
         String q = myObj.nextLine();
         if ("yes".equals(q) || "y".equals(q)) {
@@ -84,7 +89,7 @@ public class App {
             TimeUnit.SECONDS.sleep(2);
             Player.getInstance().setCurrentRoom("basement");
             Player.getInstance().getInventory().clear();
-            Console.clear();
+            com.apps.util.Console.clear();
             execute();
         }
         else {
@@ -169,6 +174,14 @@ public class App {
             System.out.print(ch);
             TimeUnit.MILLISECONDS.sleep(20);
         }
+    }
+    void playSound(String fileName) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
+        InputStream is = getClass().getResourceAsStream(fileName);
+        AudioInputStream ais = AudioSystem.getAudioInputStream(new BufferedInputStream(is));
+        Clip clip = AudioSystem.getClip();
+        clip.open(ais);
+        clip.start();
+        clip.loop(-1);
     }
 
     private void pressEnterToContinue() {
