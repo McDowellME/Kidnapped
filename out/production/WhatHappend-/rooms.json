@@ -38,7 +38,7 @@
     "npc": {
       "question": "Have you read the notes?"
     },
-    "description":"This hall has a smoothly hewn natural stone floor that have been polished smooth. A mouse scutters a across the floor. There is a bookcase at the end of the hall. The air smells stale."
+    "description":"This hall has a smoothly hewn natural stone floor that have been polished smooth. A mouse scutters\nacross the floor. There is a bookcase at the end of the hall. The air smells stale."
   },
   "kitchen":
   {
@@ -49,8 +49,7 @@
         "description2" : "The cabinets are time worn, loosely hanging on to their hinges. They rats appear to have made a meal of them, judging by the holes.",
         "clue": {
           "name": "clue3",
-          "description": "By the pricking of my thumb",
-          "retrieved": false
+          "description": "By the pricking of my thumb"
         }
       },
       "sink" : {
@@ -60,7 +59,7 @@
         "description" : "The window is barred from the outside, There is no way to get out."
       }
     },
-    "description": "The room is covered in dust and cobwebs. Glass shards cover the floor, and the smell of rust, mildew, and spoiled food is pungent. The air is so thick you can almost taste it. Roaches run up every wall and the faint sound of rats squeaking can be heard all around. The only way out is back south towards the parlor"
+    "description": "The room is covered in dust and cobwebs. Glass shards cover the floor, and the smell of rust,\nmildew, and spoiled food is pungent. The air is so thick you can almost taste it.\nRoaches run up every wall and the faint sound of rats squeaking can be heard all around. The only way out is back south towards the parlor"
   },
   "east hall":
   {
@@ -80,12 +79,11 @@
         "description2": "Like everything else in the house this vase is old and time worn.",
         "clue": {
           "name": "clue2",
-          "description": "Pale skin and bright red lips curled in a grin can entertain or terrify",
-          "retrieved": false
+          "description": "Pale skin and bright red lips curled in a grin can entertain or terrify"
         }
       }
     },
-    "description": "There is nothing warm about that place. It smells of something evil and the darkness is surreal. Not merely the type of darkness that comes from the absence of light, it was much more sinister. "
+    "description": "There is nothing warm about that place. It smells of something evil and the darkness is surreal.\nNot merely the type of darkness that comes from the absence of light, it was much more sinister. "
   },
   "parlor":
   {
@@ -100,16 +98,19 @@
       "candle holders": {
         "description": "Merely decorative. Covered in webs and dust, they appear to have not been used in some time"
       },
+      "corpse": {
+        "description": "Looks like they have the same wrist clamp as me...guess they didn't make it out in time."
+      },
       "portrait": {
         "description" : "Eerily the eyes of the portrait seem to follow you around the room, upon closer evaluation you find clue 1",
         "description2": "Eerily the eyes of the portrait seem to follow you around the room",
         "clue": {
           "name": "clue 1",
           "description": "Heavy is the head that wears the crown",
-          "item retrieved": false}
+          }
       }
     },
-    "description": "This room is large, bleak, and cold. It is quiet and somber and you fell a chill as the darkness engulfs you. You can hear the sound of your heart beat echo throughout the room. The ceiling is a cathedral vaulted (multi-domed) and with the tattered remains of what once must have been colorful streamers hanging down. A corpse covered in webs lay against the north wall right next to the entrance of what appears to be a kitchen. To the east lies a long dark hall and the west another. The room smells of mildew and decay."
+    "description": "This room is large, bleak, and cold. It is quiet and somber and you fell a chill as the darkness\nengulfs you. You can hear the sound of your heart beat echo throughout the room. The ceiling is a cathedral\nvaulted (multi-domed) and with the tattered remains of what once must have been colorful streamers hanging\ndown. A corpse covered in webs lay against the north wall right next to the entrance of what appears to be a kitchen.\nTo the east lies a long dark hall and the west another. The room smells of mildew and decay."
   },
   "basement":
   {
@@ -123,6 +124,6 @@
         "equipped": false
       }
     },
-    "description": "There is a smell of decay and mold in the room. The pitch-black atmosphere is nearly impenetrable. You stretch your eyes as wide as possible but can barely make out a feeble outline of some distant objects. There is little light except for the for a small strip below the door at the top of the stairs and a small torch which illuminates only what is in its immediate vicinity."
+    "description": "There is a smell of decay and mold in the room. The pitch-black atmosphere is nearly impenetrable.\nYou stretch your eyes as wide as possible but can barely make out a feeble outline of some distant objects.\nThere is little light except for the for a small strip below the door at the top of the stairs and a small\ntorch which illuminates only what is in its immediate vicinity.\n"
   }
 }

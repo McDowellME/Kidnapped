@@ -110,13 +110,8 @@ public class Player {
 
     // change player location
     void locationChange(String noun, JSONObject room, JSONObject roomsObj) {
-        if (noun.split(" ").length == 2) {;
-            if (roomsObj.containsKey(noun)) {
-               setCurrentRoom(noun);
-            }
-            else {
-                System.out.println(noun + " is not a known location");
-            }
+        if(roomsObj.containsKey(noun)) {
+            setCurrentRoom(noun);
         }
         else if (room.containsKey(noun) || roomsObj.containsKey(noun)) {
             setCurrentRoom((String) room.get(noun));
