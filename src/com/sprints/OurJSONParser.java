@@ -19,24 +19,16 @@ public class OurJSONParser {
     // ******** Constants **********
     private static final String COMMANDS = "/commands.json";
     private static final String ROOMS = "/rooms.json";
+    private static final String INVENTORY = "/inventory.json";
     private static final String SYN = "/synonyms.json";
 
     // ******** Fields **********
     private static JSONParser jsonParser = new JSONParser();
     private static JSONObject roomsJSON;
 
-    static {
-        try {
-            roomsJSON = (JSONObject) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(ROOMS))));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
-
     private JSONObject commandJSON;
     private JSONArray synJSON;
+    private JSONObject inventoryJSON;
     private List<String> commands;
 
     // ******** Singleton Instantiation **********
@@ -63,13 +55,17 @@ public class OurJSONParser {
     // read JSON info as streams and parse
     private OurJSONParser() throws IOException, ParseException {
         commandJSON = (JSONObject) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(COMMANDS))));
-//        roomsJSON = (JSONObject) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(ROOMS))));
+        roomsJSON = (JSONObject) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(ROOMS))));
+        inventoryJSON = (JSONObject) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(INVENTORY))));
         synJSON = (JSONArray) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(SYN))));
         commands = new ArrayList<>();
     }
 
     // ******** Business Methods **********
-    public List<String> commandParser(String noun, String verb) {
+    public void commandParser(List<String> command) {
+        String verb;
+        String noun;
+
         // clear commands list to ensure there's only ever a singular set of commands present
         commands.clear();
         // access out valid verbs, nouns, and items arrays inside commands.json
@@ -78,46 +74,18 @@ public class OurJSONParser {
         JSONArray items = (JSONArray) commandJSON.get("items");
         JSONObject room = (JSONObject) roomsJSON.get(Player.getInstance().getCurrentRoom());
 
-        if (!verbs.contains(verb) && !nouns.contains(noun)) {
-            System.out.println(verb + " " + noun + " is not a valid command");
+        if (command.size() == 1) {
+            commands.add(command.get(0));
+        }
+
+        else if (!verbs.contains(command.get(0)) && !nouns.contains(command.get(1))) {
+            System.out.println(command.get(0) + " " + command.get(1) + " is not a valid command");
         }
         else {
-            commands.add(verb);
-            commands.add(noun);
+            commands.add(command.get(0));
+            commands.add(command.get(1));
+            Player.getInstance().playerActions(commands, room, roomsJSON, synJSON, items, inventoryJSON);
         }
 
-        Player.getInstance().playerActions(commands.get(0), commands.get(1), room, roomsJSON, synJSON, items);
-        return commands;
     }
-
-//   public List<Location> locationCreator(String file, String noun) {
-//        List<Location> locations = new ArrayList<>();
-//
-//        try {
-////            InputStream in = getFileFromData(file);
-////            InputStreamReader reader = new InputStreamReader(in);
-////            roomsJSON = (JSONArray) jsonParser.parse(reader);
-//            roomsJSON = (JSONArray) jsonParser.parse(new InputStreamReader(OurJSONParser.class.getResourceAsStream(ROOMS)));
-//        }
-//        catch (Exception e) {
-//            System.out.println("Please check location of file: " + file);
-//        }
-//
-//        for (Object o : roomsJSON) {
-//            JSONObject obj = (JSONObject) o;
-//            JSONObject insideRoom = (JSONObject) obj.get(noun);
-//            JSONObject items = (JSONObject) insideRoom.get("item");
-//            Set<String> itemsSet = items.keySet();
-//            ArrayList<String> roomItems = new ArrayList<>(itemsSet);
-//            String desc = (String) insideRoom.get("description");
-//
-//
-//            Location location = new Location (noun, desc, roomItems);
-//
-//            locations.add(location);
-//
-//        }
-//        return locations;
-//   }
-
 }

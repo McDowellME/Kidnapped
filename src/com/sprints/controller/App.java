@@ -14,7 +14,6 @@ import org.json.simple.JSONObject;
 //import org.json.simple.parser.ParseException;
 import com.sprints.OurJSONParser;
 
-
 public class App {
     // ******** Fields **********
     private boolean gameOver = false;
@@ -38,14 +37,12 @@ public class App {
             String playerCommand = myObj.nextLine();
 
             //if player inputs "quit" it will break out of the while loop and exit the game----
-            if ("quit game".equals(playerCommand) || ("q".equals(playerCommand))) {
+            if ("quit".equals(playerCommand) || ("q".equals(playerCommand))) {
                 quit();
             }
-
             if ("restart".equals(playerCommand)) {
                 restart();
             }
-
             if ("help me".equals(playerCommand)) {
                 getCommands();
             }
@@ -78,6 +75,7 @@ public class App {
         Player.getInstance().getInventory().clear();
         start();
     }
+
     void quit() throws IOException, ParseException, InterruptedException {
         System.out.println("Are you sure you want to quit?");
         String q = myObj.nextLine();
@@ -94,9 +92,7 @@ public class App {
 
     // used to display status (current room, inventory, room description, etc)
     private static void showStatus () throws IOException, ParseException {
-//        JSONParser parser = new JSONParser();
-//        JSONObject roomsObj = (JSONObject) parser.parse(new InputStreamReader(App.class.getResourceAsStream("/rooms.json")));
-        JSONObject roomObj = OurJSONParser.getRoomsJSON();
+        JSONObject roomObj = OurJSONParser.instantiate().getRoomsJSON();
         JSONObject room = (JSONObject) roomObj.get(Player.getInstance().getCurrentRoom());
         JSONObject items = (JSONObject) room.get("item");
 
@@ -108,9 +104,6 @@ public class App {
 
         if (Player.getInstance().isItemEquipped()) {
             switch (Player.getInstance().getCurrentRoom()){
-//                case "basement" :
-//                    txtFileReader("/basement.txt");
-//                    break;
                 case "parlor" :
                     txtFileReader("/parlor.txt");
                     break;
@@ -129,13 +122,11 @@ public class App {
 
         System.out.println("Inventory:" + Player.getInstance().getInventory());
         if (room.containsKey("item")) {
-//            JSONObject items = (JSONObject) room.get("it);
             Set<String> roomItems = items.keySet();
             System.out.println("You see a " + roomItems);
         }
-        System.out.println(TimeElapsed.getInstance().getTime());
+        System.out.println(TimeElapsed.getTime());
         System.out.println("-----------------------------");
-
     }
 
     // read text files
@@ -143,7 +134,7 @@ public class App {
         try (var in = App.class.getResourceAsStream(filename)) {
             Scanner scanner = new Scanner(in, StandardCharsets.UTF_8);
             while ( scanner.hasNextLine() ){
-                System.out.println("\u001B[31m " + scanner.nextLine() + "\u001B[37m");
+                System.out.println(scanner.nextLine());
             }
         } catch (IOException e) {
             throw new RuntimeException("Uncaught", e);
