@@ -49,8 +49,7 @@
         "description2" : "The cabinets are time worn, loosely hanging on to their hinges. They rats appear to have made a meal of them, judging by the holes.",
         "clue": {
           "name": "clue3",
-          "description": "By the pricking of my thumb",
-          "retrieved": false
+          "description": "By the pricking of my thumb"
         }
       },
       "sink" : {
@@ -80,8 +79,7 @@
         "description2": "Like everything else in the house this vase is old and time worn.",
         "clue": {
           "name": "clue2",
-          "description": "Pale skin and bright red lips curled in a grin can entertain or terrify",
-          "retrieved": false
+          "description": "Pale skin and bright red lips curled in a grin can entertain or terrify"
         }
       }
     },
@@ -109,7 +107,7 @@
         "clue": {
           "name": "clue 1",
           "description": "Heavy is the head that wears the crown",
-          "item retrieved": false}
+          }
       }
     },
     "description": "This room is large, bleak, and cold. It is quiet and somber and you fell a chill as the darkness\nengulfs you. You can hear the sound of your heart beat echo throughout the room. The ceiling is a cathedral\nvaulted (multi-domed) and with the tattered remains of what once must have been colorful streamers hanging\ndown. A corpse covered in webs lay against the north wall right next to the entrance of what appears to be a kitchen.\nTo the east lies a long dark hall and the west another. The room smells of mildew and decay."
