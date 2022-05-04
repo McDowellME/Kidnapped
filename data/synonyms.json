@@ -9,12 +9,22 @@
     "get",
     "grab",
     "pickup",
-    "select"
+    "select",
+    "obtain"
   ],
   [
     "look",
     "see",
     "view",
     "read"
+  ],
+  [
+    "equip",
+    "wear",
+    "hold",
+    "use"
+  ],
+  [
+    "drop"
   ]
 ]

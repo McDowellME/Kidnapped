@@ -1,220 +1,197 @@
 package com.sprints.controller;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.sql.Time;
+import java.text.ParseException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
-import org.json.simple.JSONArray;
+import com.apps.util.Console;
+import com.sprints.Player;
+import com.sprints.TextParser;
+import com.sprints.TimeElapsed;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+//import org.json.simple.parser.ParseException;
+import com.sprints.OurJSONParser;
 
-
+import javax.sound.sampled.*;
 
 public class App {
-    public static String currentRoom = "basement";
-    public static List<String> inventory = new ArrayList<>();;
-    private boolean tutorial = true;
+    // ******** Fields **********
     private boolean gameOver = false;
-
+    private TextParser parser = new TextParser();
+    // instantiate scanner to read console input
     Scanner myObj = new Scanner(System.in);
 
-    public void execute() throws IOException, ParseException {
-        //displays splash screen
+    // ******** Business Methods **********
+    // hold all methods used to run app
+    public void execute() throws IOException, ParseException, InterruptedException, UnsupportedAudioFileException, LineUnavailableException {
         welcome();
+        pressEnterToContinue();
+        Console.clear();
         start();
     }
 
-    private void start() throws IOException, ParseException {
-
-        // possible start tutorial here where player prompted to look, get, and move
-        // standard gave play starts after tutorial portion ends
-        tutorial = false;
-
+    // starts app and holds game run logic
+    private void start() throws IOException, ParseException, InterruptedException, UnsupportedAudioFileException, LineUnavailableException {
         while (!gameOver) {
-
             showStatus();
+
             System.out.printf(">");
-            String playerCommand = myObj.nextLine().toLowerCase(); //changed variable name from "command" to "playerCommand" for better readability
-            List<String> input = new ArrayList<>(Arrays.asList(playerCommand.split(" ")));
+            String playerCommand = myObj.nextLine();
 
             //if player inputs "quit" it will break out of the while loop and exit the game----
-            // we can integrate the "start over" logic with this, if the group decides
-            if (playerCommand.equals("quit")) {
-                break;
+            if ("quit".equals(playerCommand) || ("q".equals(playerCommand))) {
+                quit();
             }
-
-            if (playerCommand.equals("restart")) {
-                currentRoom = "basement";
-                inventory.clear();
-                start();
+            if ("restart".equals(playerCommand)) {
+                restart();
             }
-            parseInput(input);
-
+            if ("help".equals(playerCommand)) {
+                getCommands();
+            }
+            //Clear function coming from external jar
+            parser.playerInput(playerCommand);
+            Thread.sleep(1000);
+            com.apps.util.Console.clear();
         }
     }
 
-
+    // shows available commands
     private void getCommands() {
-        // later use file to read synonyms of the commands
         // help should call this method
-        System.out.println("go [direction]\nget [item]\nlook [item]\nhelp (allows you to view in game commands)");
+        System.out.println("go [direction]\nget [item]\nlook [item]\nequip [item]\nhelp (allows you to view in game commands)");
     }
 
-    private void welcome() throws IOException {
-        txtFileReader("title.txt");
+    // welcomes to game by displaying ascii and break description of game
+    private void welcome() throws IOException, InterruptedException, UnsupportedAudioFileException, LineUnavailableException {
+        txtFileReader("/title.txt");
+        pressEnterToContinue();
+        Console.clear();
         //read from txt later
-        System.out.println("You awake to find yourself in a twisted escape game.\n Can you gather all the clues and escape with your life in tact before time runs out?");
-        System.out.println("---------------------");
+        String description = "You awake to find yourself in a twisted escape game. Can you gather all the clues and escape\nwith your life in tact before time runs out?";
+        printWithDelays(description);
+        Console.blankLines(2);
+        System.out.println("-----------------------------");
         getCommands();
+        playSound("/Sound.wav");
     }
 
-    private void parseInput(List<String> input) {
-        String noun;
-        String verb;
-        String location = "";
-
-        //if input greater than 2 words
-        if (input.size() > 2) {
-            location = input.get(1) + " " + input.get(2);
+    // restart our game
+    void restart() throws IOException, ParseException, InterruptedException, UnsupportedAudioFileException, LineUnavailableException {
+        System.out.println("Are you sure you want to restart?");
+        String q = myObj.nextLine();
+        if ("yes".equals(q) || "y".equals(q)) {
+            System.out.println("Restarting game...");
+            TimeUnit.SECONDS.sleep(2);
+            Player.getInstance().setCurrentRoom("basement");
+            Player.getInstance().getInventory().clear();
+            com.apps.util.Console.clear();
+            execute();
         }
-        if (input.size() >3) {
-            System.out.println("Please enter a valid 2 or 3 word command. Ex: [go north, go west hall, look room]");
-        }
-        else
-        {
-            verb = input.get(0);
-            noun = input.get(1);
-
-            JSONParser parser = new JSONParser();
-            try {
-                //reads from commands.json file
-                FileReader commandReader = new FileReader("data/commands.json"); //
-
-                //reads from synonyms.json
-                FileReader synonymReader = new FileReader("data/synonyms.json");
-
-                JSONObject commandObj = (JSONObject) parser.parse(commandReader);
-
-                //convert the parsed json file into a JSONArray to access values
-                JSONArray synonymObj = (JSONArray) parser.parse(synonymReader);
-
-                //valid items array
-                JSONArray validItems = (JSONArray) commandObj.get("items");
-                //valid verbs array
-                JSONArray validVerbs = (JSONArray) commandObj.get("verbs");
-                //valid nouns array
-                JSONArray validNouns = (JSONArray) commandObj.get("nouns");
-
-                //reads from room.json file
-                FileReader roomReader = new FileReader("data/rooms.json"); //
-                // entire json
-                JSONObject roomsObj = (JSONObject) parser.parse(roomReader);
-                // individual room
-                JSONObject room = (JSONObject) roomsObj.get(currentRoom);
-
-//                JSONObject items = (JSONObject) room.get("item");
-
-                // if input verb is not inside validVerbs array
-                if (synonymObj.contains(verb) || !validVerbs.contains(verb)) {
-                    System.out.println(verb + " is not recognized verb");
-                }
-                // if input noun is not inside validNouns array
-                if (!validNouns.contains(noun)) {
-                    System.out.println(noun + " is not recognized noun");
-                }
-                // pass info playerActions function
-                else {
-                    playerActions(noun, verb, room, roomsObj, location, synonymObj, validItems);
-                }
-
-            } catch (IOException | ParseException e) {
-                System.out.println(e);
-            }
-        }
-
-    }
-
-    private void playerActions(String noun, String verb, JSONObject room, JSONObject roomsObj, String location, JSONArray synonymObj, JSONArray validItems) {
-        JSONArray verbObj1 = (JSONArray) synonymObj.get(0);
-        JSONArray verbObj2 = (JSONArray) synonymObj.get(1);
-        JSONArray verbObj3 = (JSONArray) synonymObj.get(2);
-
-        if (verbObj1.contains(verb)) {
-            locationChange(noun, room, roomsObj, location);
-        }else if (verbObj2.contains(verb)) {
-            getItems(noun, room, validItems);
-        }else if (verbObj3.contains(verb)) {
-            look(noun, room, validItems);
+        else {
+            showStatus();
         }
     }
-    private void restart(){
 
+    void quit() throws IOException, ParseException, InterruptedException {
+        System.out.println("Are you sure you want to quit?");
+        String q = myObj.nextLine();
+        if ("yes".equals(q) || "y".equals(q)) {
+            System.out.println("quiting the game...");
+            TimeUnit.SECONDS.sleep(2);
+            gameOver = true;
+            System.exit(0);
+        }
+        else {
+            showStatus();
+        }
     }
 
-    private void getItems(String noun, JSONObject room, JSONArray validItems) {
+    // used to display status (current room, inventory, room description, etc)
+    private static void showStatus () throws IOException, ParseException, InterruptedException {
+        JSONObject roomObj = OurJSONParser.instantiate().getRoomsJSON();
+        JSONObject room = (JSONObject) roomObj.get(Player.getInstance().getCurrentRoom());
         JSONObject items = (JSONObject) room.get("item");
-        if (validItems.contains(noun) && items.containsKey(noun)) {
-            System.out.println(noun + " picked up");
-            inventory.add(noun);
-        }
-        else {
-            System.out.println("There is no item in this room");
-        }
-    }
 
-    private void locationChange(String noun, JSONObject room, JSONObject roomsObj, String location) {
-        if (roomsObj.containsKey(location)) {
-            currentRoom = location;
-        }
-        else if (room.containsKey(noun)) {
-            currentRoom = (String) room.get(noun);
-        }
-        else {
-            System.out.println("You cannot go that way");
-        }
-    }
+        if (Player.getInstance().isItemEquipped()) {
+            switch (Player.getInstance().getCurrentRoom()){
+                case "parlor" :
+                    txtFileReader("/parlor.txt");
+                    break;
+                case "east hall":
+                case "west hall":
+                    txtFileReader("/hallway.txt");
+                    break;
+                case "kitchen":
+                    txtFileReader("/kitchen.txt");
+                    break;
+                default:
+                    txtFileReader("/basement.txt");
+            }
 
-    private void look(String noun, JSONObject room, JSONArray validItems) {
-        if (noun.equals("here")) {
+            System.out.println("---------------------------");
+            System.out.println("You are in the " + Player.getInstance().getCurrentRoom());
+            Console.blankLines(1);
             System.out.println(room.get("description"));
+            Console.blankLines(1);
+        } else {
+            System.out.println("Too dark to see everything here, you need some light");
+            Console.blankLines(2);
         }
-        if(validItems.contains(noun) && room.containsKey("item")){
-            JSONObject items = (JSONObject) room.get("item");
-            JSONObject item = (JSONObject) items.get(noun);
-            System.out.println(item.get("description"));
-        }
-    }
-
-    private static void showStatus () throws IOException, ParseException {
-        JSONParser parser = new JSONParser();
-        FileReader roomReader = new FileReader("data/rooms.json");
-        JSONObject roomsObj = (JSONObject) parser.parse(roomReader);
-        JSONObject room = (JSONObject) roomsObj.get(currentRoom);
-
-
-        System.out.println("---------------------------");
-        System.out.println("You are in the " + currentRoom);
-        System.out.println("Inventory:" + inventory);
         if (room.containsKey("item")) {
-            JSONObject items = (JSONObject) room.get("item");
             Set<String> roomItems = items.keySet();
-            System.out.println("You see a " + roomItems);
+            System.out.println("You notice: " + roomItems);
+            Console.blankLines(1);
         }
+        System.out.println("Inventory:" + Player.getInstance().getInventory());
+        System.out.println(TimeElapsed.getTime());
         System.out.println("-----------------------------");
     }
 
-    private String txtFileReader (String filename) throws IOException {
-        if (Files.exists(Path.of("data/text_file/"+ filename))) {
-            String file = Files.readString(Path.of("data/text_file/" + filename));
-            System.out.println("\u001B[31m" + file + "\u001B[37m");
-            return file;
-        } else {
-            throw new IOException("Please verify welcome.txt location");
+    // read text files
+    private static void txtFileReader(String filename) throws IOException {
+        try (var in = App.class.getResourceAsStream(filename)) {
+            Scanner scanner = new Scanner(in, StandardCharsets.UTF_8);
+            while ( scanner.hasNextLine() ){
+                System.out.println(scanner.nextLine());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Uncaught", e);
         }
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    private static void printWithDelays(String data)
+            throws InterruptedException {
+        for (char ch:data.toCharArray()) {
+            System.out.print(ch);
+            TimeUnit.MILLISECONDS.sleep(20);
+        }
+    }
+    void playSound(String fileName) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
+        InputStream is = getClass().getResourceAsStream(fileName);
+        AudioInputStream ais = AudioSystem.getAudioInputStream(new BufferedInputStream(is));
+        Clip clip = AudioSystem.getClip();
+        clip.open(ais);
+        clip.start();
+        clip.loop(-1);
+    }
+
+    private void pressEnterToContinue() {
+        Console.blankLines(1);
+        System.out.println("Press ENTER to continue");
+        try {
+            System.in.read(new byte[2]);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }

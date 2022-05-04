@@ -1,0 +1,129 @@
+{
+  "west hall":
+  {
+    "south": "kitchen",
+    "east": "parlor",
+    "item": {
+      "bookcase": {
+        "description": "There are only 4 books here. All tattered and worn. Upon closer investigation you see a note",
+        "description2": "There are only 4 books here. All tattered and worn.",
+        "clue": {
+          "name": "clue4",
+          "description": "Beware for I am fearless, and therefore powerful"
+        },
+        "books": [
+          {
+            "name": "Something Wicked This Way Comes",
+            "number": 1,
+            "author": "Ray Bradbury"
+          },
+          {
+            "name": "It",
+            "number": 2,
+            "author": "Stephen King"
+          },
+          {
+            "name": "Frankenstein",
+            "number": 3,
+            "author": "Mary Shelly"
+          },
+          {
+            "name": "Reprieve",
+            "number": 4,
+            "author": "James Han Mattson"
+          }
+        ]
+      }
+    },
+    "npc": {
+      "question": "Have you read the notes?"
+    },
+    "description":"This hall has a smoothly hewn natural stone floor that have been polished smooth. A mouse scutters\nacross the floor. There is a bookcase at the end of the hall. The air smells stale."
+  },
+  "kitchen":
+  {
+    "south": "parlor",
+    "item": {
+      "cabinets": {
+        "description" :  "The cabinets are time worn, loosely hanging on to their hinges. They rats appear to have made a meal of them, judging by the holes. Upon closer investigation you find a note.",
+        "description2" : "The cabinets are time worn, loosely hanging on to their hinges. They rats appear to have made a meal of them, judging by the holes.",
+        "clue": {
+          "name": "clue3",
+          "description": "By the pricking of my thumb"
+        }
+      },
+      "sink" : {
+        "description": "The spoiled remains of food fill the sink"
+      },
+      "window": {
+        "description" : "The window is barred from the outside, There is no way to get out."
+      }
+    },
+    "description": "The room is covered in dust and cobwebs. Glass shards cover the floor, and the smell of rust,\nmildew, and spoiled food is pungent. The air is so thick you can almost taste it.\nRoaches run up every wall and the faint sound of rats squeaking can be heard all around. The only way out is back south towards the parlor"
+  },
+  "east hall":
+  {
+    "east": "east room",
+    "west": "parlor",
+    "description":"This hall has a smoothly hewn natural stone floor that have been polished smooth."
+  },
+  "east room":
+  {
+    "west": "east hall",
+    "item": {
+      "sword": {
+        "description": "Rusted but sharp. Dried blood covers the tip."
+      },
+      "vase": {
+        "description": "Like everything else in the house this vase is old and time worn. Upon closer investigation you find a note",
+        "description2": "Like everything else in the house this vase is old and time worn.",
+        "clue": {
+          "name": "clue2",
+          "description": "Pale skin and bright red lips curled in a grin can entertain or terrify"
+        }
+      }
+    },
+    "description": "There is nothing warm about that place. It smells of something evil and the darkness is surreal.\nNot merely the type of darkness that comes from the absence of light, it was much more sinister. "
+  },
+  "parlor":
+  {
+    "north": "kitchen",
+    "east": "east hall",
+    "west": "west hall",
+    "south": "basement",
+    "item": {
+      "streamers": {
+        "description": "Time has not treated these well"
+      },
+      "candle holders": {
+        "description": "Merely decorative. Covered in webs and dust, they appear to have not been used in some time"
+      },
+      "corpse": {
+        "description": "Looks like they have the same wrist clamp as me...guess they didn't make it out in time."
+      },
+      "portrait": {
+        "description" : "Eerily the eyes of the portrait seem to follow you around the room, upon closer evaluation you find clue 1",
+        "description2": "Eerily the eyes of the portrait seem to follow you around the room",
+        "clue": {
+          "name": "clue 1",
+          "description": "Heavy is the head that wears the crown",
+          }
+      }
+    },
+    "description": "This room is large, bleak, and cold. It is quiet and somber and you fell a chill as the darkness\nengulfs you. You can hear the sound of your heart beat echo throughout the room. The ceiling is a cathedral\nvaulted (multi-domed) and with the tattered remains of what once must have been colorful streamers hanging\ndown. A corpse covered in webs lay against the north wall right next to the entrance of what appears to be a kitchen.\nTo the east lies a long dark hall and the west another. The room smells of mildew and decay."
+  },
+  "basement":
+  {
+    "north": "parlor",
+    "item": {
+      "note": {
+        "description" : "Your participation, willing or otherwise is greatly appreciated. Hidden around the house you will find several notes to assist in your escape. Can you find them all before the game timer reaches 0?"
+      },
+      "torch": {
+        "description": "The flame shows no signs of giving out, it may be useful",
+        "equipped": false
+      }
+    },
+    "description": "There is a smell of decay and mold in the room. The pitch-black atmosphere is nearly impenetrable.\nYou stretch your eyes as wide as possible but can barely make out a feeble outline of some distant objects.\nThere is little light except for the for a small strip below the door at the top of the stairs and a small\ntorch which illuminates only what is in its immediate vicinity.\n"
+  }
+}
