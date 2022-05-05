@@ -92,7 +92,8 @@ public class Game {
         JSONObject bookcase = (JSONObject) hallItems.get("bookcase");
         JSONObject books = (JSONObject) bookcase.get("books");
         Set<String> remainingBooks = books.keySet();
-        if (remainingBooks.size() == 2 && remainingBooks.contains("it")) {
+        int bookSelections = remainingBooks.size() - (remainingBooks.size() - 2);
+        if (remainingBooks.size() <= bookSelections && remainingBooks.contains("it")) {
             endGame();
         }
     }
@@ -232,6 +233,5 @@ public class Game {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }
