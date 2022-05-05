@@ -5,34 +5,34 @@
     "east": "parlor",
     "item": {
       "bookcase": {
-        "description": "There are only 4 books here. All tattered and worn. Upon closer investigation you see a note",
+        "description": "There are only 4 books here. All tattered and worn. Upon closer investigation you see clue 4",
         "description2": "There are only 4 books here. All tattered and worn.",
         "clue": {
-          "name": "clue4",
+          "name": "clue 4",
           "description": "Beware for I am fearless, and therefore powerful"
         },
-        "books": [
-          {
+        "books": {
+          "something wicked": {
             "name": "Something Wicked This Way Comes",
             "number": 1,
             "author": "Ray Bradbury"
           },
-          {
+          "it": {
             "name": "It",
             "number": 2,
             "author": "Stephen King"
           },
-          {
+          "frankenstein": {
             "name": "Frankenstein",
             "number": 3,
             "author": "Mary Shelly"
           },
-          {
+          "reprieve": {
             "name": "Reprieve",
             "number": 4,
-            "author": "James Han Mattson"
+            "author": "James Ham Mattson"
           }
-        ]
+        }
       }
     },
     "npc": {
@@ -45,10 +45,10 @@
     "south": "parlor",
     "item": {
       "cabinets": {
-        "description" :  "The cabinets are time worn, loosely hanging on to their hinges. They rats appear to have made a meal of them, judging by the holes. Upon closer investigation you find a note.",
+        "description" :  "The cabinets are time worn, loosely hanging on to their hinges. They rats appear to have made a meal of them, judging by the holes. Upon closer investigation you see clue 3.",
         "description2" : "The cabinets are time worn, loosely hanging on to their hinges. They rats appear to have made a meal of them, judging by the holes.",
         "clue": {
-          "name": "clue3",
+          "name": "clue 3",
           "description": "By the pricking of my thumb"
         }
       },
@@ -75,10 +75,10 @@
         "description": "Rusted but sharp. Dried blood covers the tip."
       },
       "vase": {
-        "description": "Like everything else in the house this vase is old and time worn. Upon closer investigation you find a note",
+        "description": "Like everything else in the house this vase is old and time worn. Upon closer investigation you see clue 2",
         "description2": "Like everything else in the house this vase is old and time worn.",
         "clue": {
-          "name": "clue2",
+          "name": "clue 2",
           "description": "Pale skin and bright red lips curled in a grin can entertain or terrify"
         }
       }
