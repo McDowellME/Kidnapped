@@ -67,7 +67,7 @@ public class Game {
                 //Clear function coming from external jar
                 parser.playerInput(playerCommand);
                 Thread.sleep(1000);
-                com.apps.util.Console.clear();
+                Console.clear();
             } else {
                 gameOver = true;
                 endGame();
@@ -125,6 +125,9 @@ public class Game {
         Console.blankLines(2);
         System.out.println("-----------------------------");
         getCommands();
+        pressEnterToContinue();
+        Console.clear();
+        printWithDelays("...You feel a sharp prick.");
         playSound("/Sound.wav");
     }
 
@@ -244,6 +247,7 @@ public class Game {
         }
     }
 
+
     private static void printWithDelays(String data)
             throws InterruptedException {
         for (char ch:data.toCharArray()) {
@@ -252,6 +256,7 @@ public class Game {
         }
     }
 
+    // prompts players to press enter to continue game
     private void pressEnterToContinue() {
         Console.blankLines(1);
         System.out.println("Press ENTER to continue");

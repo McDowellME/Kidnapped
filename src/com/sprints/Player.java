@@ -19,6 +19,7 @@ public class Player {
     private List<String> inventory = new ArrayList<>();
     private List<String> cluesFound = new ArrayList<>();
     private boolean itemEquipped = false;
+    private int tries = 2;
 
     // ******** Business Methods **********
     /* we do not want to instantiate multiple.
@@ -164,17 +165,23 @@ public class Player {
     // look at room and items in room
     private void look(String noun, JSONObject room, JSONObject roomsObj, JSONArray validItems, JSONObject inventoryObj) {
         JSONObject items = (JSONObject) room.get("item");
-        ArrayList<String> keys = new ArrayList<>(items.keySet());
-        ArrayList<String> roomKeys = new ArrayList<>(roomsObj.keySet());
+        JSONObject bookLocation = (JSONObject) roomsObj.get("west hall");
+        JSONObject locationItems = (JSONObject) bookLocation.get("item");
+        JSONObject bookcaseItems = (JSONObject) locationItems.get("bookcase");
+        JSONObject books = (JSONObject) bookcaseItems.get("books");
+        Set<String> bookKeys = books.keySet();
 
         // checks location as west hall the only place books keyword is valid and
         // outputs the title of the books on the bookcase for player
         if ("west hall".equals(getCurrentRoom()) && "books".equals(noun) && itemEquipped) {
-            JSONObject bookcaseItems = (JSONObject) items.get("bookcase");
-            JSONObject books = (JSONObject) bookcaseItems.get(noun);
-            Set<String> bookKeys = books.keySet();
             System.out.println("You see " + bookKeys);
-            return;
+
+        }
+        else if ("west hall".equals(getCurrentRoom()) && bookKeys.contains(noun) && itemEquipped) {
+            JSONObject book = (JSONObject) books.get(noun);
+            String description = (String) book.get("description");
+            System.out.println(description);
+            tries--;
         }
         // gives description if so prints out that room description
         else if (noun.equals(getCurrentRoom()) || "here".equals(noun) && itemEquipped) {
@@ -203,15 +210,6 @@ public class Player {
             return;
         }
 
-
-//        if (keys.contains("portrait") || keys.contains("vase") || keys.contains("cabinets") || keys.contains("bookcase") ) {
-//            for (int i = 0; i < keys.size(); i++) {
-//                JSONObject item = (JSONObject) items.get(keys.get(i));
-//                if (!item.containsKey("clue")) {
-//                    System.out.println(item.get("description2"));
-//                }
-//            }
-//        }
     }
 
     public String getCurrentRoom() {

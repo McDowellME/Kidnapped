@@ -5,38 +5,35 @@
     "east": "parlor",
     "item": {
       "bookcase": {
-        "description": "There are only 4 books here. All tattered and worn. Upon closer investigation you see clue 4",
+        "description": "There are many book. All tattered and worn. Some appear to have been recently read. Upon closer investigation you see clue 4",
         "description2": "There are only 4 books here. All tattered and worn.",
         "clue": {
           "name": "clue 4",
-          "description": "Beware for I am fearless, and therefore powerful"
+          "description": "Beware for I am fearless, and therefore powerful (good luck)"
         },
         "books": {
           "something wicked": {
             "name": "Something Wicked This Way Comes",
-            "number": 1,
+            "description": "There appears to be nothing special about this book",
             "author": "Ray Bradbury"
           },
           "it": {
             "name": "It",
-            "number": 2,
+            "description": "Someone appears to have ripped pieces from several pages.\nThey look about the size of the clues.",
             "author": "Stephen King"
           },
           "frankenstein": {
             "name": "Frankenstein",
-            "number": 3,
+            "description": "There appears to be nothing special about this book",
             "author": "Mary Shelly"
           },
           "reprieve": {
             "name": "Reprieve",
-            "number": 4,
+            "description": "There appears to be nothing special about this book",
             "author": "James Ham Mattson"
           }
         }
       }
-    },
-    "npc": {
-      "question": "Have you read the notes?"
     },
     "description":"This hall has a smoothly hewn natural stone floor that have been polished smooth. A mouse scutters\nacross the floor. There is a bookcase at the end of the hall. The air smells stale."
   },
@@ -49,7 +46,7 @@
         "description2" : "The cabinets are time worn, loosely hanging on to their hinges. They rats appear to have made a meal of them, judging by the holes.",
         "clue": {
           "name": "clue 3",
-          "description": "By the pricking of my thumb"
+          "description": "Reading is fundamental, but WHAT you read is key (2)"
         }
       },
       "sink" : {
@@ -79,7 +76,7 @@
         "description2": "Like everything else in the house this vase is old and time worn.",
         "clue": {
           "name": "clue 2",
-          "description": "Pale skin and bright red lips curled in a grin can entertain or terrify"
+          "description": "Pale skin and bright red lips curled in a grin can entertain or terrify (strikes is)"
         }
       }
     },
@@ -106,7 +103,7 @@
         "description2": "Eerily the eyes of the portrait seem to follow you around the room",
         "clue": {
           "name": "clue 1",
-          "description": "Heavy is the head that wears the crown",
+          "description": "Heavy is the head that wears the crown (you get)"
           }
       }
     },
@@ -117,11 +114,14 @@
     "north": "parlor",
     "item": {
       "note": {
-        "description" : "Your participation, willing or otherwise is greatly appreciated. Hidden around the house you will find several notes to assist in your escape. Can you find them all before the game timer reaches 0?"
+        "description" : "Your participation, is greatly appreciated. Hidden around the house you will find several clues to assist in your escape.\nThe prick I'm sure you felt injected a fast acting toxin into you blood stream, but worry not,\n all will be well if you can escape before our game timer hit 0"
       },
       "torch": {
         "description": "The flame shows no signs of giving out, it may be useful",
         "equipped": false
+      },
+      "needle": {
+        "description": "A small needle protrudes from a crack in the ground where you awoke"
       }
     },
     "description": "There is a smell of decay and mold in the room. The pitch-black atmosphere is nearly impenetrable.\nYou stretch your eyes as wide as possible but can barely make out a feeble outline of some distant objects.\nThere is little light except for the for a small strip below the door at the top of the stairs and a small\ntorch which illuminates only what is in its immediate vicinity.\n"
