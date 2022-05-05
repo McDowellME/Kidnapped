@@ -42,7 +42,7 @@ public class TextParser {
         String verb;
         String noun;
         List<String> command = new ArrayList<>();
-        List<String> validSingleWords = new ArrayList<>(Arrays.asList("quit", "q", "restart", "no", "yes", "y", "n", "help"));
+        List<String> validSingleWords = new ArrayList<>(Arrays.asList("quit", "q", "restart", "no", "yes", "y", "n", "help", "mcdhapwt123"));
 
         if (inputCommand.size() == 1 && validSingleWords.contains(inputCommand.get(0))) {
             String oneWordCommand = inputCommand.get(0);

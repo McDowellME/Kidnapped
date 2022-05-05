@@ -1,6 +1,7 @@
 package com.sprints;
 
 import com.apps.util.Console;
+import com.sprints.controller.App;
 import org.json.simple.JSONObject;
 
 import javax.sound.sampled.*;
@@ -39,25 +40,41 @@ public class Game {
     public void start() throws IOException, ParseException, InterruptedException, UnsupportedAudioFileException, LineUnavailableException {
         welcome();
         while (!gameOver) {
-            showStatus();
+            if (!TimeElapsed.getTime().equals("0")) {
+                showStatus();
+                String playerCommand = promptPlayer();
 
-            String playerCommand = promptPlayer();
-
-            //if player inputs "quit" it will break out of the while loop and exit the game----
-            if ("quit".equals(playerCommand) || ("q".equals(playerCommand))) {
-                quit();
+                //if player inputs "quit" it will break out of the while loop and exit the game----
+                if ("quit".equals(playerCommand) || ("q".equals(playerCommand))) {
+                    quit();
+                }
+                if ("restart".equals(playerCommand)) {
+                    restart();
+                }
+                if ("help".equals(playerCommand)) {
+                    getCommands();
+                }
+                //encrypted command to end game if timer ends
+                if ("mcdhapwt123".equals(playerCommand)) {
+                    endGame();
+                }
+                //Clear function coming from external jar
+                parser.playerInput(playerCommand);
+                Thread.sleep(1000);
+                com.apps.util.Console.clear();
+            } else {
+                gameOver = true;
+                endGame();
+                return;
             }
-            if ("restart".equals(playerCommand)) {
-                restart();
-            }
-            if ("help".equals(playerCommand)) {
-                getCommands();
-            }
-            //Clear function coming from external jar
-            parser.playerInput(playerCommand);
-            Thread.sleep(1000);
-            com.apps.util.Console.clear();
         }
+    }
+
+    // ends the game with Ascii art if timer ends
+    private void endGame() throws IOException {
+        System.out.println("Time's Up! You just fell through the trap door!!!");
+        System.out.println();
+        TextFileReader.getInstance().txtFileReader("/gameover.txt");
     }
 
     // welcomes to game by displaying ascii and break description of game
@@ -115,11 +132,11 @@ public class Game {
             Console.blankLines(1);
         }
         System.out.println("Inventory:" + Player.getInstance().getInventory());
-        System.out.println(TimeElapsed.getTime());
+        System.out.println("Time Remaining: " + TimeElapsed.getTime());
         System.out.println("-----------------------------");
     }
 
-    // restart our game
+    // restart game
     private void restart() throws IOException, ParseException, InterruptedException, UnsupportedAudioFileException, LineUnavailableException {
         System.out.println("Are you sure you want to restart?");
         String q = myObj.nextLine();
@@ -159,13 +176,18 @@ public class Game {
         System.out.println("go [direction]\nget [item]\nlook [item]\nequip [item]\nhelp (allows you to view in game commands)");
     }
 
-    // method to prompt player
+    //prompts the user to enter commands until timer ends
     private String promptPlayer() {
-        System.out.printf(">");
-        String playerCommand = myObj.nextLine();
+        // encrypted default command calls endGame() when timer ends
+        String playerCommand = "mcdhapwt123";
+        if (!TimeElapsed.getTime().equals("0")) {
+            System.out.printf(">");
+            playerCommand = myObj.nextLine();
+        }
         return playerCommand;
     }
 
+    //play in game music
     private void playSound(String fileName) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
         InputStream is = getClass().getResourceAsStream(fileName);
         AudioInputStream ais = AudioSystem.getAudioInputStream(new BufferedInputStream(is));
