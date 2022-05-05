@@ -21,6 +21,7 @@ public class Game {
     private boolean gameOver = false;
     private TextParser parser = new TextParser();
     private Clip clip = AudioSystem.getClip();
+    private static final String ROOMS = "/rooms.json";
     // instantiate scanner to read console input
     Scanner myObj = new Scanner(System.in);
 
@@ -42,6 +43,7 @@ public class Game {
         while (!gameOver) {
             if (!TimeElapsed.getTime().equals("0")) {
                 showStatus();
+                bookLoss();
                 String playerCommand = promptPlayer();
 
                 //if player inputs "quit" it will break out of the while loop and exit the game----
@@ -72,9 +74,27 @@ public class Game {
 
     // ends the game with Ascii art if timer ends
     private void endGame() throws IOException {
-        System.out.println("Time's Up! You just fell through the trap door!!!");
+        if (TimeElapsed.getTime().equals("0")) {
+            System.out.println("Time's Up! You just fell through the trap door!!!");
+        }
+        else {
+            System.out.println("You chose..... Poorly.");
+        }
         System.out.println();
         TextFileReader.getInstance().txtFileReader("/gameover.txt");
+        System.exit(0);
+    }
+
+    private void bookLoss() throws IOException {
+        JSONObject bookCheck = OurJSONParser.getRoomsJSON();
+        JSONObject westHall = (JSONObject) bookCheck.get("west hall");
+        JSONObject hallItems = (JSONObject) westHall.get("item");
+        JSONObject bookcase = (JSONObject) hallItems.get("bookcase");
+        JSONObject books = (JSONObject) bookcase.get("books");
+        Set<String> remainingBooks = books.keySet();
+        if (remainingBooks.size() == 2 && remainingBooks.contains("it")) {
+            endGame();
+        }
     }
 
     // welcomes to game by displaying ascii and break description of game
@@ -214,9 +234,4 @@ public class Game {
         }
 
     }
-
-    private boolean isGameOver() {
-        return gameOver;
-    }
-
 }
