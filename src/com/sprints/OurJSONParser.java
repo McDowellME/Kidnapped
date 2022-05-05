@@ -31,6 +31,16 @@ public class OurJSONParser {
     private JSONObject inventoryJSON;
     private List<String> commands;
 
+    //******** CTOR **********
+    // read JSON info as streams and parse
+    private OurJSONParser() throws IOException, ParseException {
+        commandJSON = (JSONObject) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(COMMANDS))));
+        roomsJSON = (JSONObject) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(ROOMS))));
+        inventoryJSON = (JSONObject) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(INVENTORY))));
+        synJSON = (JSONArray) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(SYN))));
+        commands = new ArrayList<>();
+    }
+
     // ******** Singleton Instantiation **********
     /* we do not want to instantiate multiple.
     static allows us to use through entire app where needed.*/
@@ -47,19 +57,6 @@ public class OurJSONParser {
         return ourParser;
     }
 
-    static JSONObject getRoomsJSON() {
-        return roomsJSON;
-    }
-
-    //******** CTOR **********
-    // read JSON info as streams and parse
-    private OurJSONParser() throws IOException, ParseException {
-        commandJSON = (JSONObject) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(COMMANDS))));
-        roomsJSON = (JSONObject) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(ROOMS))));
-        inventoryJSON = (JSONObject) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(INVENTORY))));
-        synJSON = (JSONArray) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(SYN))));
-        commands = new ArrayList<>();
-    }
 
     // ******** Business Methods **********
     void commandParser(List<String> command) {
@@ -90,6 +87,9 @@ public class OurJSONParser {
             commands.add(command.get(1));
             Player.getInstance().playerActions(commands, room, roomsJSON, synJSON, items, inventoryJSON, books);
         }
+    }
 
+    static JSONObject getRoomsJSON() {
+        return roomsJSON;
     }
 }

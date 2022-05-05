@@ -1,19 +1,20 @@
 package com.sprints;
 
 public class TimeElapsed {
-    //
     private static long startTime = System.currentTimeMillis();
-    // time game will run in seconds (5 mins)
     private static int runtime = 300;
+    private static long elapsedTime;
 
+    // get the in game timer's current time remaining
     public static String getTime() {
-        long elapsedTime = System.currentTimeMillis() - startTime;
+        elapsedTime = System.currentTimeMillis() - startTime;
         // convert milli to seconds
         elapsedTime = elapsedTime/1000;
-
         // update remaining game time
         String remaining = Integer.toString((int) (runtime - elapsedTime));
-
-        return "Time Remaining: " + remaining;
+        if (Integer.parseInt(remaining) < 0) {
+            remaining = Integer.toString(0);
+        }
+        return remaining;
     }
 }
