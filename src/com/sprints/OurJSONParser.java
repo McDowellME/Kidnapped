@@ -34,7 +34,7 @@ public class OurJSONParser {
     // ******** Singleton Instantiation **********
     /* we do not want to instantiate multiple.
     static allows us to use through entire app where needed.*/
-    public static OurJSONParser instantiate() {
+    static OurJSONParser instantiate() {
         if (ourParser == null) {
             try {
                 ourParser = new OurJSONParser();
@@ -47,7 +47,7 @@ public class OurJSONParser {
         return ourParser;
     }
 
-    public static JSONObject getRoomsJSON() {
+    static JSONObject getRoomsJSON() {
         return roomsJSON;
     }
 
@@ -62,7 +62,7 @@ public class OurJSONParser {
     }
 
     // ******** Business Methods **********
-    public void commandParser(List<String> command) {
+    void commandParser(List<String> command) {
         String verb;
         String noun;
 
@@ -73,6 +73,10 @@ public class OurJSONParser {
         JSONArray nouns = (JSONArray) commandJSON.get("nouns");
         JSONArray items = (JSONArray) commandJSON.get("items");
         JSONObject room = (JSONObject) roomsJSON.get(Player.getInstance().getCurrentRoom());
+        JSONObject westHall = (JSONObject) roomsJSON.get("west hall");
+        JSONObject hallItems = (JSONObject) westHall.get("item");
+        JSONObject bookcase = (JSONObject) hallItems.get("bookcase");
+        JSONObject books = (JSONObject) bookcase.get("books");
 
         if (command.size() == 1) {
             commands.add(command.get(0));
@@ -84,7 +88,7 @@ public class OurJSONParser {
         else {
             commands.add(command.get(0));
             commands.add(command.get(1));
-            Player.getInstance().playerActions(commands, room, roomsJSON, synJSON, items, inventoryJSON);
+            Player.getInstance().playerActions(commands, room, roomsJSON, synJSON, items, inventoryJSON, books);
         }
 
     }

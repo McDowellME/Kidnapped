@@ -16,5 +16,18 @@
   },
   "clue 4": {
     "description": "Beware for I am fearless, and therefore powerful"
+  },
+  "something wicked":  {
+    "description": "Wrong choice"
+  },
+  "reprieve": {
+    "description": "Wrong choice"
+  },
+  "it": {
+    "description": "BINGO!!! Guess you got me"
+  },
+  "frankenstein": {
+    "description": "Wrong choice"
   }
+
 }
