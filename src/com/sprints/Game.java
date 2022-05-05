@@ -21,9 +21,9 @@ public class Game {
     private boolean gameOver = false;
     private TextParser parser = new TextParser();
     private Clip clip = AudioSystem.getClip();
+    private boolean isSound = true;     // music is ON by default
     private static final String ROOMS = "/rooms.json";
-    // instantiate scanner to read console input
-    Scanner myObj = new Scanner(System.in);
+    Scanner myObj = new Scanner(System.in);   // instantiate scanner to read console input
 
     // ******** CTOR **********
     public Game() throws LineUnavailableException {
@@ -61,6 +61,9 @@ public class Game {
                 if ("mcdhapwt123".equals(playerCommand)) {
                     endGame();
                 }
+                if ("music".equals(playerCommand)) {
+                    toggleSound();
+                }
                 //Clear function coming from external jar
                 parser.playerInput(playerCommand);
                 Thread.sleep(1000);
@@ -86,6 +89,7 @@ public class Game {
         System.exit(0);
     }
 
+    // End game with a win if select correct book
     private void checkWin() throws IOException {
         if (Player.getInstance().getInventory().contains("it")) {
             System.out.println("You pull the book out of the shelf and it opens a secret door.");
@@ -96,6 +100,7 @@ public class Game {
         }
     }
 
+    // End game with a loss if select 2 incorrect books
     private void bookLoss() throws IOException {
         JSONObject bookCheck = OurJSONParser.getRoomsJSON();
         JSONObject westHall = (JSONObject) bookCheck.get("west hall");
@@ -208,7 +213,7 @@ public class Game {
         System.out.println("go [direction]\nget [item]\nlook [item]\nequip [item]\nhelp (allows you to view in game commands)");
     }
 
-    //prompts the user to enter commands until timer ends
+    // prompts the user to enter commands until timer ends
     private String promptPlayer() {
         // encrypted default command calls endGame() when timer ends
         String playerCommand = "mcdhapwt123";
@@ -219,13 +224,24 @@ public class Game {
         return playerCommand;
     }
 
-    //play in game music
+    // start in game music
     private void playSound(String fileName) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
         InputStream is = getClass().getResourceAsStream(fileName);
         AudioInputStream ais = AudioSystem.getAudioInputStream(new BufferedInputStream(is));
         clip.open(ais);
         clip.start();
         clip.loop(-1);
+    }
+
+    // stop in game music
+    private void toggleSound() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
+        if (isSound) {
+            clip.stop();
+            isSound = false;
+        } else {
+            clip.start();
+            isSound = true;
+        }
     }
 
     private static void printWithDelays(String data)
