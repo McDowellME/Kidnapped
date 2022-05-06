@@ -63,9 +63,9 @@ class Player {
         }else if (verbObj5.contains(commands.get(0))) {
             dropItems(commands.get(1), roomItems, validItems);
         }else if (verbObj6.contains(commands.get(0))) {
-            Game.getInstance().raiseSoundVolume();
+            MusicPlayer.raiseSoundVolume();
         }else if (verbObj7.contains(commands.get(0))) {
-            Game.getInstance().lowerSoundVolume();
+            MusicPlayer.lowerSoundVolume();
         }
     }
 
