@@ -13,6 +13,8 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import static com.sprints.MusicPlayer.clip;
+
 public class Game {
     // ******** Class Singleton **********
     private static Game game = null;
@@ -20,8 +22,8 @@ public class Game {
     // ******** Fields **********
     private boolean gameOver = false;
     private TextParser parser = new TextParser();
-    private Clip clip = AudioSystem.getClip();
-    private boolean isSound = true;     // music is ON by default
+//    private Clip clip = AudioSystem.getClip();
+//    private boolean isSound = true;     // music is ON by default
     private static final String ROOMS = "/rooms.json";
     Scanner myObj = new Scanner(System.in);   // instantiate scanner to read console input
 
@@ -62,7 +64,7 @@ public class Game {
                     getCommands();
                 }
                 else if ("mute".equals(playerCommand) || "play".equals(playerCommand)) {
-                    toggleSound();
+                    MusicPlayer.toggleSound();
                 }
 
             }
@@ -238,33 +240,33 @@ public class Game {
         clip.loop(-1);
     }
 
-    // pause/re-play in game music
-    private void toggleSound() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
-        if (isSound) {
-            clip.stop();
-            isSound = false;
-        } else {
-            clip.start();
-            isSound = true;
-        }
-    }
-
-
-    public void lowerSoundVolume() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
-        if (!isSound) {
-            toggleSound();
-        }
-        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        gainControl.setValue(-6.0f);
-    }
-
-
-    public void raiseSoundVolume() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
-        if (!isSound) {
-            toggleSound();
-        }
-        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        gainControl.setValue(+6.0f);
-    }
+//    // pause/re-play in game music
+//    private void toggleSound() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
+//        if (isSound) {
+//            clip.stop();
+//            isSound = false;
+//        } else {
+//            clip.start();
+//            isSound = true;
+//        }
+//    }
+//
+//
+//    public void lowerSoundVolume() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+//        if (!isSound) {
+//            toggleSound();
+//        }
+//        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+//        gainControl.setValue(-6.0f);
+//    }
+//
+//
+//    public void raiseSoundVolume() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+//        if (!isSound) {
+//            toggleSound();
+//        }
+//        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+//        gainControl.setValue(+6.0f);
+//    }
 
 }
