@@ -80,7 +80,7 @@ public class Game {
             Utils.printWithDelays("Your body begins to stiffen and agony takes the name of each breath. Your world fades to black\nas you fall to the ground...");
         }
         else {
-            Utils.printWithDelays("You chose..... Poorly.");
+            Utils.printWithDelays("You feel the floor shift beneath your feet. It opens up, dropping you into a massive spike pit.\nAs you descend you see the bodies of countless others who have played and failed this twisted game.");
         }
         Console.blankLines(1);
         TimeUnit.SECONDS.sleep(1);
@@ -236,4 +236,7 @@ public class Game {
         clip.loop(-1);
     }
 
+    public boolean isGameOver() {
+        return gameOver;
+    }
 }
