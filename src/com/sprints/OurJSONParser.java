@@ -5,6 +5,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -59,7 +61,7 @@ public class OurJSONParser {
 
 
     // ******** Business Methods **********
-    void commandParser(List<String> command) {
+    void commandParser(List<String> command) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         String verb;
         String noun;
 

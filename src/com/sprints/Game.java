@@ -61,7 +61,7 @@ public class Game {
                 if ("mcdhapwt123".equals(playerCommand)) {
                     endGame();
                 }
-                if ("music".equals(playerCommand)) {
+                if ("mute".equals(playerCommand) || "play".equals(playerCommand)) {
                     toggleSound();
                 }
                 //Clear function coming from external jar
@@ -212,8 +212,11 @@ public class Game {
 
     // shows player command that can be used in game
     private void getCommands() {
+        System.out.println("======= COMMANDS =======");
         // help should call this method
-        System.out.println("go [direction]\nget [item]\nlook [item]\nequip [item]\nhelp (allows you to view in game commands)");
+        System.out.println("go [direction]\nget [item]\nlook [item]\nequip [item]\nhelp (view in game commands)\nmute (stops sound)" +
+                "\nplay (starts sound)\nraise volume\nlower volume");
+        System.out.println("========================");
     }
 
     // prompts the user to enter commands until timer ends
@@ -236,7 +239,7 @@ public class Game {
         clip.loop(-1);
     }
 
-    // stop in game music
+    // pause/re-play in game music
     private void toggleSound() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
         if (isSound) {
             clip.stop();
@@ -245,6 +248,24 @@ public class Game {
             clip.start();
             isSound = true;
         }
+    }
+
+
+    public void lowerSoundVolume() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+        if (!isSound) {
+            toggleSound();
+        }
+        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        gainControl.setValue(-6.0f);
+    }
+
+
+    public void raiseSoundVolume() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+        if (!isSound) {
+            toggleSound();
+        }
+        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        gainControl.setValue(+6.0f);
     }
 
 

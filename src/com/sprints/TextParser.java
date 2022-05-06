@@ -3,6 +3,9 @@ package com.sprints;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,7 +18,7 @@ public class TextParser {
     // ******** Business Methods **********
     /* checks input and passes to Tokenizer to break apart, then pass to parseInput
     method to separate verb and noun */
-    public void playerInput(String input) {
+    public void playerInput(String input) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         String in = input.trim().toLowerCase();
         if ("".equals(input)) {
             System.out.println("What would you like to do?");
@@ -38,11 +41,11 @@ public class TextParser {
     }
 
     // separate verbs and nouns, passing them to JSON command parser
-    private void parseInput(List<String> inputCommand) {
+    private void parseInput(List<String> inputCommand) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         String verb;
         String noun;
         List<String> command = new ArrayList<>();
-        List<String> validSingleWords = new ArrayList<>(Arrays.asList("quit", "q", "restart", "no", "yes", "y", "n", "help", "mcdhapwt123", "music"));
+        List<String> validSingleWords = new ArrayList<>(Arrays.asList("quit", "q", "restart", "no", "yes", "y", "n", "help", "mcdhapwt123", "mute", "play", "volume-up", "volume-down"));
 
         if (inputCommand.size() == 1 && validSingleWords.contains(inputCommand.get(0))) {
             String oneWordCommand = inputCommand.get(0);

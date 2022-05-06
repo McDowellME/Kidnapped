@@ -4,6 +4,9 @@ import com.apps.util.Console;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,13 +37,18 @@ public class Player {
     // ******** Business Methods **********
     /* takes in all commands along with current room info, rooms.json info,
     synonyms, and valid items */
-    public void playerActions(List<String> commands, JSONObject room, JSONObject roomItems, JSONObject roomsObj, JSONArray synonymObj, JSONArray validItems, JSONObject inventoryObj, JSONObject books, JSONObject clueHolder) {
+    public void playerActions(List<String> commands, JSONObject room, JSONObject roomItems, JSONObject roomsObj, JSONArray synonymObj,
+                              JSONArray validItems, JSONObject inventoryObj, JSONObject books, JSONObject clueHolder)
+            throws LineUnavailableException, UnsupportedAudioFileException, IOException {
+
         // separate synonyms.json at indexes
         JSONArray verbObj1 = (JSONArray) synonymObj.get(0); // go
         JSONArray verbObj2 = (JSONArray) synonymObj.get(1); // get
         JSONArray verbObj3 = (JSONArray) synonymObj.get(2); // look
         JSONArray verbObj4 = (JSONArray) synonymObj.get(3); // equip
         JSONArray verbObj5 = (JSONArray) synonymObj.get(4); // drop
+        JSONArray verbObj6 = (JSONArray) synonymObj.get(5); // raise
+        JSONArray verbObj7 = (JSONArray) synonymObj.get(6); // lower
 
         // pass to function depending on which synonym array verb belongs to
         if (verbObj1.contains(commands.get(0))) {
@@ -53,6 +61,10 @@ public class Player {
             equip(commands.get(1));
         }else if (verbObj5.contains(commands.get(0))) {
             dropItems(commands.get(1), roomItems, validItems);
+        }else if (verbObj6.contains(commands.get(0))) {
+            Game.getInstance().raiseSoundVolume();
+        }else if (verbObj7.contains(commands.get(0))) {
+            Game.getInstance().lowerSoundVolume();
         }
     }
 
