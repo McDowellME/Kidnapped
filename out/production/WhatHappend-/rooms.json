@@ -6,30 +6,30 @@
     "item": {
       "bookcase": {
         "description": "There are many book. All tattered and worn. Some appear to have been recently read. Upon closer investigation you see clue 4",
-        "description2": "There are only 4 books here. All tattered and worn.",
+        "description2": "There are many books here. All tattered and worn.",
         "clue": {
           "name": "clue 4",
-          "description": "Beware for I am fearless, and therefore powerful (good luck)"
+          "description": "I'm every nightmare you've ever had (good luck)"
         },
         "books": {
           "something wicked": {
             "name": "Something Wicked This Way Comes",
-            "description": "There appears to be nothing special about this book",
+            "description": "It is about two 13-year-old best friends, and their nightmarish experience with a traveling carnival that comes to their Midwestern home",
             "author": "Ray Bradbury"
           },
           "it": {
             "name": "It",
-            "description": "Someone appears to have ripped pieces from several pages.\nThey look about the size of the clues.",
+            "description": "The story follows the experiences of seven children as they are terrorized by an evil entity that exploits the fears of its victims to disguise itself while hunting its prey",
             "author": "Stephen King"
           },
           "frankenstein": {
             "name": "Frankenstein",
-            "description": "There appears to be nothing special about this book",
+            "description": "The book tells the story of Victor Frankenstein, a Swiss student of natural science who creates an artificial man from pieces of corpses and brings his creature to life.",
             "author": "Mary Shelly"
           },
           "reprieve": {
             "name": "Reprieve",
-            "description": "There appears to be nothing special about this book",
+            "description": "Seems to be a novel about otherness, loneliness, racism, and identity wrapped in a gory tale about a full-contact escape room attraction.",
             "author": "James Ham Mattson"
           }
         }
