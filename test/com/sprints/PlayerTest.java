@@ -17,8 +17,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class PlayerTest {
-
-    private static final Player player = new Player();
+    
     private static final JSONParser jsonParser = new JSONParser();
     private static final String ROOMS = "/rooms.json";
     private static final String ITEMS = "/commands.json";
