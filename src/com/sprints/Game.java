@@ -80,7 +80,7 @@ public class Game {
             Utils.printWithDelays("Your body begins to stiffen and agony takes the name of each breath. Your world fades to black\nas you fall to the ground...");
         }
         else {
-            Utils.printWithDelays("You chose..... Poorly.");
+            Utils.printWithDelays("You feel the floor shift beneath your feet. It opens up, dropping you into a massive spike pit.\nAs you descend you see the bodies of countless others who have played and failed this twisted game.");
         }
         Console.blankLines(1);
         TimeUnit.SECONDS.sleep(1);
@@ -175,7 +175,7 @@ public class Game {
     }
 
     // restart game
-    private void restart() throws IOException, ParseException, InterruptedException, UnsupportedAudioFileException, LineUnavailableException {
+    void restart() throws IOException, ParseException, InterruptedException, UnsupportedAudioFileException, LineUnavailableException {
         System.out.println("Are you sure you want to restart?");
         String q = myObj.nextLine();
         if ("yes".equals(q) || "y".equals(q)) {
@@ -194,7 +194,7 @@ public class Game {
     }
 
     // quit game
-    private void quit() throws IOException, ParseException, InterruptedException {
+    void quit() throws IOException, ParseException, InterruptedException {
         System.out.println("Are you sure you want to quit?");
         String q = myObj.nextLine();
         if ("yes".equals(q) || "y".equals(q)) {
@@ -236,4 +236,7 @@ public class Game {
         clip.loop(-1);
     }
 
+    public boolean isGameOver() {
+        return gameOver;
+    }
 }
