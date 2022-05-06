@@ -70,10 +70,12 @@ public class OurJSONParser {
         JSONArray nouns = (JSONArray) commandJSON.get("nouns");
         JSONArray items = (JSONArray) commandJSON.get("items");
         JSONObject room = (JSONObject) roomsJSON.get(Player.getInstance().getCurrentRoom());
+        JSONObject roomItems = (JSONObject) room.get("item");
         JSONObject westHall = (JSONObject) roomsJSON.get("west hall");
         JSONObject hallItems = (JSONObject) westHall.get("item");
         JSONObject bookcase = (JSONObject) hallItems.get("bookcase");
         JSONObject books = (JSONObject) bookcase.get("books");
+        JSONObject clueHolder = null;
 
         if (command.size() == 1) {
             commands.add(command.get(0));
@@ -85,7 +87,7 @@ public class OurJSONParser {
         else {
             commands.add(command.get(0));
             commands.add(command.get(1));
-            Player.getInstance().playerActions(commands, room, roomsJSON, synJSON, items, inventoryJSON, books);
+            Player.getInstance().playerActions(commands, room, roomItems, roomsJSON, synJSON, items, inventoryJSON, books, null);
         }
     }
 
