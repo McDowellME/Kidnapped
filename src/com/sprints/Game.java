@@ -22,8 +22,6 @@ public class Game {
     // ******** Fields **********
     private boolean gameOver = false;
     private TextParser parser = new TextParser();
-//    private Clip clip = AudioSystem.getClip();
-//    private boolean isSound = true;     // music is ON by default
     private static final String ROOMS = "/rooms.json";
     Scanner myObj = new Scanner(System.in);   // instantiate scanner to read console input
 
@@ -220,8 +218,6 @@ public class Game {
     }
 
     // prompts the user to enter commands until timer ends
-
-    // prompts the user to enter commands until timer ends
     private String promptPlayer() {
         String playerCommand = "";
         if (!TimeElapsed.getInstance().getTime().equals("0")) {
@@ -239,34 +235,5 @@ public class Game {
         clip.start();
         clip.loop(-1);
     }
-
-//    // pause/re-play in game music
-//    private void toggleSound() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
-//        if (isSound) {
-//            clip.stop();
-//            isSound = false;
-//        } else {
-//            clip.start();
-//            isSound = true;
-//        }
-//    }
-//
-//
-//    public void lowerSoundVolume() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
-//        if (!isSound) {
-//            toggleSound();
-//        }
-//        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-//        gainControl.setValue(-6.0f);
-//    }
-//
-//
-//    public void raiseSoundVolume() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
-//        if (!isSound) {
-//            toggleSound();
-//        }
-//        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-//        gainControl.setValue(+6.0f);
-//    }
 
 }

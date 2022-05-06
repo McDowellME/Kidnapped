@@ -11,6 +11,7 @@ class MusicPlayer {
     static Clip clip;
     private static boolean isSound = true;     // music is ON by default
 
+    // get the audio clip used for sound
     static {
         try {
             clip = AudioSystem.getClip();
@@ -34,7 +35,7 @@ class MusicPlayer {
     }
 
     // pause/re-play in game music
-    static void toggleSound() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
+    static void toggleSound() {
         if (isSound) {
             clip.stop();
             isSound = false;
@@ -45,7 +46,8 @@ class MusicPlayer {
     }
 
 
-    public static void lowerSoundVolume() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+    // lower music volume
+    public static void lowerSoundVolume() {
         if (!isSound) {
             toggleSound();
         }
@@ -53,8 +55,8 @@ class MusicPlayer {
         gainControl.setValue(-6.0f);
     }
 
-
-    public static void raiseSoundVolume() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+    // increase music volume
+    public static void raiseSoundVolume() {
         if (!isSound) {
             toggleSound();
         }
