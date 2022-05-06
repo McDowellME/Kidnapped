@@ -175,7 +175,7 @@ public class Game {
     }
 
     // restart game
-    void restart() throws IOException, ParseException, InterruptedException, UnsupportedAudioFileException, LineUnavailableException {
+    private void restart() throws IOException, ParseException, InterruptedException, UnsupportedAudioFileException, LineUnavailableException {
         System.out.println("Are you sure you want to restart?");
         String q = myObj.nextLine();
         if ("yes".equals(q) || "y".equals(q)) {
@@ -194,7 +194,7 @@ public class Game {
     }
 
     // quit game
-    void quit() throws IOException, ParseException, InterruptedException {
+    private void quit() throws IOException, ParseException, InterruptedException {
         System.out.println("Are you sure you want to quit?");
         String q = myObj.nextLine();
         if ("yes".equals(q) || "y".equals(q)) {

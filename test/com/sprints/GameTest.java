@@ -18,15 +18,4 @@ public class GameTest {
         Game.getInstance().start();
         assertTrue(Game.getInstance().isGameOver());
     }
-
-    @Test
-    public void testPlayerRestart_shouldAskIfSureToRestart() throws LineUnavailableException, UnsupportedAudioFileException, IOException, ParseException, InterruptedException {
-        Game.getInstance().restart();
-    }
-
-    @Test
-    public void testPlayerQuit_shouldAskIfSureToQuit() throws LineUnavailableException, UnsupportedAudioFileException, IOException, ParseException, InterruptedException {
-        Game.getInstance().quit();
-    }
-
 }
