@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 class MusicPlayer {
-
-
     static Clip clip;
     private static boolean isSound = true;     // music is ON by default
 
@@ -44,7 +42,6 @@ class MusicPlayer {
             isSound = true;
         }
     }
-
 
     // lower music volume
     public static void lowerSoundVolume() {

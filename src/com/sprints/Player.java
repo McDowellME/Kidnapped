@@ -142,7 +142,7 @@ class Player {
     }
 
     // allow player to equip items (only torch at this moment)
-    void equip(String noun) {
+    private void equip(String noun) {
         if (!"torch".equals(noun)){
             System.out.println("You can only equip a torch at this time.");
         }
@@ -156,7 +156,7 @@ class Player {
     }
 
     // change player location
-    void locationChange(String noun, JSONObject room, JSONObject roomsObj) {
+    private void locationChange(String noun, JSONObject room, JSONObject roomsObj) {
         // if the roomsObj (json file with room info) has a location with a name that matches the player
         // input noun, we set it as the current room
         if(roomsObj.containsKey(noun)) {
@@ -189,28 +189,23 @@ class Player {
         // gives description if so prints out that room description
         else if (noun.equals(getCurrentRoom()) || "here".equals(noun) && itemEquipped) {
             System.out.println(room.get("description"));
-            return;
         }
         // gives description of items if they are in player inventory
         else if (inventory.contains(noun) && itemEquipped) {
             JSONObject itemDescription = (JSONObject) inventoryObj.get(noun);
             System.out.println(itemDescription.get("description"));
-            return;
         }
         // allows player to get description of items in room
         else if (validItems.contains(noun) && room.containsKey("item") && roomItems.containsKey(noun) && itemEquipped){
             JSONObject item = (JSONObject) roomItems.get(noun);
             System.out.println(item.get("description"));
-            return;
         }
         // response if player attempts to
         else if (!noun.contains(getCurrentRoom()) && itemEquipped || !roomItems.containsKey(noun) && itemEquipped) {
             System.out.println("You cannot see " + noun + " from here");
-            return;
         }
         else {
             System.out.println("Too dark to see. Some light would help");
-            return;
         }
         Utils.pressEnterToContinue();
     }

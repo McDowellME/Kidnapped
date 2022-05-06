@@ -1,13 +1,9 @@
 package com.sprints;
 
 import com.apps.util.Console;
-import com.sprints.controller.App;
 import org.json.simple.JSONObject;
-
 import javax.sound.sampled.*;
-import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.ParseException;
 import java.util.Scanner;
 import java.util.Set;
@@ -126,7 +122,7 @@ public class Game {
         Utils.pressEnterToContinue();
         Console.clear();
         Utils.printWithDelays("...You feel a sharp prick.");
-        playSound("/Sound.wav");
+        MusicPlayer.playSound("/Sound.wav");
     }
 
     // used to display status (current room, inventory, room description, etc)
@@ -174,6 +170,25 @@ public class Game {
         System.out.println("-----------------------------");
     }
 
+    // prompts the user to enter commands until timer ends
+    private String promptPlayer() {
+        String playerCommand = "";
+        if (!TimeElapsed.getInstance().getTime().equals("0")) {
+            System.out.printf(">");
+            playerCommand = myObj.nextLine();
+        }
+        return playerCommand;
+    }
+
+    // shows player command that can be used in game
+    private void getCommands() {
+        System.out.println("======= COMMANDS =======");
+        // help should call this method
+        System.out.println("go [direction]\nget [item]\nlook [item]\nequip [item]\nhelp (view in game commands)\nmute (stops sound)" +
+                "\nplay (starts sound)\nraise volume\nlower volume");
+        System.out.println("========================");
+    }
+
     // restart game
     private void restart() throws IOException, ParseException, InterruptedException, UnsupportedAudioFileException, LineUnavailableException {
         System.out.println("Are you sure you want to restart?");
@@ -208,35 +223,7 @@ public class Game {
         }
     }
 
-    // shows player command that can be used in game
-    private void getCommands() {
-        System.out.println("======= COMMANDS =======");
-        // help should call this method
-        System.out.println("go [direction]\nget [item]\nlook [item]\nequip [item]\nhelp (view in game commands)\nmute (stops sound)" +
-                "\nplay (starts sound)\nraise volume\nlower volume");
-        System.out.println("========================");
-    }
-
-    // prompts the user to enter commands until timer ends
-    private String promptPlayer() {
-        String playerCommand = "";
-        if (!TimeElapsed.getInstance().getTime().equals("0")) {
-            System.out.printf(">");
-            playerCommand = myObj.nextLine();
-        }
-        return playerCommand;
-    }
-
-    // start in game music
-    private void playSound(String fileName) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
-        InputStream is = getClass().getResourceAsStream(fileName);
-        AudioInputStream ais = AudioSystem.getAudioInputStream(new BufferedInputStream(is));
-        clip.open(ais);
-        clip.start();
-        clip.loop(-1);
-    }
-
-    public boolean isGameOver() {
+    boolean isGameOver() {
         return gameOver;
     }
 }
