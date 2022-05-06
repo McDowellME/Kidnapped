@@ -5,6 +5,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -25,31 +27,12 @@ public class OurJSONParser {
     // ******** Fields **********
     private static JSONParser jsonParser = new JSONParser();
     private static JSONObject roomsJSON;
-
+    private static JSONObject books;
     private JSONObject commandJSON;
-    private JSONArray synJSON;
     private JSONObject inventoryJSON;
+    private JSONArray synJSON;
     private List<String> commands;
 
-    // ******** Singleton Instantiation **********
-    /* we do not want to instantiate multiple.
-    static allows us to use through entire app where needed.*/
-    public static OurJSONParser instantiate() {
-        if (ourParser == null) {
-            try {
-                ourParser = new OurJSONParser();
-            }
-            catch (IOException | ParseException e) {
-                System.out.println(e);
-                System.exit(0);
-            }
-        }
-        return ourParser;
-    }
-
-    public static JSONObject getRoomsJSON() {
-        return roomsJSON;
-    }
 
     //******** CTOR **********
     // read JSON info as streams and parse
@@ -58,11 +41,32 @@ public class OurJSONParser {
         roomsJSON = (JSONObject) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(ROOMS))));
         inventoryJSON = (JSONObject) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(INVENTORY))));
         synJSON = (JSONArray) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(SYN))));
+        JSONObject westHall = (JSONObject) roomsJSON.get("west hall");
+        JSONObject hallItems = (JSONObject) westHall.get("item");
+        JSONObject bookcase = (JSONObject) hallItems.get("bookcase");
+        books = (JSONObject) bookcase.get("books");
         commands = new ArrayList<>();
     }
 
+    // ******** Singleton Instantiation **********
+    /* we do not want to instantiate multiple.
+    static allows us to use through entire app where needed.*/
+    static OurJSONParser instantiate() {
+        if (ourParser == null) {
+            try {
+                ourParser = new OurJSONParser();
+            }
+            catch (IOException | ParseException e) {
+                System.out.println(e.getMessage());
+                System.exit(0);
+            }
+        }
+        return ourParser;
+    }
+
+
     // ******** Business Methods **********
-    public void commandParser(List<String> command) {
+    void commandParser(List<String> command) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         String verb;
         String noun;
 
@@ -73,6 +77,8 @@ public class OurJSONParser {
         JSONArray nouns = (JSONArray) commandJSON.get("nouns");
         JSONArray items = (JSONArray) commandJSON.get("items");
         JSONObject room = (JSONObject) roomsJSON.get(Player.getInstance().getCurrentRoom());
+        JSONObject roomItems = (JSONObject) room.get("item");
+        JSONObject clueHolder = null;
 
         if (command.size() == 1) {
             commands.add(command.get(0));
@@ -84,8 +90,17 @@ public class OurJSONParser {
         else {
             commands.add(command.get(0));
             commands.add(command.get(1));
-            Player.getInstance().playerActions(commands, room, roomsJSON, synJSON, items, inventoryJSON);
+            Player.getInstance().playerActions(commands, room, roomItems, roomsJSON, synJSON, items, inventoryJSON, getBooks(), null);
         }
+    }
 
+    static JSONObject getRoomsJSON() {
+        return roomsJSON;
+    }
+
+    static JSONObject getBooks() {
+        return books;
     }
 }
+
+

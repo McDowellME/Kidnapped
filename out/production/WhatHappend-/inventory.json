@@ -1,20 +1,33 @@
 {
   "note": {
-    "description": "Your participation, willing or otherwise is greatly appreciated. Hidden around the house you will find several notes to assist in your escape. Can you find them all before the game timer reaches 0?"
+    "description": "Your participation, is greatly appreciated. Hidden around the house you will find several clues to assist in your escape.\nThe prick I'm sure you felt injected a fast acting toxin into you blood stream, but worry not,\n all will be well if you can escape before our game timer hit 0"
   },
   "torch": {
     "description": "The flame shows no signs of giving out, it may be useful"
   },
   "clue 1": {
-    "description": "Heavy is the head that wears the crown"
+    "description": "Heavy is the head that wears the crown (you get)"
   },
   "clue 2": {
-    "description": "Pale skin and bright red lips curled in a grin can entertain or terrify"
+    "description": "Pale skin and bright red lips curled in a grin can entertain or terrify (strikes is)"
   },
   "clue 3": {
-    "description": "By the pricking of my thumb"
+    "description": "Reading is fundamental, but WHAT you read is key (2)"
   },
   "clue 4": {
-    "description": "Beware for I am fearless, and therefore powerful"
+    "description": "I'm every nightmare you've ever had"
+  },
+  "something wicked":  {
+    "description": "Bad choice"
+  },
+  "reprieve": {
+    "description": "Bad choice"
+  },
+  "it": {
+    "description": "BINGO!!! Guess you got me"
+  },
+  "frankenstein": {
+    "description": "Bad choice"
   }
+
 }

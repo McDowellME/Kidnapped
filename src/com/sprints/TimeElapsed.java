@@ -1,15 +1,31 @@
 package com.sprints;
 
-public class TimeElapsed {
-    private static long startTime = System.currentTimeMillis();
-    private static int runtime = 300;
+class TimeElapsed {
+    private static TimeElapsed timer = null;
+    private static final long startTime = System.currentTimeMillis();
 
-    public static String getTime() {
+    private TimeElapsed() {
+
+    }
+
+    static TimeElapsed getInstance() {
+        if (timer == null) {
+            timer = new TimeElapsed();
+        }
+        return timer;
+    }
+
+    // get the in game timer's current time remaining
+    public String getTime() {
         long elapsedTime = System.currentTimeMillis() - startTime;
-        elapsedTime = elapsedTime/1000;
-
+        // convert milli to seconds
+        elapsedTime = elapsedTime /1000;
+        // update remaining game time
+        int runtime = 300;
         String remaining = Integer.toString((int) (runtime - elapsedTime));
-
-        return "Time Remaining: " + remaining;
+        if (Integer.parseInt(remaining) < 0) {
+            remaining = Integer.toString(0);
+        }
+        return remaining;
     }
 }

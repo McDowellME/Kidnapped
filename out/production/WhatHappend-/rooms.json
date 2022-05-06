@@ -5,38 +5,35 @@
     "east": "parlor",
     "item": {
       "bookcase": {
-        "description": "There are only 4 books here. All tattered and worn. Upon closer investigation you see a note",
-        "description2": "There are only 4 books here. All tattered and worn.",
+        "description": "There are many book. All tattered and worn. Some appear to have been recently read. Upon closer investigation you see clue 4",
+        "description2": "There are many books here. All tattered and worn.",
         "clue": {
-          "name": "clue4",
-          "description": "Beware for I am fearless, and therefore powerful"
+          "name": "clue 4",
+          "description": "I'm every nightmare you've ever had (good luck)"
         },
-        "books": [
-          {
+        "books": {
+          "something wicked": {
             "name": "Something Wicked This Way Comes",
-            "number": 1,
+            "description": "It is about two 13-year-old best friends, and their nightmarish experience with a traveling carnival that comes to their Midwestern home",
             "author": "Ray Bradbury"
           },
-          {
+          "it": {
             "name": "It",
-            "number": 2,
+            "description": "The story follows the experiences of seven children as they are terrorized by an evil entity that exploits the fears of its victims to disguise itself while hunting its prey",
             "author": "Stephen King"
           },
-          {
+          "frankenstein": {
             "name": "Frankenstein",
-            "number": 3,
+            "description": "The book tells the story of Victor Frankenstein, a Swiss student of natural science who creates an artificial man from pieces of corpses and brings his creature to life.",
             "author": "Mary Shelly"
           },
-          {
+          "reprieve": {
             "name": "Reprieve",
-            "number": 4,
-            "author": "James Han Mattson"
+            "description": "Seems to be a novel about otherness, loneliness, racism, and identity wrapped in a gory tale about a full-contact escape room attraction.",
+            "author": "James Ham Mattson"
           }
-        ]
+        }
       }
-    },
-    "npc": {
-      "question": "Have you read the notes?"
     },
     "description":"This hall has a smoothly hewn natural stone floor that have been polished smooth. A mouse scutters\nacross the floor. There is a bookcase at the end of the hall. The air smells stale."
   },
@@ -45,11 +42,11 @@
     "south": "parlor",
     "item": {
       "cabinets": {
-        "description" :  "The cabinets are time worn, loosely hanging on to their hinges. They rats appear to have made a meal of them, judging by the holes. Upon closer investigation you find a note.",
+        "description" :  "The cabinets are time worn, loosely hanging on to their hinges. They rats appear to have made a meal of them, judging by the holes. Upon closer investigation you see clue 3.",
         "description2" : "The cabinets are time worn, loosely hanging on to their hinges. They rats appear to have made a meal of them, judging by the holes.",
         "clue": {
-          "name": "clue3",
-          "description": "By the pricking of my thumb"
+          "name": "clue 3",
+          "description": "Reading is fundamental, but WHAT you read is key (2)"
         }
       },
       "sink" : {
@@ -75,11 +72,11 @@
         "description": "Rusted but sharp. Dried blood covers the tip."
       },
       "vase": {
-        "description": "Like everything else in the house this vase is old and time worn. Upon closer investigation you find a note",
+        "description": "Like everything else in the house this vase is old and time worn. Upon closer investigation you see clue 2",
         "description2": "Like everything else in the house this vase is old and time worn.",
         "clue": {
-          "name": "clue2",
-          "description": "Pale skin and bright red lips curled in a grin can entertain or terrify"
+          "name": "clue 2",
+          "description": "Pale skin and bright red lips curled in a grin can entertain or terrify (strikes is)"
         }
       }
     },
@@ -106,7 +103,7 @@
         "description2": "Eerily the eyes of the portrait seem to follow you around the room",
         "clue": {
           "name": "clue 1",
-          "description": "Heavy is the head that wears the crown",
+          "description": "Heavy is the head that wears the crown (you get)"
           }
       }
     },
@@ -117,11 +114,14 @@
     "north": "parlor",
     "item": {
       "note": {
-        "description" : "Your participation, willing or otherwise is greatly appreciated. Hidden around the house you will find several notes to assist in your escape. Can you find them all before the game timer reaches 0?"
+        "description" : "Your participation, is greatly appreciated. Hidden around the house you will find several clues to assist in your escape.\nThe prick I'm sure you felt injected a fast acting toxin into you blood stream, but worry not,\n all will be well if you can escape before our game timer hit 0"
       },
       "torch": {
         "description": "The flame shows no signs of giving out, it may be useful",
         "equipped": false
+      },
+      "needle": {
+        "description": "A small needle protrudes from a crack in the ground where you awoke"
       }
     },
     "description": "There is a smell of decay and mold in the room. The pitch-black atmosphere is nearly impenetrable.\nYou stretch your eyes as wide as possible but can barely make out a feeble outline of some distant objects.\nThere is little light except for the for a small strip below the door at the top of the stairs and a small\ntorch which illuminates only what is in its immediate vicinity.\n"
