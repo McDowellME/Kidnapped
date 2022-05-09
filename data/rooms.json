@@ -5,7 +5,7 @@
     "east": "parlor",
     "item": {
       "bookcase": {
-        "description": "There are many book. All tattered and worn. Some appear to have been recently read. Upon closer investigation you see clue 4",
+        "description": "There are many book. All tattered and worn. Some appear to have been recently read. Upon closer investigation you see a clue (4)",
         "description2": "There are many books here. All tattered and worn.",
         "clue": {
           "name": "clue 4",
@@ -42,7 +42,7 @@
     "south": "parlor",
     "item": {
       "cabinets": {
-        "description" :  "The cabinets are time worn, loosely hanging on to their hinges. They rats appear to have made a meal of them, judging by the holes. Upon closer investigation you see clue 3.",
+        "description" :  "The cabinets are time worn, hanging loosely by their hinges. The rats appear to have made a meal of them. Upon closer investigation you see a clue (3).",
         "description2" : "The cabinets are time worn, loosely hanging on to their hinges. They rats appear to have made a meal of them, judging by the holes.",
         "clue": {
           "name": "clue 3",
@@ -72,11 +72,11 @@
         "description": "Rusted but sharp. Dried blood covers the tip."
       },
       "vase": {
-        "description": "Like everything else in the house this vase is old and time worn. Upon closer investigation you see clue 2",
+        "description": "Like everything else in the house this vase is old and time worn. Upon closer investigation you see a clue (2)",
         "description2": "Like everything else in the house this vase is old and time worn.",
         "clue": {
           "name": "clue 2",
-          "description": "Pale skin and bright red lips curled in a grin can entertain or terrify (strikes is)"
+          "description": "Pale skin and bright red lips curled in a grin can terrify (strikes is)"
         }
       }
     },
@@ -99,7 +99,7 @@
         "description": "Looks like they have the same wrist clamp as me...guess they didn't make it out in time."
       },
       "portrait": {
-        "description" : "Eerily the eyes of the portrait seem to follow you around the room, upon closer evaluation you find clue 1",
+        "description" : "Eerily the eyes of the portrait seem to follow you around the room, upon closer evaluation you find clue (1)",
         "description2": "Eerily the eyes of the portrait seem to follow you around the room",
         "clue": {
           "name": "clue 1",

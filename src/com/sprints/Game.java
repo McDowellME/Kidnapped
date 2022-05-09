@@ -1,13 +1,9 @@
 package com.sprints;
 
 import com.apps.util.Console;
-import com.sprints.controller.App;
 import org.json.simple.JSONObject;
-
 import javax.sound.sampled.*;
-import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.ParseException;
 import java.util.Scanner;
 import java.util.Set;
@@ -67,7 +63,6 @@ public class Game {
 
             }
             else {
-                gameOver = true;
                 endGame();
                 return;
             }
@@ -76,25 +71,31 @@ public class Game {
 
     // ends the game with Ascii art if timer ends
     private void endGame() throws IOException, InterruptedException {
+        gameOver = true;
         if (TimeElapsed.getInstance().getTime().equals("0")) {
+            Console.clear();
             Utils.printWithDelays("Your body begins to stiffen and agony takes the name of each breath. Your world fades to black\nas you fall to the ground...");
         }
         else {
-            Utils.printWithDelays("You chose..... Poorly.");
+            Console.clear();
+            Utils.printWithDelays("You feel the floor shift beneath your feet. It opens up, dropping you into a massive spike pit.\nAs you descend you see the bodies of countless others who have played and failed this twisted game.");
         }
-        Console.blankLines(1);
+        System.out.println();
         TimeUnit.SECONDS.sleep(1);
-        Console.blankLines(1);
+        System.out.println();
         TextFileReader.getInstance().txtFileReader("/gameover.txt");
         System.exit(0);
     }
 
     // End game with a win if select correct book
-    private void checkWin() throws IOException {
+    private void checkWin() throws IOException, InterruptedException {
         if (Player.getInstance().getInventory().contains("it")) {
-            System.out.println("You pull the book out of the shelf and it opens a secret door.");
-            System.out.println();
             gameOver = true;
+            Console.clear();
+            TimeUnit.SECONDS.sleep(1);
+            Utils.printWithDelays("You pull the book from the shelf and hear the faint sound of gears rotating. The shelf slides left, revealing a door.\nYou step through and awake once more...It was all a terrible dream.");
+            Console.blankLines(2);
+            TimeUnit.SECONDS.sleep(1);
             TextFileReader.getInstance().txtFileReader("/escaped.txt");
             System.exit(0);
         }
@@ -126,7 +127,8 @@ public class Game {
         Utils.pressEnterToContinue();
         Console.clear();
         Utils.printWithDelays("...You feel a sharp prick.");
-        playSound("/Sound.wav");
+        System.out.println();
+        MusicPlayer.playSound("/Sound.wav");
     }
 
     // used to display status (current room, inventory, room description, etc)
@@ -157,9 +159,9 @@ public class Game {
 
             System.out.println("---------------------------");
             System.out.println("You are in the " + Player.getInstance().getCurrentRoom());
-            Console.blankLines(1);
+            System.out.println();
             System.out.println(room.get("description"));
-            Console.blankLines(1);
+            System.out.println();
         } else {
             System.out.println("Too dark to see everything here, you need some light");
             Console.blankLines(2);
@@ -167,11 +169,30 @@ public class Game {
         if (room.containsKey("item")) {
             Set<String> roomItems = items.keySet();
             System.out.println("You notice: " + roomItems);
-            Console.blankLines(1);
+            System.out.println();
         }
         System.out.println("Inventory:" + Player.getInstance().getInventory());
         System.out.println("Time Remaining: " + TimeElapsed.getInstance().getTime());
         System.out.println("-----------------------------");
+    }
+
+    // prompts the user to enter commands until timer ends
+    private String promptPlayer() {
+        String playerCommand = "";
+        if (!TimeElapsed.getInstance().getTime().equals("0")) {
+            System.out.printf(">");
+            playerCommand = myObj.nextLine();
+        }
+        return playerCommand;
+    }
+
+    // shows player command that can be used in game
+    private void getCommands() {
+        System.out.println("======= COMMANDS =======");
+        // help should call this method
+        System.out.println("go [direction]\nget [item]\nlook [item]\nequip [item]\nhelp (view in game commands)\nmute (stops sound)" +
+                "\nplay (starts sound)\nraise volume\nlower volume");
+        System.out.println("========================");
     }
 
     // restart game
@@ -208,32 +229,10 @@ public class Game {
         }
     }
 
-    // shows player command that can be used in game
-    private void getCommands() {
-        System.out.println("======= COMMANDS =======");
-        // help should call this method
-        System.out.println("go [direction]\nget [item]\nlook [item]\nequip [item]\nhelp (view in game commands)\nmute (stops sound)" +
-                "\nplay (starts sound)\nraise volume\nlower volume");
-        System.out.println("========================");
+    // method used for testing to verify game over status
+    /*
+    boolean isGameOver() {
+        return gameOver;
     }
-
-    // prompts the user to enter commands until timer ends
-    private String promptPlayer() {
-        String playerCommand = "";
-        if (!TimeElapsed.getInstance().getTime().equals("0")) {
-            System.out.printf(">");
-            playerCommand = myObj.nextLine();
-        }
-        return playerCommand;
-    }
-
-    // start in game music
-    private void playSound(String fileName) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
-        InputStream is = getClass().getResourceAsStream(fileName);
-        AudioInputStream ais = AudioSystem.getAudioInputStream(new BufferedInputStream(is));
-        clip.open(ais);
-        clip.start();
-        clip.loop(-1);
-    }
-
+     */
 }

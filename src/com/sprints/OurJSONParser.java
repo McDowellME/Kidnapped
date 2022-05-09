@@ -67,8 +67,6 @@ public class OurJSONParser {
 
     // ******** Business Methods **********
     void commandParser(List<String> command) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
-        String verb;
-        String noun;
 
         // clear commands list to ensure there's only ever a singular set of commands present
         commands.clear();
