@@ -1,7 +1,10 @@
 package com.sprints;
 
 class TimeElapsed {
+    // ******** Class Singleton **********
     private static TimeElapsed timer = null;
+
+    // ******** Fields **********
     private static final long startTime = System.currentTimeMillis();
 
     private TimeElapsed() {
