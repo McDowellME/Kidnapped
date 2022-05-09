@@ -63,7 +63,6 @@ public class Game {
 
             }
             else {
-                gameOver = true;
                 endGame();
                 return;
             }
@@ -72,25 +71,31 @@ public class Game {
 
     // ends the game with Ascii art if timer ends
     private void endGame() throws IOException, InterruptedException {
+        gameOver = true;
         if (TimeElapsed.getInstance().getTime().equals("0")) {
+            Console.clear();
             Utils.printWithDelays("Your body begins to stiffen and agony takes the name of each breath. Your world fades to black\nas you fall to the ground...");
         }
         else {
+            Console.clear();
             Utils.printWithDelays("You feel the floor shift beneath your feet. It opens up, dropping you into a massive spike pit.\nAs you descend you see the bodies of countless others who have played and failed this twisted game.");
         }
-        Console.blankLines(1);
+        System.out.println();
         TimeUnit.SECONDS.sleep(1);
-        Console.blankLines(1);
+        System.out.println();
         TextFileReader.getInstance().txtFileReader("/gameover.txt");
         System.exit(0);
     }
 
     // End game with a win if select correct book
-    private void checkWin() throws IOException {
+    private void checkWin() throws IOException, InterruptedException {
         if (Player.getInstance().getInventory().contains("it")) {
-            System.out.println("You pull the book out of the shelf and it opens a secret door.");
-            System.out.println();
             gameOver = true;
+            Console.clear();
+            TimeUnit.SECONDS.sleep(1);
+            Utils.printWithDelays("You pull the book from the shelf and hear the faint sound of gears rotating. The shelf slides left, revealing a door.\nYou step through and awake once more...It was all a terrible dream.");
+            Console.blankLines(2);
+            TimeUnit.SECONDS.sleep(1);
             TextFileReader.getInstance().txtFileReader("/escaped.txt");
             System.exit(0);
         }
@@ -122,6 +127,7 @@ public class Game {
         Utils.pressEnterToContinue();
         Console.clear();
         Utils.printWithDelays("...You feel a sharp prick.");
+        System.out.println();
         MusicPlayer.playSound("/Sound.wav");
     }
 
@@ -153,9 +159,9 @@ public class Game {
 
             System.out.println("---------------------------");
             System.out.println("You are in the " + Player.getInstance().getCurrentRoom());
-            Console.blankLines(1);
+            System.out.println();
             System.out.println(room.get("description"));
-            Console.blankLines(1);
+            System.out.println();
         } else {
             System.out.println("Too dark to see everything here, you need some light");
             Console.blankLines(2);
@@ -163,7 +169,7 @@ public class Game {
         if (room.containsKey("item")) {
             Set<String> roomItems = items.keySet();
             System.out.println("You notice: " + roomItems);
-            Console.blankLines(1);
+            System.out.println();
         }
         System.out.println("Inventory:" + Player.getInstance().getInventory());
         System.out.println("Time Remaining: " + TimeElapsed.getInstance().getTime());
@@ -223,7 +229,10 @@ public class Game {
         }
     }
 
+    // method used for testing to verify game over status
+    /*
     boolean isGameOver() {
         return gameOver;
     }
+     */
 }

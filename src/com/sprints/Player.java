@@ -20,7 +20,6 @@ class Player {
     // ******** Fields **********
     private String currentRoom = "basement";
     private List<String> inventory = new ArrayList<>();
-    private List<String> cluesFound = new ArrayList<>();
     private boolean itemEquipped = false;
 
     private Player () {
@@ -111,7 +110,6 @@ class Player {
                 String clue = (String) clueObj.get("name");
                 // check is noun is equal to name of one of our clues
                 if(noun.equals(clue)) {
-                    cluesFound.add(clue);
                     inventory.add(clue);
                     clueHolder.remove("clue");
                     System.out.println(noun + " picked up");
