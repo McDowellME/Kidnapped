@@ -154,7 +154,7 @@ class Player {
     }
 
     // change player location
-    private void locationChange(String noun, JSONObject room, JSONObject roomsObj) {
+    void locationChange(String noun, JSONObject room, JSONObject roomsObj) {
         // if the roomsObj (json file with room info) has a location with a name that matches the player
         // input noun, we set it as the current room
         if(roomsObj.containsKey(noun)) {
