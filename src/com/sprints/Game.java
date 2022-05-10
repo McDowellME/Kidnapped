@@ -230,9 +230,9 @@ public class Game {
     }
 
     // method used for testing to verify game over status
-    /*
+
     boolean isGameOver() {
         return gameOver;
     }
-     */
+
 }
