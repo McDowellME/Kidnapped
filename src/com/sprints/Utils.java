@@ -22,7 +22,7 @@ class Utils {
     // prompts players to press enter to continue game
     static void pressEnterToContinue() {
         Console.blankLines(1);
-        System.out.println("Press ENTER to continue");
+        System.out.print("Press ENTER to continue");
         try {
             System.in.read(new byte[2]);
         } catch (IOException e) {

@@ -44,7 +44,6 @@ public class Game {
 
                 //Clear function coming from external jar
                 parser.playerInput(playerCommand);
-                Thread.sleep(1000);
                 Console.clear();
 
                 //if player inputs "quit" it will break out of the while loop and exit the game----
@@ -89,7 +88,7 @@ public class Game {
 
     // End game with a win if select correct book
     private void checkWin() throws IOException, InterruptedException {
-        if (Player.getInstance().getInventory().contains("it")) {
+        if (Player.getInstance().getInventory().containsKey("it")) {
             gameOver = true;
             Console.clear();
             TimeUnit.SECONDS.sleep(1);
@@ -120,8 +119,7 @@ public class Game {
         Console.clear();
         //read from txt later
         String description = "You awake to find yourself in a twisted escape game. Can you gather all the clues and escape\nwith your life before time runs out?";
-        Utils.printWithDelays(description);
-        Console.blankLines(2);
+        System.out.println(description);
         System.out.println("-----------------------------");
         getCommands();
         Utils.pressEnterToContinue();
@@ -171,9 +169,20 @@ public class Game {
             System.out.println("You notice: " + roomItems);
             System.out.println();
         }
-        System.out.println("Inventory:" + Player.getInstance().getInventory());
+//        System.out.println("Inventory:" + Player.getInstance().getInventory());
+        System.out.println(showInventory());
         System.out.println("Time Remaining: " + TimeElapsed.getInstance().getTime());
         System.out.println("-----------------------------");
+    }
+
+    private static String showInventory() {
+        String result = "Inventory: [";
+        for (String k : Player.getInstance().getInventory().keySet()){
+            result += k +", ";
+        }
+        result = result.trim();
+        result += "]";
+        return result;
     }
 
     // prompts the user to enter commands until timer ends
@@ -230,9 +239,9 @@ public class Game {
     }
 
     // method used for testing to verify game over status
-    /*
+
     boolean isGameOver() {
         return gameOver;
     }
-     */
+
 }

@@ -1,7 +1,6 @@
 {
   "west hall":
   {
-    "south": "kitchen",
     "east": "parlor",
     "item": {
       "bookcase": {
