@@ -44,7 +44,6 @@ public class Game {
 
                 //Clear function coming from external jar
                 parser.playerInput(playerCommand);
-                Thread.sleep(1000);
                 Console.clear();
 
                 //if player inputs "quit" it will break out of the while loop and exit the game----
@@ -120,8 +119,7 @@ public class Game {
         Console.clear();
         //read from txt later
         String description = "You awake to find yourself in a twisted escape game. Can you gather all the clues and escape\nwith your life before time runs out?";
-        Utils.printWithDelays(description);
-        Console.blankLines(2);
+        System.out.println(description);
         System.out.println("-----------------------------");
         getCommands();
         Utils.pressEnterToContinue();

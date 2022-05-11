@@ -24,7 +24,7 @@ class TimeElapsed {
         // convert milli to seconds
         elapsedTime = elapsedTime /1000;
         // update remaining game time
-        int runtime = 300;
+        int runtime = 600;
         String remaining = Integer.toString((int) (runtime - elapsedTime));
         if (Integer.parseInt(remaining) < 0) {
             remaining = Integer.toString(0);
