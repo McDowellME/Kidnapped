@@ -196,12 +196,13 @@ public class Game {
     }
 
     // shows player command that can be used in game
-    private void getCommands() {
-        System.out.println("======= COMMANDS =======");
-        // help should call this method
-        System.out.println("go [direction]\nget [item]\nlook [item]\nequip [item]\nhelp (view in game commands)\nmute (stops sound)" +
-                "\nplay (starts sound)\nraise volume\nlower volume");
-        System.out.println("========================");
+    private void getCommands() throws IOException {
+//        System.out.println("======= COMMANDS =======");
+//        // help should call this method
+//        System.out.println("go [direction]\nget [item]\nlook [item]\nequip [item]\nhelp (view in game commands)\nmute (stops sound)" +
+//                "\nplay (starts sound)\nraise volume\nlower volume");
+//        System.out.println("========================");
+        TextFileReader.getInstance().txtFileReader("/commandsmenu.txt");
     }
 
     // restart game
