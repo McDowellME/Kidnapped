@@ -8,10 +8,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 class Player {
     // ******** Class Singleton **********
@@ -19,8 +16,9 @@ class Player {
 
     // ******** Fields **********
     private String currentRoom = "basement";
-    private List<String> inventory = new ArrayList<>();
+    private Map<String, String> inventory = new HashMap<>();
     private boolean itemEquipped = false;
+    private final List<String> locations = Arrays.asList("kitchen", "parlor", "east room", "west hall");
 
     private Player () {
     }
@@ -71,30 +69,41 @@ class Player {
     // pick up items
     void getItems(String noun, JSONObject roomItems, JSONArray validItems, JSONObject inventoryObj, JSONObject books, JSONObject clueHolder) {
         // check if item is a valid and something we can hold in inventory
-        if(validItems.contains(noun) && inventoryObj.containsKey(noun)) {
+
+        if(roomItems!=null && validItems.contains(noun) && inventoryObj.containsKey(noun)) {
             //check if the room had the item player is trying to get
             if (roomItems.containsKey(noun)) {
-                inventory.add(noun);
+//                inventory.add(noun);
+
+                inventory.put(noun, roomItems.get(noun).toString());
                 roomItems.remove(noun);
                 System.out.println(noun + " picked up");
             }
             // check location and if noun is the title of one of the books on bookcase
             else if (getCurrentRoom().equals("west hall") && books.containsKey(noun)) {
-                inventory.add(noun);
+//                inventory.add(noun);
+
+                JSONObject description = (JSONObject) books.get(noun);
+
+                inventory.put(noun, description.get("description").toString());
                 books.remove(noun);
                 System.out.println(noun + " picked up");
             }
-            else if (!roomItems.containsKey(noun) && inventory.contains(noun)) {
+            else if (!roomItems.containsKey(noun) && inventory.containsKey(noun)) {
                 System.out.println("You already have " + noun);
             }
+
+
             // what to do if noun is not present clearly present in room
-            else if (!roomItems.containsKey(noun) && "kitchen".equals(getCurrentRoom()) || "parlor".equals(getCurrentRoom()) || "east hall".equals(getCurrentRoom()) || "west hall".equals(getCurrentRoom())) {
+
+            //"kitchen".equals(getCurrentRoom()) || "parlor".equals(getCurrentRoom()) || "east room".equals(getCurrentRoom()) || "west hall".equals(getCurrentRoom())
+            else if (!roomItems.containsKey(noun) && locations.contains(getCurrentRoom())) {
                 // switch case for rooms that hold clues inside other objects
                 switch (getCurrentRoom()) {
                     case "kitchen":
                         clueHolder = (JSONObject) roomItems.get("cabinets");
                         break;
-                    case "east hall":
+                    case "east room":
                         clueHolder = (JSONObject) roomItems.get("vase");
                         break;
                     case "parlor":
@@ -110,7 +119,8 @@ class Player {
                 String clue = (String) clueObj.get("name");
                 // check is noun is equal to name of one of our clues
                 if(noun.equals(clue)) {
-                    inventory.add(clue);
+//                    inventory.add(clue);
+                    inventory.put(clue, clueObj.get("description").toString());
                     clueHolder.remove("clue");
                     System.out.println(noun + " picked up");
                 }
@@ -118,6 +128,8 @@ class Player {
                     System.out.println(noun + " is not in this room");
                 }
             }
+
+
         }
         // how we handle it if item is not valid or something player cannot hold in inventory
         else {
@@ -127,11 +139,12 @@ class Player {
 
     // allows player to drop items
     private void dropItems(String noun, JSONObject roomItems, JSONArray validItems) {
-        JSONObject itemDescription = (JSONObject) roomItems.get(noun);
+//        JSONObject itemDescription = (JSONObject) roomItems.get(noun);
         if (validItems.contains(noun) && !roomItems.containsKey(noun)) {
             System.out.println(noun + " dropped");
+//            inventory.remove(noun);
+            roomItems.put(noun,inventory.get(noun));
             inventory.remove(noun);
-            roomItems.put(noun, itemDescription);
         }
         if (noun.equals("torch")) {
             itemEquipped = false;
@@ -144,7 +157,7 @@ class Player {
         if (!"torch".equals(noun)){
             System.out.println("You can only equip a torch at this time.");
         }
-        else if (!inventory.contains("torch")) {
+        else if (!inventory.containsKey("torch")) {// !inventory.contains("torch")
             System.out.println("You must get the torch to use it!");
         }
         else {
@@ -189,14 +202,16 @@ class Player {
             System.out.println(room.get("description"));
         }
         // gives description of items if they are in player inventory
-        else if (inventory.contains(noun) && itemEquipped) {
-            JSONObject itemDescription = (JSONObject) inventoryObj.get(noun);
-            System.out.println(itemDescription.get("description"));
+        else if (inventory.containsKey(noun) && itemEquipped) { //inventory.contains(noun) && itemEquipped
+//            JSONObject itemDescription = (JSONObject) inventoryObj.get(noun);
+//            System.out.println(itemDescription.get("description"));
+            System.out.println(inventory.get(noun));
         }
         // allows player to get description of items in room
         else if (validItems.contains(noun) && room.containsKey("item") && roomItems.containsKey(noun) && itemEquipped){
-            JSONObject item = (JSONObject) roomItems.get(noun);
-            System.out.println(item.get("description"));
+//            JSONObject item = (JSONObject) roomItems.get(noun);
+//            System.out.println(item.get("description"));
+            System.out.println(roomItems.get(noun).toString());
         }
         // response if player attempts to
         else if (!noun.contains(getCurrentRoom()) && itemEquipped || !roomItems.containsKey(noun) && itemEquipped) {
@@ -216,7 +231,7 @@ class Player {
         this.currentRoom = currentRoom;
     }
 
-    public List<String> getInventory() {
+    public Map<String, String> getInventory() {
         return inventory;
     }
 

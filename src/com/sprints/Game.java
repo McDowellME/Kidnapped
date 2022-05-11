@@ -89,7 +89,7 @@ public class Game {
 
     // End game with a win if select correct book
     private void checkWin() throws IOException, InterruptedException {
-        if (Player.getInstance().getInventory().contains("it")) {
+        if (Player.getInstance().getInventory().containsKey("it")) {
             gameOver = true;
             Console.clear();
             TimeUnit.SECONDS.sleep(1);
@@ -171,9 +171,20 @@ public class Game {
             System.out.println("You notice: " + roomItems);
             System.out.println();
         }
-        System.out.println("Inventory:" + Player.getInstance().getInventory());
+//        System.out.println("Inventory:" + Player.getInstance().getInventory());
+        System.out.println(showInventory());
         System.out.println("Time Remaining: " + TimeElapsed.getInstance().getTime());
         System.out.println("-----------------------------");
+    }
+
+    private static String showInventory() {
+        String result = "Inventory: [";
+        for (String k : Player.getInstance().getInventory().keySet()){
+            result += k +", ";
+        }
+        result = result.trim();
+        result += "]";
+        return result;
     }
 
     // prompts the user to enter commands until timer ends
