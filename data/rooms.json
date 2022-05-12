@@ -4,7 +4,7 @@
     "east": "parlor",
     "item": {
       "bookcase": {
-        "description": "You see many books, all tattered and worn. Some appear to have been recently read. Upon closer investigation you see clue 4",
+        "description": "You see many books, all tattered and worn. Some appear to have been recently read. Upon closer investigation you see clue 4.",
         "description2": "You see many books, all tattered and worn. Some appear to have been recently read.",
         "clue": {
           "name": "clue 4",
