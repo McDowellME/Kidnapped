@@ -47,6 +47,9 @@ public class Game {
                 Console.clear();
 
                 //if player inputs "quit" it will break out of the while loop and exit the game----
+                if("godmode".equals(playerCommand)){
+                    TimeElapsed.setRuntime(1000000);
+                }
                 if ("quit".equals(playerCommand) || ("q".equals(playerCommand))) {
                     quit();
                 }
@@ -118,7 +121,7 @@ public class Game {
         Utils.pressEnterToContinue();
         Console.clear();
         //read from txt later
-        String description = "You awake to find yourself in a twisted escape game. Can you gather all the clues and escape\nwith your life before time runs out?";
+        String description = "You awake to find yourself in a twisted escape game. \nLook around and get clues to help you escape with your life before time runs out!";
         System.out.println(description);
         System.out.println("-----------------------------");
         getCommands();
@@ -126,7 +129,7 @@ public class Game {
         Console.clear();
         Utils.printWithDelays("...You feel a sharp prick.");
         System.out.println();
-        MusicPlayer.playSound("/Sound.wav");
+        MusicPlayer.playSound("/audio/Sound.wav");
     }
 
     // used to display status (current room, inventory, room description, etc)
@@ -196,12 +199,13 @@ public class Game {
     }
 
     // shows player command that can be used in game
-    private void getCommands() {
-        System.out.println("======= COMMANDS =======");
-        // help should call this method
-        System.out.println("go [direction]\nget [item]\nlook [item]\nequip [item]\nhelp (view in game commands)\nmute (stops sound)" +
-                "\nplay (starts sound)\nraise volume\nlower volume");
-        System.out.println("========================");
+    private void getCommands() throws IOException {
+//        System.out.println("======= COMMANDS =======");
+//        // help should call this method
+//        System.out.println("go [direction]\nget [item]\nlook [item]\nequip [item]\nhelp (view in game commands)\nmute (stops sound)" +
+//                "\nplay (starts sound)\nraise volume\nlower volume");
+//        System.out.println("========================");
+        TextFileReader.getInstance().txtFileReader("/commandsmenu.txt");
     }
 
     // restart game

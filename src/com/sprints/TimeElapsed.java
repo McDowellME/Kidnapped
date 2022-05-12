@@ -1,6 +1,10 @@
 package com.sprints;
 
 class TimeElapsed {
+    static int runtime = 600;
+
+
+
     // ******** Class Singleton **********
     private static TimeElapsed timer = null;
 
@@ -24,11 +28,14 @@ class TimeElapsed {
         // convert milli to seconds
         elapsedTime = elapsedTime /1000;
         // update remaining game time
-        int runtime = 600;
         String remaining = Integer.toString((int) (runtime - elapsedTime));
         if (Integer.parseInt(remaining) < 0) {
             remaining = Integer.toString(0);
         }
         return remaining;
+    }
+
+    public static void setRuntime(int runtime) {
+        TimeElapsed.runtime = runtime;
     }
 }

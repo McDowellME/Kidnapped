@@ -1,0 +1,17 @@
+================= COMMANDS =================
+
+help - to see these commands
+
+**GAMEPLAY**
+go [direction] - moves into room in that direction
+get [item] - puts item into inventory
+look [item] - gets more details about item
+equip [item] - uses the item
+drop [item] - removes item from inventory
+
+**AUDIO**
+mute
+play
+raise volume
+lower volume
+============================================
