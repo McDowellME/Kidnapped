@@ -47,6 +47,9 @@ public class Game {
                 Console.clear();
 
                 //if player inputs "quit" it will break out of the while loop and exit the game----
+                if("godmode".equals(playerCommand)){
+                    TimeElapsed.setRuntime(1000000);
+                }
                 if ("quit".equals(playerCommand) || ("q".equals(playerCommand))) {
                     quit();
                 }

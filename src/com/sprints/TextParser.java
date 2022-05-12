@@ -47,6 +47,11 @@ public class TextParser {
         List<String> command = new ArrayList<>();
         List<String> validSingleWords = new ArrayList<>(Arrays.asList("quit", "q", "restart", "no", "yes", "y", "n", "help", "mcdhapwt123", "mute", "play", "volume-up", "volume-down"));
 
+        System.out.println(inputCommand.get(0));
+        if(inputCommand.size() ==1 && inputCommand.get(0).equals("godmode")){
+            command.add(inputCommand.get(0));
+            return;
+        }
         if (inputCommand.size() == 1 && validSingleWords.contains(inputCommand.get(0))) {
             String oneWordCommand = inputCommand.get(0);
             command.add(oneWordCommand);

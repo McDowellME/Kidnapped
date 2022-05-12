@@ -59,6 +59,7 @@
   },
   "east hall":
   {
+    "item": {},
     "east": "east room",
     "west": "parlor",
     "description":"This hall has a natural stone floor that has been polished smooth. \nThere is a room to the east and the parlor to the west."
