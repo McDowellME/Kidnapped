@@ -15,18 +15,23 @@ public class TitleFrame extends JPanel implements ActionListener {
     Font btnFont = new Font("Times New Roman", Font.BOLD, 30);
 
     public TitleFrame() throws IOException {
+        // Setting up the dimensions and background color
         setPreferredSize (new Dimension(1094, 730));
         setLayout(null);
         setBackground(Color.BLACK);
 
+        // The title background image
         InputStream main = classLoaderResourceStream("images/main2.png");
         Image mainImg = ImageIO.read(main);
         ImageIcon imageIcon = new ImageIcon(mainImg);
         Image image = imageIcon.getImage();
         Image img2 = image.getScaledInstance(1094, 730,  Image.SCALE_SMOOTH);
+
+        // Placing the background image
         JLabel imageLabel = new JLabel(new ImageIcon(img2));
         imageLabel.setBounds (0, 0, 1094, 730);
 
+        // Start button
         JButton startBtn = new JButton("START");
         startBtn.setOpaque(true);
         startBtn.setForeground(Color.RED);

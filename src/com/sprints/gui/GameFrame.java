@@ -18,11 +18,12 @@ class GameFrame extends JPanel implements ActionListener {
     Font inventoryFont = new Font("Times New Roman", Font.BOLD, 20);
 
     public GameFrame() throws IOException {
+        // Dimensions of the frame
         setPreferredSize (new Dimension(1094, 730));
         setLayout(null);
         setBackground(Color.BLACK);
 
-
+        // Location image
         InputStream location = classLoaderResourceStream("images/placeholder.png");
         Image locImg = ImageIO.read(location);
         ImageIcon imageIcon = new ImageIcon(locImg);
@@ -31,12 +32,14 @@ class GameFrame extends JPanel implements ActionListener {
         locationLabel = new JLabel(new ImageIcon(locImg2));
         locationLabel.setBounds (136, 20, 822, 400);
 
+        // User input
         textField = new JTextField();
         textField.setHorizontalAlignment(SwingConstants.CENTER);
-        textField.addActionListener( action );
+        textField.addActionListener( action ); // let me use enter key on keyboard
         textField.setFont(new Font("Calibri", Font.BOLD, 17));
         textField.setBounds(345,640,300,50);
 
+        // Description
         textArea = new JTextArea();
         textArea.setBackground(Color.WHITE);
         textArea.setForeground(Color.BLACK);
@@ -45,6 +48,7 @@ class GameFrame extends JPanel implements ActionListener {
         textArea.setLineWrap(true);
         textArea.setBounds(325,450,410,150);
 
+        // Inventory
         inventoryTextArea = new JTextArea();
         inventoryTextArea.setBackground(Color.WHITE);
         inventoryTextArea.setForeground(Color.BLACK);
@@ -53,11 +57,13 @@ class GameFrame extends JPanel implements ActionListener {
         inventoryTextArea.setLineWrap(true);
         inventoryTextArea.setBounds(100,450,160,150);
 
+        // Inventory Label
         inventoryLabel = new JLabel("Inventory");
         inventoryLabel.setForeground(Color.RED);
         inventoryLabel.setFont(inventoryFont);
         inventoryLabel.setBounds(140,429,160,20);
 
+        // Enter button
         enterBtn = new JButton("Enter");
         enterBtn.setOpaque(true);
         enterBtn.setForeground(Color.RED);
@@ -69,6 +75,7 @@ class GameFrame extends JPanel implements ActionListener {
         enterBtn.addActionListener(this);
         enterBtn.setBounds (650, 640, 80, 50);
 
+        // North button
         InputStream north  =  classLoaderResourceStream("images/button_n.png");
         Image nImg = ImageIO.read(north);
         ImageIcon nIcon = new ImageIcon(nImg);
@@ -86,6 +93,7 @@ class GameFrame extends JPanel implements ActionListener {
         northBtn.setIcon(new ImageIcon(nImg2));
         northBtn.setBounds (850, 450, 80, 50);
 
+        // East button
         InputStream east  =  classLoaderResourceStream("images/button_e.png");
         Image eImg = ImageIO.read(east);
         ImageIcon eIcon = new ImageIcon(eImg);
@@ -103,6 +111,7 @@ class GameFrame extends JPanel implements ActionListener {
         eastBtn.setIcon(new ImageIcon(eImg2));
         eastBtn.setBounds (900, 500, 80, 50);
 
+        // South Button
         InputStream south  =  classLoaderResourceStream("images/button_s.png");
         Image sImg = ImageIO.read(south);
         ImageIcon sIcon = new ImageIcon(sImg);
@@ -120,6 +129,7 @@ class GameFrame extends JPanel implements ActionListener {
         southBtn.setIcon(new ImageIcon(sImg2));
         southBtn.setBounds (850, 550, 80, 50);
 
+        // West button
         InputStream west  =  classLoaderResourceStream("images/button_w.png");
         Image wImg = ImageIO.read(west);
         ImageIcon wIcon = new ImageIcon(wImg);
@@ -137,6 +147,7 @@ class GameFrame extends JPanel implements ActionListener {
         westBtn.setIcon(new ImageIcon(wImg2));
         westBtn.setBounds (800, 500, 80, 50);
 
+        // Audio button
         InputStream audio  =  classLoaderResourceStream("images/play.png");
         Image audImg = ImageIO.read(audio);
         ImageIcon audIcon = new ImageIcon(audImg);
@@ -146,7 +157,6 @@ class GameFrame extends JPanel implements ActionListener {
         audBtn = new JButton();
         audBtn.setOpaque(true);
         audBtn.setBorderPainted(false);
-        audBtn.setFont(txtFont);
         audBtn.setFocusPainted(false);
         audBtn.setBorder(null);
         audBtn.setContentAreaFilled(false);
@@ -155,11 +165,13 @@ class GameFrame extends JPanel implements ActionListener {
         audBtn.setIcon(new ImageIcon(audImg2));
         audBtn.setBounds (1000, 377, 80, 50);
 
+        // Audio slider
         audSlider = new JSlider( JSlider.VERTICAL,-40,6,-17);
         audSlider.setOpaque(true);
         audSlider.setBackground(Color.WHITE);
         audSlider.addChangeListener(e -> {
             Audio.currentVolume = audSlider.getValue();
+            // Barely audible past -40 so easier to mute at that level
             if(Audio.currentVolume == -40){
                 Audio.currentVolume = -80;
             }
@@ -183,11 +195,11 @@ class GameFrame extends JPanel implements ActionListener {
         setVisible(true);
 
     }
+    // for Jar-ing purposes
     private static InputStream classLoaderResourceStream(String file){
         InputStream is = GameFrame.class.getClassLoader().getResourceAsStream(file);
         return is;
     }
-
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -197,11 +209,10 @@ class GameFrame extends JPanel implements ActionListener {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-            audBtn.setVisible(true);
-
         }
     }
 
+    // For the key 'enter'
     Action action = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
