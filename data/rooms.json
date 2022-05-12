@@ -4,8 +4,8 @@
     "east": "parlor",
     "item": {
       "bookcase": {
-        "description": "There are many books, all tattered and worn. Some appear to have been recently read. Upon closer investigation you see clue 4",
-        "description2": "There are many books, all tattered and worn. Some appear to have been recently read.",
+        "description": "You see many books, all tattered and worn. Some appear to have been recently read. Upon closer investigation you see clue 4",
+        "description2": "You see many books, all tattered and worn. Some appear to have been recently read.",
         "clue": {
           "name": "clue 4",
           "description": "I'm every nightmare you've ever had. (good luck)"
