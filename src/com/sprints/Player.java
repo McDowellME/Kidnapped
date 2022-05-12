@@ -122,6 +122,8 @@ class Player {
 //                    inventory.add(clue);
                     inventory.put(clue, clueObj.get("description").toString());
                     clueHolder.remove("clue");
+                    System.out.println(clueHolder);
+                    clueHolder.replace("description", clueHolder.get("description2"));
                     System.out.println(noun + " picked up");
                 }
                 else {
