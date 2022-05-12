@@ -46,22 +46,27 @@ class Audio {
     static void toggleSound(JButton audBtn, JSlider audSlider) throws IOException {
         if (isSound) {
 
+            previousVolume = currentVolume;
+            currentVolume = -80.0f;
+
             clip.stop();
             isSound = false;
             String mute = "images/mute.png";
             Image audImg = img(mute);
             audBtn.setIcon(new ImageIcon(audImg));
-            currentVolume = -80.0f;
             fc.setValue(currentVolume);
             audSlider.setValue(audSlider.getMinimum());
         } else {
+
+            currentVolume = previousVolume;
+
             clip.start();
             isSound = true;
             String play = "images/play.png";
             Image audImg = img(play);
             audBtn.setIcon(new ImageIcon(audImg));
             fc.setValue(currentVolume);
-            audSlider.setValue((int) previousVolume);
+            audSlider.setValue((int) currentVolume);
         }
     }
 
