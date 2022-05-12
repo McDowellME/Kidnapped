@@ -45,6 +45,7 @@ class Audio {
     // pause/re-play in game music
     static void toggleSound(JButton audBtn, JSlider audSlider) throws IOException {
         if (isSound) {
+
             clip.stop();
             isSound = false;
             String mute = "images/mute.png";
