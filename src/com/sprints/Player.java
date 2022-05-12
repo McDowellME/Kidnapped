@@ -47,6 +47,7 @@ class Player {
         JSONArray verbObj5 = (JSONArray) synonymObj.get(4); // drop
         JSONArray verbObj6 = (JSONArray) synonymObj.get(5); // raise
         JSONArray verbObj7 = (JSONArray) synonymObj.get(6); // lower
+        JSONArray godMode = (JSONArray) synonymObj.get(7); // god mode
 
         // pass to function depending on which synonym array verb belongs to
         if (verbObj1.contains(commands.get(0))) {
@@ -72,10 +73,17 @@ class Player {
 
         if(roomItems!=null && validItems.contains(noun) && inventoryObj.containsKey(noun)) {
             //check if the room had the item player is trying to get
+            String itemDescription ="";
             if (roomItems.containsKey(noun)) {
 //                inventory.add(noun);
-
-                inventory.put(noun, roomItems.get(noun).toString());
+                if (roomItems.get(noun) instanceof String){
+                    itemDescription = roomItems.get(noun).toString();
+                }
+                else {
+                    JSONObject item = (JSONObject) roomItems.get(noun);
+                    itemDescription = item.get("description").toString();
+                }
+                inventory.put(noun,itemDescription);
                 roomItems.remove(noun);
                 System.out.println(noun + " picked up");
             }
@@ -116,13 +124,22 @@ class Player {
                         break;
                 }
                 JSONObject clueObj = (JSONObject) clueHolder.get("clue");
+
+                // if user picks clue up and drops in another room
+                // if they go back to orig location an 'get clue' again clueObj is null
+                if(clueObj==null) {
+                    // but needs to say cant get noun
+                    System.out.println(noun + " is not in this room");
+                    return;
+                }
+
                 String clue = (String) clueObj.get("name");
+
                 // check is noun is equal to name of one of our clues
                 if(noun.equals(clue)) {
 //                    inventory.add(clue);
                     inventory.put(clue, clueObj.get("description").toString());
                     clueHolder.remove("clue");
-                    System.out.println(clueHolder);
                     clueHolder.replace("description", clueHolder.get("description2"));
                     System.out.println(noun + " picked up");
                 }
@@ -141,10 +158,13 @@ class Player {
 
     // allows player to drop items
     private void dropItems(String noun, JSONObject roomItems, JSONArray validItems) {
-//        JSONObject itemDescription = (JSONObject) roomItems.get(noun);
+        // There is no roomItems JSONObj in the empty rooms
+
+
         if (validItems.contains(noun) && !roomItems.containsKey(noun)) {
             System.out.println(noun + " dropped");
 //            inventory.remove(noun);
+
             roomItems.put(noun,inventory.get(noun));
             inventory.remove(noun);
         }
@@ -172,6 +192,7 @@ class Player {
     void locationChange(String noun, JSONObject room, JSONObject roomsObj) {
         // if the roomsObj (json file with room info) has a location with a name that matches the player
         // input noun, we set it as the current room
+        // Teleport
         if(roomsObj.containsKey(noun)) {
             setCurrentRoom(noun);
         }
@@ -203,12 +224,12 @@ class Player {
         else if (noun.equals(getCurrentRoom()) || "here".equals(noun) && itemEquipped) {
             System.out.println(room.get("description"));
         }
+
         // gives description of items if they are in player inventory
         else if (inventory.containsKey(noun) && itemEquipped) { //inventory.contains(noun) && itemEquipped
-//            JSONObject itemDescription = (JSONObject) inventoryObj.get(noun);
-//            System.out.println(itemDescription.get("description"));
-            System.out.println(inventory.get(noun));
+            System.out.println(inventory.get(noun).toString());
         }
+
         // allows player to get description of items in room
         else if (validItems.contains(noun) && room.containsKey("item") && roomItems.containsKey(noun) && itemEquipped){
             JSONObject item;
