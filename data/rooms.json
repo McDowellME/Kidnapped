@@ -4,8 +4,8 @@
     "east": "parlor",
     "item": {
       "bookcase": {
-        "description": "There are many books, all tattered and worn. Some appear to have been recently read. Upon closer investigation you see clue 4",
-        "description2": "There are many books, all tattered and worn. Some appear to have been recently read.",
+        "description": "You see many books, all tattered and worn. Some appear to have been recently read. Upon closer investigation you see clue 4.",
+        "description2": "You see many books, all tattered and worn. Some appear to have been recently read.",
         "clue": {
           "name": "clue 4",
           "description": "I'm every nightmare you've ever had. (good luck)"
@@ -34,7 +34,7 @@
         }
       }
     },
-    "description":"This hall has a natural stone floor that has been polished smooth. A mouse scutters\nacross the floor. There is a bookcase at the end of the hall. The air smells stale."
+    "description":"This hall has a natural stone floor that has been polished smooth. A mouse scutters\nacross the floor. There is a bookcase at the end of the hall. The air smells stale. \nThe only way out is the parlor, to the east."
   },
   "kitchen":
   {
@@ -55,13 +55,13 @@
         "description" : "The window is barred from the outside, There is no way to get out."
       }
     },
-    "description": "The room is covered in dust and cobwebs. Glass shards cover the floor, and the smell of rust,\nmildew, and spoiled food is pungent. The air is so thick you can almost taste it.\nRoaches run up every wall and the faint sound of rats squeaking can be heard all around. The only way out is back south, towards the parlor."
+    "description": "The room is covered in dust and cobwebs. Glass shards cover the floor, and the smell of rust,\nmildew, and spoiled food is pungent. The air is so thick you can almost taste it.\nRoaches run up every wall and the faint sound of rats squeaking can be heard all around. \nThe only way out is south, to the parlor."
   },
   "east hall":
   {
     "east": "east room",
     "west": "parlor",
-    "description":"This hall has a natural stone floor that has been polished smooth."
+    "description":"This hall has a natural stone floor that has been polished smooth. \nThere is a room to the east and the parlor to the west."
   },
   "east room":
   {
@@ -79,7 +79,7 @@
         }
       }
     },
-    "description": "There is nothing warm about that place. It smells of something evil and the darkness is surreal.\nNot merely the type of darkness that comes from the absence of light, but much more sinister. "
+    "description": "There is nothing warm about that place. It smells of something evil and the darkness is surreal.\nNot merely the type of darkness that comes from the absence of light, but much more sinister. \nThe only way out is west, to the hall."
   },
   "parlor":
   {
@@ -106,7 +106,7 @@
           }
       }
     },
-    "description": "This room is large, bleak, and cold. It is quiet and somber and you feel a chill as the darkness\nengulfs you. You can hear the sound of your heart beat echo throughout the room. The ceiling is a vaulted\n, cathedral ceiling with the tattered remains of what once must have been colorful streamers hanging\ndown. A corpse covered in webs lay against the north wall right next to the entrance of what appears to be a kitchen.\nTo the east lies a long dark hall and the west, another. The room smells of mildew and decay."
+    "description": "This room is large, bleak, and cold. It is quiet and somber and you feel a chill as the darkness\nengulfs you. You can hear the sound of your heart beat echo throughout the room. The ceiling is a vaulted, \ncathedral ceiling with the tattered remains of what once must have been colorful streamers hanging\ndown. The room smells of mildew and decay. \nA corpse covered in webs lay against the north wall right next to the entrance of what appears to be a kitchen. \nAlso, to the east lies a long dark hall and the west, another."
   },
   "basement":
   {
@@ -123,6 +123,6 @@
         "description": "A small needle protrudes from a crack in the ground where you awoke."
       }
     },
-    "description": "There is a smell of decay and mold in the room. The pitch-black atmosphere is nearly impenetrable.\nYou stretch your eyes as wide as possible but can barely make out a feeble outline of some distant objects.\nThere is little light except for the for a small strip below the door at the top of the stairs, to the north, and a small\ntorch which illuminates only what is in its immediate vicinity\n"
+    "description": "There is a smell of decay and mold in the room. The pitch-black atmosphere is nearly impenetrable.\nYou stretch your eyes as wide as possible but can barely make out a feeble outline of some distant objects.\nThere is little light except for the for a small strip below the door at the top of the stairs, to the north, \nand the torch which illuminates only what is in its immediate vicinity\n"
   }
 }

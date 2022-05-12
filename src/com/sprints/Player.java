@@ -122,6 +122,8 @@ class Player {
 //                    inventory.add(clue);
                     inventory.put(clue, clueObj.get("description").toString());
                     clueHolder.remove("clue");
+                    System.out.println(clueHolder);
+                    clueHolder.replace("description", clueHolder.get("description2"));
                     System.out.println(noun + " picked up");
                 }
                 else {
@@ -209,9 +211,18 @@ class Player {
         }
         // allows player to get description of items in room
         else if (validItems.contains(noun) && room.containsKey("item") && roomItems.containsKey(noun) && itemEquipped){
-//            JSONObject item = (JSONObject) roomItems.get(noun);
-//            System.out.println(item.get("description"));
-            System.out.println(roomItems.get(noun).toString());
+            JSONObject item;
+            if (roomItems.get(noun) instanceof java.lang.String) {
+                System.out.println(roomItems.get(noun).toString());
+            }
+            else {
+                item = (JSONObject) roomItems.get(noun);
+                System.out.println(item.get("description"));
+            }
+////            System.out.println(item.get("description"));
+//            else {
+//            //System.out.println(roomItems.get(noun).toString());
+//            }
         }
         // response if player attempts to
         else if (!noun.contains(getCurrentRoom()) && itemEquipped || !roomItems.containsKey(noun) && itemEquipped) {

@@ -118,7 +118,7 @@ public class Game {
         Utils.pressEnterToContinue();
         Console.clear();
         //read from txt later
-        String description = "You awake to find yourself in a twisted escape game. Can you gather all the clues and escape\nwith your life before time runs out?";
+        String description = "You awake to find yourself in a twisted escape game. \nLook around and get clues to help you escape with your life before time runs out!";
         System.out.println(description);
         System.out.println("-----------------------------");
         getCommands();
