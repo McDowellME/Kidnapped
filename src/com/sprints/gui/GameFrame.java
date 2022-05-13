@@ -11,8 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -204,6 +203,7 @@ class GameFrame extends JPanel implements ActionListener {
         helpBtn.setBorder(null);
         helpBtn.setContentAreaFilled(false);
         helpBtn.addActionListener(this);
+        helpBtn.setActionCommand("help");
         helpBtn.setIcon(helpIcon);
         helpBtn.setBounds (1000, 650, 80, 50);
         //endregion
@@ -289,6 +289,10 @@ class GameFrame extends JPanel implements ActionListener {
             else if(e.getActionCommand().equals("go west")){
                 Player.getInstance().playerActions(Arrays.asList("go", "west"));
                 textArea.setText(OurJSONParser.getRoom().get("description").toString());
+            }
+            else if(e.getActionCommand().equals("help")){
+                BufferedReader input = new BufferedReader(new InputStreamReader(new FileInputStream("data/commandsmenu.txt")));
+                textArea.read(input, null);
             }
         }
         catch (IOException | LineUnavailableException | UnsupportedAudioFileException ex) {
