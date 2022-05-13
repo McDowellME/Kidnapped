@@ -106,6 +106,7 @@ public class Game {
     // End game with a loss if select 2 incorrect books
     private void bookShelfCheck() throws IOException, InterruptedException {
         Set<String> remainingBooks = OurJSONParser.getBooks().keySet();
+
         int bookSelections = remainingBooks.size() - (remainingBooks.size() - 2);
         if (remainingBooks.size() <= bookSelections && remainingBooks.contains("it")) {
             endGame();

@@ -1,16 +1,17 @@
 package com.sprints;
 
-import com.apps.util.Console;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import com.sprints.OurJSONParser.*;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.*;
 
-class Player {
+import static com.sprints.OurJSONParser.*;
+
+public class Player {
     // ******** Class Singleton **********
     private static Player player = null;
 
@@ -19,6 +20,16 @@ class Player {
     private Map<String, String> inventory = new HashMap<>();
     private boolean itemEquipped = false;
     private final List<String> locations = Arrays.asList("kitchen", "parlor", "east room", "west hall");
+    public static String plug ="";
+
+    JSONArray verbObj1 = (JSONArray) OurJSONParser.getSynJSON().get(0); // go
+    JSONArray verbObj2 = (JSONArray) OurJSONParser.getSynJSON().get(1); // get
+    JSONArray verbObj3 = (JSONArray) OurJSONParser.getSynJSON().get(2); // look
+    JSONArray verbObj4 = (JSONArray) OurJSONParser.getSynJSON().get(3); // equip
+    JSONArray verbObj5 = (JSONArray) OurJSONParser.getSynJSON().get(4); // drop
+    JSONArray verbObj6 = (JSONArray) OurJSONParser.getSynJSON().get(5); // raise
+    JSONArray verbObj7 = (JSONArray) OurJSONParser.getSynJSON().get(6); // lower
+    JSONArray godMode = (JSONArray) OurJSONParser.getSynJSON().get(7); // god mode
 
     private Player () {
     }
@@ -35,31 +46,26 @@ class Player {
     // ******** Business Methods **********
     /* takes in all commands along with current room info, rooms.json info,
     synonyms, and valid items */
-    public void playerActions(List<String> commands, JSONObject room, JSONObject roomItems, JSONObject roomsObj, JSONArray synonymObj,
-                              JSONArray validItems, JSONObject inventoryObj, JSONObject books, JSONObject clueHolder)
+    public void playerActions(List<String> commands)
             throws LineUnavailableException, UnsupportedAudioFileException, IOException {
+        /*
+            , JSONObject room, JSONObject roomItems, JSONObject roomsObj, JSONArray synonymObj,
+                              JSONArray validItems, JSONObject inventoryObj, JSONObject books, JSONObject clueHolder
+         */
 
         // separate synonyms.json at indexes
-        JSONArray verbObj1 = (JSONArray) synonymObj.get(0); // go
-        JSONArray verbObj2 = (JSONArray) synonymObj.get(1); // get
-        JSONArray verbObj3 = (JSONArray) synonymObj.get(2); // look
-        JSONArray verbObj4 = (JSONArray) synonymObj.get(3); // equip
-        JSONArray verbObj5 = (JSONArray) synonymObj.get(4); // drop
-        JSONArray verbObj6 = (JSONArray) synonymObj.get(5); // raise
-        JSONArray verbObj7 = (JSONArray) synonymObj.get(6); // lower
-        JSONArray godMode = (JSONArray) synonymObj.get(7); // god mode
 
         // pass to function depending on which synonym array verb belongs to
         if (verbObj1.contains(commands.get(0))) {
-            locationChange(commands.get(1), room, roomsObj);
+            locationChange(commands.get(1));
         }else if (verbObj2.contains(commands.get(0))) {
-            getItems(commands.get(1), roomItems, validItems, inventoryObj, books, clueHolder);
+            getItems(commands.get(1));
         }else if (verbObj3.contains(commands.get(0))) {
-            look(commands.get(1), room, roomItems, validItems, inventoryObj, books);
+            look(commands.get(1));
         }else if (verbObj4.contains(commands.get(0))) {
             equip(commands.get(1));
         }else if (verbObj5.contains(commands.get(0))) {
-            dropItems(commands.get(1), roomItems, validItems);
+            dropItems(commands.get(1));
         }else if (verbObj6.contains(commands.get(0))) {
             MusicPlayer.raiseSoundVolume();
         }else if (verbObj7.contains(commands.get(0))) {
@@ -68,10 +74,10 @@ class Player {
     }
 
     // pick up items
-    void getItems(String noun, JSONObject roomItems, JSONArray validItems, JSONObject inventoryObj, JSONObject books, JSONObject clueHolder) {
+    void getItems(String noun) {
         // check if item is a valid and something we can hold in inventory
 
-        if(roomItems!=null && validItems.contains(noun) && inventoryObj.containsKey(noun)) {
+        if(roomItems!=null && OurJSONParser.getItems().contains(noun) && getInventoryJSON().containsKey(noun)) {
             //check if the room had the item player is trying to get
             String itemDescription ="";
             if (roomItems.containsKey(noun)) {
@@ -88,13 +94,13 @@ class Player {
                 System.out.println(noun + " picked up");
             }
             // check location and if noun is the title of one of the books on bookcase
-            else if (getCurrentRoom().equals("west hall") && books.containsKey(noun)) {
+            else if (getCurrentRoom().equals("west hall") && OurJSONParser.getBooks().containsKey(noun)) {
 //                inventory.add(noun);
 
-                JSONObject description = (JSONObject) books.get(noun);
+                JSONObject description = (JSONObject) OurJSONParser.getBooks().get(noun);
 
                 inventory.put(noun, description.get("description").toString());
-                books.remove(noun);
+                OurJSONParser.getBooks().remove(noun);
                 System.out.println(noun + " picked up");
             }
             else if (!roomItems.containsKey(noun) && inventory.containsKey(noun)) {
@@ -109,21 +115,24 @@ class Player {
                 // switch case for rooms that hold clues inside other objects
                 switch (getCurrentRoom()) {
                     case "kitchen":
-                        clueHolder = (JSONObject) roomItems.get("cabinets");
+                        OurJSONParser.setClueHolder((JSONObject) roomItems.get("cabinets"));
                         break;
                     case "east room":
-                        clueHolder = (JSONObject) roomItems.get("vase");
+                        OurJSONParser.setClueHolder((JSONObject) roomItems.get("vase"));
                         break;
                     case "parlor":
-                        clueHolder = (JSONObject) roomItems.get("portrait");
+                        OurJSONParser.setClueHolder((JSONObject) roomItems.get("portrait"));
                         break;
                     case "west hall":
-                        clueHolder = (JSONObject) roomItems.get("bookcase");
+                        OurJSONParser.setClueHolder((JSONObject) roomItems.get("bookcase"));
                         break;
                     default:
                         break;
                 }
-                JSONObject clueObj = (JSONObject) clueHolder.get("clue");
+                System.out.println(getCurrentRoom());
+                System.out.println(((JSONObject) roomItems.get("portrait")).toString());
+                System.out.println(OurJSONParser.getClueHolder().toString());
+                JSONObject clueObj = (JSONObject) OurJSONParser.getClueHolder().get("clue");
 
                 // if user picks clue up and drops in another room
                 // if they go back to orig location an 'get clue' again clueObj is null
@@ -139,7 +148,7 @@ class Player {
                 if(noun.equals(clue)) {
 //                    inventory.add(clue);
                     inventory.put(clue, clueObj.get("description").toString());
-                    clueHolder.remove("clue");
+                    OurJSONParser.getClueHolder().remove("clue");
                     clueHolder.replace("description", clueHolder.get("description2"));
                     System.out.println(noun + " picked up");
                 }
@@ -157,11 +166,11 @@ class Player {
     }
 
     // allows player to drop items
-    private void dropItems(String noun, JSONObject roomItems, JSONArray validItems) {
+    private void dropItems(String noun) {
         // There is no roomItems JSONObj in the empty rooms
 
 
-        if (validItems.contains(noun) && !roomItems.containsKey(noun)) {
+        if (OurJSONParser.getItems().contains(noun) && !roomItems.containsKey(noun)) {
             System.out.println(noun + " dropped");
 //            inventory.remove(noun);
 
@@ -189,17 +198,19 @@ class Player {
     }
 
     // change player location
-    void locationChange(String noun, JSONObject room, JSONObject roomsObj) {
+    void locationChange(String noun) {
         // if the roomsObj (json file with room info) has a location with a name that matches the player
         // input noun, we set it as the current room
         // Teleport
-        if(roomsObj.containsKey(noun)) {
+        if(OurJSONParser.getRoomsJSON().containsKey(noun)) {
             setCurrentRoom(noun);
         }
         // checks if current room has a given direction (north, south, east, west) amd if so
         //changes current room to the value of said direction
-        else if (room.containsKey(noun)) {
-            setCurrentRoom((String) room.get(noun));
+        else if (OurJSONParser.getRoom().containsKey(noun)) {
+            setCurrentRoom((String) OurJSONParser.getRoom().get(noun));
+            OurJSONParser.setRoom((JSONObject) getRoomsJSON().get(getCurrentRoom()));
+            roomItems =(JSONObject) getRoom().get("item");
         }
         else {
             System.out.println("You cannot go that way");
@@ -207,8 +218,8 @@ class Player {
     }
 
     // look at room and items in room
-    private void look(String noun, JSONObject room, JSONObject roomItems, JSONArray validItems, JSONObject inventoryObj, JSONObject books) {
-        Set<String> bookKeys = books.keySet();
+    private void look(String noun) {
+        Set<String> bookKeys = OurJSONParser.getBooks().keySet();
 
         // checks location as west hall the only place books keyword is valid and
         // outputs the title of the books on the bookcase for player
@@ -216,7 +227,7 @@ class Player {
             System.out.println("You see " + bookKeys);
         }
         else if ("west hall".equals(getCurrentRoom()) && bookKeys.contains(noun) && itemEquipped) {
-            JSONObject book = (JSONObject) books.get(noun);
+            JSONObject book = (JSONObject) OurJSONParser.getBooks().get(noun);
             String description = (String) book.get("description");
             System.out.println(description);
         }
@@ -231,7 +242,7 @@ class Player {
         }
 
         // allows player to get description of items in room
-        else if (validItems.contains(noun) && room.containsKey("item") && roomItems.containsKey(noun) && itemEquipped){
+        else if (OurJSONParser.getItems().contains(noun) && room.containsKey("item") && roomItems.containsKey(noun) && itemEquipped){
             JSONObject item;
             if (roomItems.get(noun) instanceof java.lang.String) {
                 System.out.println(roomItems.get(noun).toString());

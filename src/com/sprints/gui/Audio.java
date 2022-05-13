@@ -32,7 +32,7 @@ class Audio {
 
     // start in game music
     static void playSound() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
-        AudioInputStream ais = AudioSystem.getAudioInputStream(path);
+        AudioInputStream ais = AudioSystem.getAudioInputStream(sound);
         clip = AudioSystem.getClip();
         clip.open(ais);
         fc = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);

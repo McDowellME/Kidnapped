@@ -39,31 +39,31 @@ public class PlayerTest {
 
     @Test
     public void changeLocationFromBasement_shouldChangeLocation_whenValidDirectionPassed() {
-        Player.getInstance().locationChange("north", basement, roomsJSON);
+        Player.getInstance().locationChange("north");
         assertEquals("parlor", Player.getInstance().getCurrentRoom());
     }
 
     @Test
     public void changeLocationFromBasement_shouldReturnErrorMessage_whenInvalidDirectionPassed() {
-        Player.getInstance().locationChange("south", basement, roomsJSON);
+        Player.getInstance().locationChange("south");
         assertTrue("You cannot go that way", true);
     }
 
     @Test
     public void changeLocationFromBasement_shouldChangeLocation_whenValidRoomPassed() {
-        Player.getInstance().locationChange("kitchen", basement, roomsJSON);
+        Player.getInstance().locationChange("kitchen");
         assertEquals("kitchen", Player.getInstance().getCurrentRoom());
     }
 
     @Test
     public void changeLocationFromBasement_shouldReturnErrorMessage_whenInvalidRoomPassed() {
-        Player.getInstance().locationChange("attic", basement, roomsJSON);
+        Player.getInstance().locationChange("attic");
         assertTrue("attic is not a known location", true);
     }
 
     @Test
     public void getItem_shouldAddTorchToInventory_whenPickedUp() {
-        Player.getInstance().getItems("torch", basementItems, validItems, validInventory, null, null);
+        Player.getInstance().getItems("torch");
 //        assertTrue(Player.getInstance().getInventory().contains("torch"));
         assertTrue(Player.getInstance().getInventory().containsKey("torch"));
     }
@@ -71,7 +71,7 @@ public class PlayerTest {
     @Test
     public void getItem_shouldAddEmbeddedItemToInventory_whenPickedUp() {
         Player.getInstance().setCurrentRoom("kitchen");
-        Player.getInstance().getItems("clue 3", kitchenItems, validItems, validInventory, null, null);
+        Player.getInstance().getItems("clue 3");
 //        assertTrue(Player.getInstance().getInventory().contains("clue 3"));
         assertTrue(Player.getInstance().getInventory().containsKey("clue 3"));
     }
@@ -79,7 +79,7 @@ public class PlayerTest {
     @Test
     public void getItem_shouldAddBookToInventory_whenPickedUp() {
         Player.getInstance().setCurrentRoom("west hall");
-        Player.getInstance().getItems("it", hallItems, validItems, validInventory, books, null);
+        Player.getInstance().getItems("it");
 //        assertTrue(Player.getInstance().getInventory().contains("it"));
         assertTrue(Player.getInstance().getInventory().containsKey("it"));
 
@@ -87,7 +87,7 @@ public class PlayerTest {
 
     @Test
     public void dropItem_shouldRemoveItemFromInventory_whenDropped() {
-        Player.getInstance().getItems("torch", basementItems, validItems, validInventory, null, null);
+        Player.getInstance().getItems("torch");
 //        assertTrue(Player.getInstance().getInventory().contains("torch"));
 //        Player.getInstance().dropItems("torch", basementItems, validItems);
 //        assertFalse(Player.getInstance().getInventory().contains("torch"));
@@ -95,7 +95,7 @@ public class PlayerTest {
 
     @Test
     public void dropItem_shouldAddItemToRoom_whenDropped() {
-        Player.getInstance().getItems("torch", basementItems, validItems, validInventory, null, null);
+        Player.getInstance().getItems("torch");
         Player.getInstance().setCurrentRoom("kitchen");
         //Player.getInstance().dropItems("torch", kitchenItems, validItems);
         assertTrue(kitchenItems.containsKey("torch"));

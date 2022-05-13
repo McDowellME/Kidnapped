@@ -1,29 +1,39 @@
 package com.sprints.gui;
 
+import com.sprints.OurJSONParser;
+import com.sprints.Player;
+import com.sprints.controller.*;
+
 import javax.imageio.ImageIO;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
 
 class GameFrame extends JPanel implements ActionListener {
+
     JTextField textField;
-    JTextArea textArea, inventoryTextArea;
+    JTextArea textArea, inventoryTextArea, responseArea;
     JLabel inventoryLabel, locationLabel;
     JButton enterBtn, northBtn, eastBtn, southBtn, westBtn, audBtn;
     JSlider audSlider;
-    Font txtFont = new Font("Times New Roman", Font.BOLD, 20);
+    Font txtFont = new Font("Times New Roman", Font.BOLD, 12);
     Font inventoryFont = new Font("Times New Roman", Font.BOLD, 20);
 
     public GameFrame() throws IOException {
-        // Dimensions of the frame
+        //region Dimensions of the frame
         setPreferredSize (new Dimension(1094, 730));
         setLayout(null);
         setBackground(Color.BLACK);
+        //endregion
 
-        // Location image
+        //region Location image
         InputStream location = classLoaderResourceStream("images/placeholder.png");
         Image locImg = ImageIO.read(location);
         ImageIcon imageIcon = new ImageIcon(locImg);
@@ -31,39 +41,62 @@ class GameFrame extends JPanel implements ActionListener {
         Image locImg2 = locImage.getScaledInstance(1094, 730,  Image.SCALE_SMOOTH);
         locationLabel = new JLabel(new ImageIcon(locImg2));
         locationLabel.setBounds (136, 20, 822, 400);
+        //endregion
 
-        // User input
+        //region User input
         textField = new JTextField();
         textField.setHorizontalAlignment(SwingConstants.CENTER);
         textField.addActionListener( action ); // let me use enter key on keyboard
         textField.setFont(new Font("Calibri", Font.BOLD, 17));
         textField.setBounds(345,640,300,50);
+        //endregion
 
-        // Description
+        //region response area
+        responseArea = new JTextArea();
+        responseArea.setBackground(Color.WHITE);
+        responseArea.setForeground(Color.BLACK);
+        responseArea.setFont(txtFont);
+        responseArea.setEditable(false);
+        responseArea.setLineWrap(true);
+        responseArea.setBounds(325,400,300,30);
+        //endregion
+
+        //region Description
         textArea = new JTextArea();
         textArea.setBackground(Color.WHITE);
         textArea.setForeground(Color.BLACK);
         textArea.setFont(txtFont);
+
+        textArea.setText(OurJSONParser.getRoom().get("description").toString());
+
         textArea.setEditable(false);
         textArea.setLineWrap(true);
         textArea.setBounds(325,450,410,150);
+        //endregion
 
-        // Inventory
+        //region Inventory
         inventoryTextArea = new JTextArea();
         inventoryTextArea.setBackground(Color.WHITE);
         inventoryTextArea.setForeground(Color.BLACK);
         inventoryTextArea.setFont(txtFont);
+        //endregion
+
+        //region Inventory
+        inventoryTextArea.setText(Player.getInstance().getInventory().toString());
+
         inventoryTextArea.setEditable(false);
         inventoryTextArea.setLineWrap(true);
         inventoryTextArea.setBounds(100,450,160,150);
+        //endregion
 
-        // Inventory Label
+        //region Inventory Label
         inventoryLabel = new JLabel("Inventory");
         inventoryLabel.setForeground(Color.RED);
         inventoryLabel.setFont(inventoryFont);
         inventoryLabel.setBounds(140,429,160,20);
+        //endregion
 
-        // Enter button
+        //region Enter button
         enterBtn = new JButton("Enter");
         enterBtn.setOpaque(true);
         enterBtn.setForeground(Color.RED);
@@ -72,10 +105,11 @@ class GameFrame extends JPanel implements ActionListener {
         enterBtn.setFocusPainted(false);
         enterBtn.setBorder(null);
         enterBtn.setContentAreaFilled(false);
-        enterBtn.addActionListener(this);
+        enterBtn.addActionListener(action);
         enterBtn.setBounds (650, 640, 80, 50);
+        //endregion
 
-        // North button
+        //region North button
         InputStream north  =  classLoaderResourceStream("images/button_n.png");
         Image nImg = ImageIO.read(north);
         ImageIcon nIcon = new ImageIcon(nImg);
@@ -90,11 +124,14 @@ class GameFrame extends JPanel implements ActionListener {
         northBtn.setBorder(null);
         northBtn.setContentAreaFilled(false);
         northBtn.addActionListener(this);
+        northBtn.setActionCommand("go north");
         northBtn.setIcon(new ImageIcon(nImg2));
         northBtn.setBounds (850, 450, 80, 50);
+        //endregion
 
-        // East button
+        //region East button
         InputStream east  =  classLoaderResourceStream("images/button_e.png");
+
         Image eImg = ImageIO.read(east);
         ImageIcon eIcon = new ImageIcon(eImg);
         Image eImage = eIcon.getImage();
@@ -108,10 +145,12 @@ class GameFrame extends JPanel implements ActionListener {
         eastBtn.setBorder(null);
         eastBtn.setContentAreaFilled(false);
         eastBtn.addActionListener(this);
+        eastBtn.setActionCommand("go east");
         eastBtn.setIcon(new ImageIcon(eImg2));
         eastBtn.setBounds (900, 500, 80, 50);
+        //endregion
 
-        // South Button
+        //region South button
         InputStream south  =  classLoaderResourceStream("images/button_s.png");
         Image sImg = ImageIO.read(south);
         ImageIcon sIcon = new ImageIcon(sImg);
@@ -126,10 +165,12 @@ class GameFrame extends JPanel implements ActionListener {
         southBtn.setBorder(null);
         southBtn.setContentAreaFilled(false);
         southBtn.addActionListener(this);
+        southBtn.setActionCommand("go south");
         southBtn.setIcon(new ImageIcon(sImg2));
         southBtn.setBounds (850, 550, 80, 50);
+        //endregion
 
-        // West button
+        //region West button
         InputStream west  =  classLoaderResourceStream("images/button_w.png");
         Image wImg = ImageIO.read(west);
         ImageIcon wIcon = new ImageIcon(wImg);
@@ -144,10 +185,12 @@ class GameFrame extends JPanel implements ActionListener {
         westBtn.setBorder(null);
         westBtn.setContentAreaFilled(false);
         westBtn.addActionListener(this);
+        westBtn.setActionCommand("go west");
         westBtn.setIcon(new ImageIcon(wImg2));
         westBtn.setBounds (800, 500, 80, 50);
+        //endregion
 
-        // Audio button
+        //region Audio button
         InputStream audio  =  classLoaderResourceStream("images/play.png");
         Image audImg = ImageIO.read(audio);
         ImageIcon audIcon = new ImageIcon(audImg);
@@ -164,8 +207,9 @@ class GameFrame extends JPanel implements ActionListener {
         audBtn.setActionCommand("audToggle");
         audBtn.setIcon(new ImageIcon(audImg2));
         audBtn.setBounds (1000, 377, 80, 50);
+        //endregion
 
-        // Audio slider
+        //region Audio slider
         audSlider = new JSlider( JSlider.VERTICAL,-40,6,-17);
         audSlider.setOpaque(true);
         audSlider.setBackground(Color.WHITE);
@@ -179,7 +223,10 @@ class GameFrame extends JPanel implements ActionListener {
             Audio.fc.setValue(Audio.currentVolume);
         });
         audSlider.setBounds (1025, 250, 31, 120);
+        //endregion
 
+        //region Add components
+        add(responseArea);
         add(locationLabel);
         add(textField);
         add(textArea);
@@ -193,6 +240,7 @@ class GameFrame extends JPanel implements ActionListener {
         add(audBtn);
         add(audSlider);
         setVisible(true);
+        //endregion
 
     }
     // for Jar-ing purposes
@@ -203,12 +251,29 @@ class GameFrame extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getActionCommand().equals("audToggle")){
-            try {
+        try{
+            if(e.getActionCommand().equals("audToggle")){
                 Audio.toggleSound(audBtn, audSlider);
-            } catch (IOException ex) {
-                ex.printStackTrace();
             }
+            else if(e.getActionCommand().equals("go north")){
+                Player.getInstance().playerActions(Arrays.asList("go", "north"));
+                textArea.setText(OurJSONParser.getRoom().get("description").toString());
+            }
+            else if(e.getActionCommand().equals("go east")){
+                Player.getInstance().playerActions(Arrays.asList("go", "east"));
+                textArea.setText(OurJSONParser.getRoom().get("description").toString());
+            }
+            else if(e.getActionCommand().equals("go south")){
+                Player.getInstance().playerActions(Arrays.asList("go", "south"));
+                textArea.setText(OurJSONParser.getRoom().get("description").toString());
+            }
+            else if(e.getActionCommand().equals("go west")){
+                Player.getInstance().playerActions(Arrays.asList("go", "west"));
+                textArea.setText(OurJSONParser.getRoom().get("description").toString());
+            }
+        }
+        catch (IOException | LineUnavailableException | UnsupportedAudioFileException ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -216,6 +281,19 @@ class GameFrame extends JPanel implements ActionListener {
     Action action = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
+            try {
+                List<String> input = Arrays.asList(textField.getText().split(" "));
+                OurJSONParser.commandParser(input);
+                updateAll();
+            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+                ex.printStackTrace();
+            }
         }
     };
+
+    private void updateAll() {
+        textArea.setText(OurJSONParser.getRoom().get("description").toString());
+        inventoryTextArea.setText(Player.getInstance().getInventory().keySet().toString());
+        textField.setText("");
+    }
 }
