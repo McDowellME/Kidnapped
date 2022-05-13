@@ -266,6 +266,10 @@ public class Player {
         Utils.pressEnterToContinue();
     }
 
+    public List<String> getCurrentInventory(){
+        return new ArrayList<String>(Player.getInstance().getInventory().keySet());
+    }
+
     public String getCurrentRoom() {
         return currentRoom;
     }
