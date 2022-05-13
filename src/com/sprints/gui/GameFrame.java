@@ -21,7 +21,7 @@ class GameFrame extends JPanel implements ActionListener {
     JTextField textField;
     JTextArea textArea, inventoryTextArea, responseArea;
     JLabel inventoryLabel, locationLabel;
-    JButton enterBtn, northBtn, eastBtn, southBtn, westBtn, audBtn;
+    JButton enterBtn, northBtn, eastBtn, southBtn, westBtn, helpBtn, audBtn;
     JSlider audSlider;
     Font txtFont = new Font("Times New Roman", Font.BOLD, 12);
     Font inventoryFont = new Font("Times New Roman", Font.BOLD, 20);
@@ -190,6 +190,24 @@ class GameFrame extends JPanel implements ActionListener {
         westBtn.setBounds (800, 500, 80, 50);
         //endregion
 
+        // region Help button
+        InputStream help = classLoaderResourceStream("images/button_help.png");
+        Image helpImg = ImageIO.read(help);
+        Image helpImgScaled = helpImg.getScaledInstance(40,40,Image.SCALE_DEFAULT);
+        ImageIcon helpIcon = new ImageIcon(helpImgScaled);
+
+        helpBtn = new JButton();
+        helpBtn.setOpaque(true);
+        helpBtn.setBorderPainted(false);
+        helpBtn.setFont(txtFont);
+        helpBtn.setFocusPainted(false);
+        helpBtn.setBorder(null);
+        helpBtn.setContentAreaFilled(false);
+        helpBtn.addActionListener(this);
+        helpBtn.setIcon(helpIcon);
+        helpBtn.setBounds (1000, 650, 80, 50);
+        //endregion
+
         //region Audio button
         InputStream audio  =  classLoaderResourceStream("images/play.png");
         Image audImg = ImageIO.read(audio);
@@ -237,6 +255,7 @@ class GameFrame extends JPanel implements ActionListener {
         add(eastBtn);
         add(southBtn);
         add(westBtn);
+        add(helpBtn);
         add(audBtn);
         add(audSlider);
         setVisible(true);
