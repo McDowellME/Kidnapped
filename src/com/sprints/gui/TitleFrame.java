@@ -1,5 +1,7 @@
 package com.sprints.gui;
 
+import com.sprints.controller.App;
+
 import javax.imageio.ImageIO;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -9,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
 
 public class TitleFrame extends JPanel implements ActionListener {
 
