@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +19,8 @@ import java.util.List;
 class GameFrame extends JPanel implements ActionListener {
 
     JTextField textField;
+    JScrollPane scrollPane;
+    JList inventoryList;
     JTextArea textArea, inventoryTextArea, responseArea;
     JLabel inventoryLabel, locationLabel;
     JButton enterBtn, northBtn, eastBtn, southBtn, westBtn, helpBtn, audBtn;
@@ -70,7 +73,10 @@ class GameFrame extends JPanel implements ActionListener {
 
         textArea.setEditable(false);
         textArea.setLineWrap(true);
-        textArea.setBounds(325,450,410,150);
+
+        scrollPane = new JScrollPane(textArea);
+        scrollPane.setBounds(325,450,410,150);
+
         //endregion
 
         //region Inventory
@@ -81,11 +87,12 @@ class GameFrame extends JPanel implements ActionListener {
         //endregion
 
         //region Inventory
-        inventoryTextArea.setText(Player.getInstance().getInventory().toString());
-
-        inventoryTextArea.setEditable(false);
-        inventoryTextArea.setLineWrap(true);
-        inventoryTextArea.setBounds(100,450,160,150);
+        inventoryList = new JList();
+        inventoryList.setBackground(Color.WHITE);
+        inventoryList.setForeground(Color.BLACK);
+        inventoryList.setFont(txtFont);
+        inventoryList.setBorder(new LineBorder(Color.red));
+        inventoryList.setBounds(100,450,160,150);
         //endregion
 
         //region Inventory Label
@@ -247,8 +254,10 @@ class GameFrame extends JPanel implements ActionListener {
         add(responseArea);
         add(locationLabel);
         add(textField);
-        add(textArea);
-        add(inventoryTextArea);
+        //add(textArea);
+        add(scrollPane);
+        //add(inventoryTextArea);
+        add(inventoryList);
         add(inventoryLabel);
         add(enterBtn);
         add(northBtn);
@@ -304,19 +313,26 @@ class GameFrame extends JPanel implements ActionListener {
     Action action = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            try {
-                List<String> input = Arrays.asList(textField.getText().split(" "));
-                OurJSONParser.commandParser(input);
-                updateAll();
-            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-                ex.printStackTrace();
-            }
+        try {
+            List<String> input = Arrays.asList(textField.getText().split(" "));
+            OurJSONParser.commandParser(input);
+            updateAll();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+            ex.printStackTrace();
+        }
         }
     };
 
     private void updateAll() {
         textArea.setText(OurJSONParser.getRoom().get("description").toString());
-        inventoryTextArea.setText(Player.getInstance().getInventory().keySet().toString());
+        //inventoryTextArea.setText(Player.getInstance().getInventory().keySet().toString());
+        setInventory();
         textField.setText("");
+    }
+
+    private void setInventory() {
+        DefaultListModel<String> model = new DefaultListModel<>();
+        model.addAll(Player.getInstance().getCurrentInventory());
+        inventoryList.setModel(model);
     }
 }
