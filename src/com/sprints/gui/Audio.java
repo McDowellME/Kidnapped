@@ -4,6 +4,7 @@ import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +17,7 @@ class Audio {
     static float previousVolume = -17;
     static FloatControl fc;
     private static URL sound = Audio.class.getResource("main.wav");
+//    private static InputStream sound = Audio.class.getResourceAsStream("data/audio/main.wav");
 
     // get the audio clip used for sound
     static {
@@ -30,6 +32,7 @@ class Audio {
     // start in game music
     static void playSound() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
         AudioInputStream ais = AudioSystem.getAudioInputStream(sound);
+//        AudioInputStream ais = AudioSystem.getAudioInputStream(new BufferedInputStream(sound));
         clip = AudioSystem.getClip();
         clip.open(ais);
         fc = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);

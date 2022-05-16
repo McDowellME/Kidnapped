@@ -1,6 +1,7 @@
 {
   "west hall":
   {
+    "image": "images/west_hall.jpg",
     "east": "parlor",
     "item": {
       "bookcase": {
@@ -38,6 +39,7 @@
   },
   "kitchen":
   {
+    "image": "images/kitchen.jpg",
     "south": "parlor",
     "item": {
       "cabinets": {
@@ -59,6 +61,7 @@
   },
   "east hall":
   {
+    "image": "images/east_hall.jpg",
     "item": {},
     "east": "east room",
     "west": "parlor",
@@ -66,6 +69,7 @@
   },
   "east room":
   {
+    "image": "images/east_room.jpg",
     "west": "east hall",
     "item": {
       "sword": {
@@ -84,6 +88,7 @@
   },
   "parlor":
   {
+    "image": "images/parlor.jpg",
     "north": "kitchen",
     "east": "east hall",
     "west": "west hall",
@@ -111,6 +116,7 @@
   },
   "basement":
   {
+    "image": "images/basement.jpg",
     "north": "parlor",
     "item": {
       "note": {
