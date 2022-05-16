@@ -224,34 +224,26 @@ public class GameFrame extends JPanel implements ActionListener {
 
     // for Jar-ing purposes
     private static InputStream classLoaderResourceStream(String file){
-        InputStream is = GameFrame.class.getClassLoader().getResourceAsStream(file);
-        return is;
+        return GameFrame.class.getClassLoader().getResourceAsStream(file);
     }
 
     // create image area icon
     private static ImageIcon createLocIcon(String file) throws IOException {
-        InputStream location = classLoaderResourceStream(file);
-        Image locImg = ImageIO.read(location);
-        Image locImgScaled = locImg.getScaledInstance(1094, 730,  Image.SCALE_DEFAULT);
-        ImageIcon locImgIcon = new ImageIcon(locImgScaled);
-        return locImgIcon;
+        return createImageIcon(file,1094,730);
     }
 
-    // create button
-    private static ImageIcon createBtnIcon(String file, int size) throws IOException {
-        InputStream btnIS = classLoaderResourceStream(file);
-        Image btnImg = ImageIO.read(btnIS);
-        Image btnImgScaled = btnImg.getScaledInstance(size,size,Image.SCALE_DEFAULT);
-        ImageIcon btnIcon = new ImageIcon(btnImgScaled);
-        return btnIcon;
+    // create ImageIcon
+    private static ImageIcon createImageIcon(String file, int width, int height) throws IOException {
+        InputStream imgIS = classLoaderResourceStream(file);
+        Image img = ImageIO.read(imgIS);
+        Image imgScaled = img.getScaledInstance(width,height,Image.SCALE_DEFAULT);
+        ImageIcon imgIcon = new ImageIcon(imgScaled);
+        return imgIcon;
     }
 
     // build a button with Jbutton, img file, same height/width size, and command name
     private void buildImgButton(JButton btn, String file, String command, int size) throws IOException {
-        InputStream btnIS = classLoaderResourceStream(file);
-        Image btnImg = ImageIO.read(btnIS);
-        Image btnImgScaled = btnImg.getScaledInstance(size,size,Image.SCALE_DEFAULT);
-        ImageIcon btnIcon = new ImageIcon(btnImgScaled);
+        ImageIcon btnIcon = createImageIcon(file, size, size);
         btn.setOpaque(true);
         btn.setBorderPainted(false);
         btn.setFont(txtFont);
