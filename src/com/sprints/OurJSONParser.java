@@ -74,7 +74,7 @@ public class OurJSONParser {
     // ******** Singleton Instantiation **********
     /* we do not want to instantiate multiple.
     static allows us to use through entire app where needed.*/
-    static OurJSONParser instantiate() {
+    public static OurJSONParser instantiate() {
         if (ourParser == null) {
             try {
                 ourParser = new OurJSONParser();

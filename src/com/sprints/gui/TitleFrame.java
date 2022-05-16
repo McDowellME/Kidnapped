@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
+import java.util.concurrent.TimeUnit;
 
 public class TitleFrame extends JPanel implements ActionListener {
 
@@ -45,7 +46,7 @@ public class TitleFrame extends JPanel implements ActionListener {
         startBtn.setContentAreaFilled(false);
         startBtn.addActionListener(this);
         startBtn.setActionCommand("start");
-        startBtn.setBounds (280, 500, 500, 100);
+        startBtn.setBounds (450, 530, 150, 60);
 
         add(startBtn);
         add(imageLabel);
@@ -60,8 +61,10 @@ public class TitleFrame extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("start")) {
             try {
+                TimeUnit.SECONDS.sleep(1);
                 Frame.getGameFrame();
                 Audio.playSound();
+                GameFrame.setCountDown();
             } catch (IOException | InterruptedException | LineUnavailableException | UnsupportedAudioFileException ex) {
                 ex.printStackTrace();
             }
