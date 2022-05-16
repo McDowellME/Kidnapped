@@ -20,7 +20,8 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-class GameFrame extends JPanel implements ActionListener {
+public class GameFrame extends JPanel implements ActionListener {
+    private static DefaultListModel<String> model;
     TextParser textParser = new TextParser();
     private static Timer timer;
     private static int seconds, minutes;
@@ -29,14 +30,20 @@ class GameFrame extends JPanel implements ActionListener {
     JTextField textField;
     JScrollPane scrollPane;
     JList inventoryList;
-    JTextArea textArea, responseArea;
+    private static JTextArea textArea, responseArea;
     private static JLabel inventoryLabel, locationLabel, countDownLabel;
     JButton enterBtn, northBtn, eastBtn, southBtn, westBtn, helpBtn, audBtn;
     JSlider audSlider;
     Font txtFont = new Font("Times New Roman", Font.BOLD, 15);
     Font inventoryFont = new Font("Times New Roman", Font.BOLD, 20);
 
+    private static final String resetVariable = Player.getInstance().getCurrentRoom().toUpperCase(Locale.ROOT) + "\n" +
+            OurJSONParser.getRoom().get("description").toString() + "\nYou see: " +
+            OurJSONParser.getRoomItems().keySet().toString();
+
     public GameFrame() throws IOException {
+        //region params
+
         //region Dimensions of the frame
         setPreferredSize (new Dimension(1094, 730));
         setLayout(null);
@@ -69,7 +76,7 @@ class GameFrame extends JPanel implements ActionListener {
         textArea.setForeground(Color.BLACK);
         textArea.setFont(txtFont);
         Set item = OurJSONParser.getRoomItems().keySet();
-        textArea.setText(Player.getInstance().getCurrentRoom().toUpperCase(Locale.ROOT) + "\n" + OurJSONParser.getRoom().get("description").toString()+ "\nYou see: "+ item);
+        textArea.setText(resetVariable);
         textArea.setEditable(false);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
@@ -280,8 +287,9 @@ class GameFrame extends JPanel implements ActionListener {
 
         setVisible(true);
         //endregion
-
+    //endregion
     }
+
     static void setCountDown(){
         countDownLabel.setText("05:00");
         countDownLabel.setForeground(Color.RED);
@@ -369,7 +377,7 @@ class GameFrame extends JPanel implements ActionListener {
     }
 
     private void setInventory() throws IOException, InterruptedException {
-        DefaultListModel<String> model = new DefaultListModel<>();
+        model = new DefaultListModel<>();
         model.addAll(Player.getInstance().getCurrentInventory());
         inventoryList.setModel(model);
         checkWin(model);
@@ -381,18 +389,24 @@ class GameFrame extends JPanel implements ActionListener {
         if (remainingBooks.size() <= bookSelections && remainingBooks.contains("it")) {
             try {
                 timer.stop();
-                TimeUnit.SECONDS.sleep(1);
-                Audio.stopSound();
-                Frame.getLoseScreen();
-            } catch (IOException | InterruptedException ex) {
+                resetGameField();
+            } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
         } else if (model.contains("it")) {
-            TimeUnit.SECONDS.sleep(1);
-            timer.stop();
-            Audio.stopSound();
+            resetGameField();
             Frame.getWinScreen();
         }
+    }
+
+    private static void resetGameField() throws InterruptedException {
+        TimeUnit.SECONDS.sleep(1);
+        Player.setPlug("");
+        responseArea.setText(Player.getPlug());
+        timer.stop();
+        Audio.stopSound();
+        textArea.setText(resetVariable);
+        model.clear();
     }
 
     public static void countDown(){
@@ -414,8 +428,7 @@ class GameFrame extends JPanel implements ActionListener {
                 if (minutes == 0 && seconds == 0){
                     timer.stop();
                     try {
-                        TimeUnit.SECONDS.sleep(1);
-                        Audio.stopSound();
+                        resetGameField();
                         Frame.getLoseScreen();
                     } catch (IOException | InterruptedException ex) {
                         ex.printStackTrace();
@@ -424,4 +437,5 @@ class GameFrame extends JPanel implements ActionListener {
             }
         });
     }
+
 }

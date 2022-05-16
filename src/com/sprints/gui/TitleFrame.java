@@ -62,6 +62,7 @@ public class TitleFrame extends JPanel implements ActionListener {
         if(e.getActionCommand().equals("start")) {
             try {
                 TimeUnit.SECONDS.sleep(1);
+
                 Frame.getGameFrame();
                 Audio.playSound();
                 GameFrame.setCountDown();

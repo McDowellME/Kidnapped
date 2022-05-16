@@ -93,13 +93,13 @@ public class Game {
     private void checkWin() throws IOException, InterruptedException {
         if (Player.getInstance().getInventory().containsKey("it")) {
             gameOver = true;
-            Console.clear();
-            TimeUnit.SECONDS.sleep(1);
+            //Console.clear();
+            //TimeUnit.SECONDS.sleep(1);
             Utils.printWithDelays("You pull the book from the shelf and hear the faint sound of gears rotating. The shelf slides left, revealing a door.\nYou step through and awake once more...It was all a terrible dream.");
-            Console.blankLines(2);
-            TimeUnit.SECONDS.sleep(1);
-            TextFileReader.getInstance().txtFileReader("/escaped.txt");
-            System.exit(0);
+            //Console.blankLines(2);
+            //TimeUnit.SECONDS.sleep(1);
+            //TextFileReader.getInstance().txtFileReader("/escaped.txt");
+            //System.exit(0);
         }
     }
 

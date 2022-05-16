@@ -1,5 +1,10 @@
 package com.sprints.gui;
 
+import com.sprints.Game;
+import com.sprints.OurJSONParser;
+import com.sprints.Player;
+import org.json.simple.parser.JSONParser;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -67,11 +72,14 @@ class WinScreen extends JPanel implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e){
         try {
         switch (e.getActionCommand()){
             case "play":
                 TimeUnit.SECONDS.sleep(1);
+                reset();
+//                //Frame.getTitleScreen();
+//                Frame.resetAll();
                 Frame.getTitleScreen();
                 break;
             case "exit":
@@ -83,5 +91,20 @@ class WinScreen extends JPanel implements ActionListener {
         }catch (InterruptedException ex) {
             ex.printStackTrace();
             }
+        catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
+
+    private void reset() throws Exception{
+        OurJSONParser.setOurParser(new OurJSONParser());
+//        OurJSONParser.setJsonParser(new JSONParser());
+//        Game.setGame(new Game());
+        Player.setPlayer(new Player());
+
+        OurJSONParser.resetAll();
+
+//        System.out.println(Player.getInstance().getCurrentRoom());
+//        System.out.println(OurJSONParser.getRoomItems().toString());
+    }
+}

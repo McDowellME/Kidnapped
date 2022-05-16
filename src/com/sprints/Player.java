@@ -28,7 +28,7 @@ public class Player {
     JSONArray verbObj7 = (JSONArray) OurJSONParser.getSynJSON().get(6); // lower
     JSONArray godMode = (JSONArray) OurJSONParser.getSynJSON().get(7); // god mode
 
-    private Player () {
+    public Player() {
     }
     // ******** Business Methods **********
     /* we do not want to instantiate multiple.
@@ -305,5 +305,13 @@ public class Player {
 
     public static void setPlug(String plug) {
         Player.plug = plug;
+    }
+
+    public static Player getPlayer() {
+        return player;
+    }
+
+    public static void setPlayer(Player player) {
+        Player.player = player;
     }
 }
