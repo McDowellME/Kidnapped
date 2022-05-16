@@ -15,26 +15,8 @@ public class Frame implements ActionListener {
     static {
         try {
             titleFrame = new TitleFrame();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    static {
-        try {
             gameFrame = new GameFrame();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    static {
-        try {
             loseScreen = new LoseScreen();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    static {
-        try {
             winScreen = new WinScreen();
         } catch (IOException e) {
             e.printStackTrace();
