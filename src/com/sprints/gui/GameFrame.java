@@ -2,7 +2,7 @@ package com.sprints.gui;
 
 import com.sprints.OurJSONParser;
 import com.sprints.Player;
-import com.sprints.controller.*;
+import com.sprints.TextParser;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.LineUnavailableException;
@@ -13,19 +13,27 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 class GameFrame extends JPanel implements ActionListener {
-
+    TextParser textParser = new TextParser();
+    private static Timer timer;
+    private static int seconds, minutes;
+    private static String dblSeconds, dblMinutes;
+    private static DecimalFormat decimalFormat = new DecimalFormat("00");
     JTextField textField;
     JScrollPane scrollPane;
     JList inventoryList;
-    JTextArea textArea, inventoryTextArea, responseArea;
-    JLabel inventoryLabel, locationLabel;
+    JTextArea textArea, responseArea;
+    private static JLabel inventoryLabel, locationLabel, countDownLabel;
     JButton enterBtn, northBtn, eastBtn, southBtn, westBtn, helpBtn, audBtn;
     JSlider audSlider;
-    Font txtFont = new Font("Times New Roman", Font.BOLD, 12);
+    Font txtFont = new Font("Times New Roman", Font.BOLD, 15);
     Font inventoryFont = new Font("Times New Roman", Font.BOLD, 20);
 
     public GameFrame() throws IOException {
@@ -49,8 +57,26 @@ class GameFrame extends JPanel implements ActionListener {
         textField = new JTextField();
         textField.setHorizontalAlignment(SwingConstants.CENTER);
         textField.addActionListener( action ); // let me use enter key on keyboard
-        textField.setFont(new Font("Calibri", Font.BOLD, 17));
-        textField.setBounds(345,640,300,50);
+        textField.setFont(new Font("Calibri", Font.BOLD, 15));
+        textField.setBorder(new LineBorder(Color.red));
+        textField.setBounds(390,663,300,40);
+        //endregion
+
+
+        //region Description
+        textArea = new JTextArea();
+        textArea.setBackground(Color.WHITE);
+        textArea.setForeground(Color.BLACK);
+        textArea.setFont(txtFont);
+        Set item = OurJSONParser.getRoomItems().keySet();
+        textArea.setText(Player.getInstance().getCurrentRoom().toUpperCase(Locale.ROOT) + "\n" + OurJSONParser.getRoom().get("description").toString()+ "\nYou see: "+ item);
+        textArea.setEditable(false);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+
+        scrollPane = new JScrollPane(textArea);
+        scrollPane.setBorder(new LineBorder(Color.RED));
+        scrollPane.setBounds(310,475,500,180);
         //endregion
 
         //region response area
@@ -60,30 +86,9 @@ class GameFrame extends JPanel implements ActionListener {
         responseArea.setFont(txtFont);
         responseArea.setEditable(false);
         responseArea.setLineWrap(true);
-        responseArea.setBounds(325,400,300,30);
-        //endregion
-
-        //region Description
-        textArea = new JTextArea();
-        textArea.setBackground(Color.WHITE);
-        textArea.setForeground(Color.BLACK);
-        textArea.setFont(txtFont);
-
-        textArea.setText(OurJSONParser.getRoom().get("description").toString());
-
-        textArea.setEditable(false);
-        textArea.setLineWrap(true);
-
-        scrollPane = new JScrollPane(textArea);
-        scrollPane.setBounds(325,450,410,150);
-
-        //endregion
-
-        //region Inventory
-        inventoryTextArea = new JTextArea();
-        inventoryTextArea.setBackground(Color.WHITE);
-        inventoryTextArea.setForeground(Color.BLACK);
-        inventoryTextArea.setFont(txtFont);
+        responseArea.setWrapStyleWord(true);
+        responseArea.setBorder(new LineBorder(Color.red));
+        responseArea.setBounds(310,427,500,42);
         //endregion
 
         //region Inventory
@@ -92,14 +97,14 @@ class GameFrame extends JPanel implements ActionListener {
         inventoryList.setForeground(Color.BLACK);
         inventoryList.setFont(txtFont);
         inventoryList.setBorder(new LineBorder(Color.red));
-        inventoryList.setBounds(100,450,160,150);
+        inventoryList.setBounds(100,495,160,160);
         //endregion
 
         //region Inventory Label
         inventoryLabel = new JLabel("Inventory");
         inventoryLabel.setForeground(Color.RED);
         inventoryLabel.setFont(inventoryFont);
-        inventoryLabel.setBounds(140,429,160,20);
+        inventoryLabel.setBounds(140,474,160,20);
         //endregion
 
         //region Enter button
@@ -112,7 +117,7 @@ class GameFrame extends JPanel implements ActionListener {
         enterBtn.setBorder(null);
         enterBtn.setContentAreaFilled(false);
         enterBtn.addActionListener(action);
-        enterBtn.setBounds (650, 640, 80, 50);
+        enterBtn.setBounds (690, 663, 80, 40);
         //endregion
 
         //region North button
@@ -130,9 +135,9 @@ class GameFrame extends JPanel implements ActionListener {
         northBtn.setBorder(null);
         northBtn.setContentAreaFilled(false);
         northBtn.addActionListener(this);
-        northBtn.setActionCommand("go north");
+        northBtn.setActionCommand("north");
         northBtn.setIcon(new ImageIcon(nImg2));
-        northBtn.setBounds (850, 450, 80, 50);
+        northBtn.setBounds (875, 475, 80, 50);
         //endregion
 
         //region East button
@@ -151,9 +156,9 @@ class GameFrame extends JPanel implements ActionListener {
         eastBtn.setBorder(null);
         eastBtn.setContentAreaFilled(false);
         eastBtn.addActionListener(this);
-        eastBtn.setActionCommand("go east");
+        eastBtn.setActionCommand("east");
         eastBtn.setIcon(new ImageIcon(eImg2));
-        eastBtn.setBounds (900, 500, 80, 50);
+        eastBtn.setBounds (925, 525, 80, 50);
         //endregion
 
         //region South button
@@ -171,9 +176,9 @@ class GameFrame extends JPanel implements ActionListener {
         southBtn.setBorder(null);
         southBtn.setContentAreaFilled(false);
         southBtn.addActionListener(this);
-        southBtn.setActionCommand("go south");
+        southBtn.setActionCommand("south");
         southBtn.setIcon(new ImageIcon(sImg2));
-        southBtn.setBounds (850, 550, 80, 50);
+        southBtn.setBounds (875, 575, 80, 50);
         //endregion
 
         //region West button
@@ -191,9 +196,9 @@ class GameFrame extends JPanel implements ActionListener {
         westBtn.setBorder(null);
         westBtn.setContentAreaFilled(false);
         westBtn.addActionListener(this);
-        westBtn.setActionCommand("go west");
+        westBtn.setActionCommand("west");
         westBtn.setIcon(new ImageIcon(wImg2));
-        westBtn.setBounds (800, 500, 80, 50);
+        westBtn.setBounds (825, 525, 80, 50);
         //endregion
 
         // region Help button
@@ -247,16 +252,20 @@ class GameFrame extends JPanel implements ActionListener {
             System.out.println(Audio.currentVolume);
             Audio.fc.setValue(Audio.currentVolume);
         });
+        audSlider.setBackground(Color.RED);
         audSlider.setBounds (1025, 250, 31, 120);
         //endregion
 
+//        //region Timer
+        countDownLabel = new JLabel();
+
+//        //endregion
+
         //region Add components
-        add(responseArea);
+        add(countDownLabel);
         add(locationLabel);
         add(textField);
-        //add(textArea);
         add(scrollPane);
-        //add(inventoryTextArea);
         add(inventoryList);
         add(inventoryLabel);
         add(enterBtn);
@@ -267,10 +276,23 @@ class GameFrame extends JPanel implements ActionListener {
         add(helpBtn);
         add(audBtn);
         add(audSlider);
+        add(responseArea);
+
         setVisible(true);
         //endregion
 
     }
+    static void setCountDown(){
+        countDownLabel.setText("05:00");
+        countDownLabel.setForeground(Color.RED);
+        countDownLabel.setBounds(1000, 20, 50, 50);
+        countDownLabel.setFont(new Font("Times New Roman", Font.BOLD, 20));
+        seconds = 0;
+        minutes = 5;
+        countDown();
+        timer.start();
+    }
+
     // for Jar-ing purposes
     private static InputStream classLoaderResourceStream(String file){
         InputStream is = GameFrame.class.getClassLoader().getResourceAsStream(file);
@@ -279,32 +301,32 @@ class GameFrame extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        try{
-            if(e.getActionCommand().equals("audToggle")){
-                Audio.toggleSound(audBtn, audSlider);
+        try {
+            Player.setPlug("");
+            switch (e.getActionCommand()){
+                case "north":
+                    Player.getInstance().playerActions(Arrays.asList("go", "north"));
+                    break;
+                case "east":
+                    Player.getInstance().playerActions(Arrays.asList("go", "east"));
+                    break;
+                case "south":
+                    Player.getInstance().playerActions(Arrays.asList("go", "south"));
+                    break;
+                case "west":
+                    Player.getInstance().playerActions(Arrays.asList("go", "west"));
+                    break;
+                case "audToggle":
+                    Audio.toggleSound(audBtn, audSlider);
+                    break;
+                case "help":
+                    BufferedReader input = new BufferedReader(new InputStreamReader(new FileInputStream("data/commandsmenu.txt")));
+                    textArea.read(input, null);
+                    return;
+                default:
             }
-            else if(e.getActionCommand().equals("go north")){
-                Player.getInstance().playerActions(Arrays.asList("go", "north"));
-                textArea.setText(OurJSONParser.getRoom().get("description").toString());
-            }
-            else if(e.getActionCommand().equals("go east")){
-                Player.getInstance().playerActions(Arrays.asList("go", "east"));
-                textArea.setText(OurJSONParser.getRoom().get("description").toString());
-            }
-            else if(e.getActionCommand().equals("go south")){
-                Player.getInstance().playerActions(Arrays.asList("go", "south"));
-                textArea.setText(OurJSONParser.getRoom().get("description").toString());
-            }
-            else if(e.getActionCommand().equals("go west")){
-                Player.getInstance().playerActions(Arrays.asList("go", "west"));
-                textArea.setText(OurJSONParser.getRoom().get("description").toString());
-            }
-            else if(e.getActionCommand().equals("help")){
-                BufferedReader input = new BufferedReader(new InputStreamReader(new FileInputStream("data/commandsmenu.txt")));
-                textArea.read(input, null);
-            }
-        }
-        catch (IOException | LineUnavailableException | UnsupportedAudioFileException ex) {
+            updateAll();
+        } catch (IOException | LineUnavailableException | UnsupportedAudioFileException | InterruptedException ex) {
             ex.printStackTrace();
         }
     }
@@ -313,26 +335,93 @@ class GameFrame extends JPanel implements ActionListener {
     Action action = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-        try {
-            List<String> input = Arrays.asList(textField.getText().split(" "));
-            OurJSONParser.commandParser(input);
-            updateAll();
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-            ex.printStackTrace();
-        }
+            try {
+                Player.setPlug("");
+                List<String> input = textParser.commandTokenizer(textField.getText());
+                textParser.parseInput(input);
+                updateAll();
+            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException | InterruptedException ex) {
+                ex.printStackTrace();
+            }
         }
     };
 
-    private void updateAll() {
-        textArea.setText(OurJSONParser.getRoom().get("description").toString());
-        //inventoryTextArea.setText(Player.getInstance().getInventory().keySet().toString());
+    private void updateAll() throws IOException, InterruptedException {
+        Set item;
+        if(OurJSONParser.getRoomItems()!=null){
+            item = OurJSONParser.getRoomItems().keySet();
+            if(item.size() == 0){
+                textArea.setText(Player.getInstance().getCurrentRoom().toUpperCase(Locale.ROOT) + "\n" + OurJSONParser.getRoom().get("description").toString());
+            } else{
+                textArea.setText(Player.getInstance().getCurrentRoom().toUpperCase(Locale.ROOT) + "\n" + OurJSONParser.getRoom().get("description").toString() + "\nYou see: " + item);
+            }
+        }
+        else{
+            textArea.setText(OurJSONParser.getRoom().get("description").toString());
+        }
         setInventory();
+        setResponse();
         textField.setText("");
     }
 
-    private void setInventory() {
+    private void setResponse() {
+        responseArea.setText(Player.getPlug());
+    }
+
+    private void setInventory() throws IOException, InterruptedException {
         DefaultListModel<String> model = new DefaultListModel<>();
         model.addAll(Player.getInstance().getCurrentInventory());
         inventoryList.setModel(model);
+        checkWin(model);
+    }
+
+    public void checkWin(DefaultListModel model) throws InterruptedException, IOException {
+        Set<String> remainingBooks = OurJSONParser.getBooks().keySet();
+        int bookSelections = remainingBooks.size() - (remainingBooks.size() - 2);
+        if (remainingBooks.size() <= bookSelections && remainingBooks.contains("it")) {
+            try {
+                timer.stop();
+                TimeUnit.SECONDS.sleep(1);
+                Audio.stopSound();
+                Frame.getLoseScreen();
+            } catch (IOException | InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        } else if (model.contains("it")) {
+            TimeUnit.SECONDS.sleep(1);
+            timer.stop();
+            Audio.stopSound();
+            Frame.getWinScreen();
+        }
+    }
+
+    public static void countDown(){
+        timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                seconds--;
+                dblSeconds = decimalFormat.format(seconds);
+                dblMinutes = decimalFormat.format(minutes);
+                countDownLabel.setText(dblMinutes + ":" + dblSeconds);
+
+                if (seconds == -1){
+                    seconds = 59;
+                    minutes--;
+                    dblSeconds = decimalFormat.format(seconds);
+                    dblMinutes = decimalFormat.format(minutes);
+                    countDownLabel.setText(dblMinutes + ":" + dblSeconds);
+                }
+                if (minutes == 0 && seconds == 0){
+                    timer.stop();
+                    try {
+                        TimeUnit.SECONDS.sleep(1);
+                        Audio.stopSound();
+                        Frame.getLoseScreen();
+                    } catch (IOException | InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 }

@@ -17,9 +17,6 @@ class Audio {
     static FloatControl fc;
     private static URL sound = Audio.class.getResource("main.wav");
 
-    private static final String soundPath = "data/audio/main.wav";
-    private static File path = new File(soundPath);
-
     // get the audio clip used for sound
     static {
         try {
@@ -40,6 +37,11 @@ class Audio {
         clip.start();
         fc.setValue(currentVolume);
         clip.loop(Clip.LOOP_CONTINUOUSLY);
+    }
+
+    static void stopSound(){
+        clip.stop();
+        clip.close();
     }
 
     // pause/re-play in game music

@@ -2,13 +2,10 @@ package com.sprints;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import com.sprints.OurJSONParser.*;
-
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.util.*;
-
 import static com.sprints.OurJSONParser.*;
 
 public class Player {
@@ -92,6 +89,7 @@ public class Player {
                 inventory.put(noun,itemDescription);
                 roomItems.remove(noun);
                 System.out.println(noun + " picked up");
+                plug = noun + " picked up";
             }
             // check location and if noun is the title of one of the books on bookcase
             else if (getCurrentRoom().equals("west hall") && OurJSONParser.getBooks().containsKey(noun)) {
@@ -102,9 +100,11 @@ public class Player {
                 inventory.put(noun, description.get("description").toString());
                 OurJSONParser.getBooks().remove(noun);
                 System.out.println(noun + " picked up");
+                plug = noun + " picked up";
             }
             else if (!roomItems.containsKey(noun) && inventory.containsKey(noun)) {
                 System.out.println("You already have " + noun);
+                plug= "You already have " + noun;
             }
 
 
@@ -129,9 +129,7 @@ public class Player {
                     default:
                         break;
                 }
-                System.out.println(getCurrentRoom());
-                System.out.println(((JSONObject) roomItems.get("portrait")).toString());
-                System.out.println(OurJSONParser.getClueHolder().toString());
+
                 JSONObject clueObj = (JSONObject) OurJSONParser.getClueHolder().get("clue");
 
                 // if user picks clue up and drops in another room
@@ -139,6 +137,7 @@ public class Player {
                 if(clueObj==null) {
                     // but needs to say cant get noun
                     System.out.println(noun + " is not in this room");
+                    plug = noun + " is not in this room";
                     return;
                 }
 
@@ -151,9 +150,11 @@ public class Player {
                     OurJSONParser.getClueHolder().remove("clue");
                     clueHolder.replace("description", clueHolder.get("description2"));
                     System.out.println(noun + " picked up");
+                    plug = noun + " picked up";
                 }
                 else {
                     System.out.println(noun + " is not in this room");
+                    plug = noun + " is not in this room";
                 }
             }
 
@@ -162,6 +163,7 @@ public class Player {
         // how we handle it if item is not valid or something player cannot hold in inventory
         else {
             System.out.println("You cannot pick up " + noun);
+            plug = "You cannot pick up " + noun;
         }
     }
 
@@ -172,8 +174,7 @@ public class Player {
 
         if (OurJSONParser.getItems().contains(noun) && !roomItems.containsKey(noun)) {
             System.out.println(noun + " dropped");
-//            inventory.remove(noun);
-
+            plug = noun + " dropped";
             roomItems.put(noun,inventory.get(noun));
             inventory.remove(noun);
         }
@@ -187,12 +188,15 @@ public class Player {
     private void equip(String noun) {
         if (!"torch".equals(noun)){
             System.out.println("You can only equip a torch at this time.");
+            plug = "You can only equip a torch at this time.";
         }
         else if (!inventory.containsKey("torch")) {// !inventory.contains("torch")
             System.out.println("You must get the torch to use it!");
+            plug = "You must get the torch to use it!";
         }
         else {
             System.out.println("Torch equipped");
+            plug = "Torch equipped";
             itemEquipped = true;
         }
     }
@@ -214,6 +218,7 @@ public class Player {
         }
         else {
             System.out.println("You cannot go that way");
+            plug = "You cannot go that way";
         }
     }
 
@@ -225,20 +230,24 @@ public class Player {
         // outputs the title of the books on the bookcase for player
         if ("west hall".equals(getCurrentRoom()) && "books".equals(noun) && itemEquipped) {
             System.out.println("You see " + bookKeys);
+            plug = "You see " + bookKeys;
         }
         else if ("west hall".equals(getCurrentRoom()) && bookKeys.contains(noun) && itemEquipped) {
             JSONObject book = (JSONObject) OurJSONParser.getBooks().get(noun);
             String description = (String) book.get("description");
             System.out.println(description);
+            plug = description;
         }
         // gives description if so prints out that room description
         else if (noun.equals(getCurrentRoom()) || "here".equals(noun) && itemEquipped) {
             System.out.println(room.get("description"));
+            plug = room.get("description").toString();
         }
 
         // gives description of items if they are in player inventory
         else if (inventory.containsKey(noun) && itemEquipped) { //inventory.contains(noun) && itemEquipped
             System.out.println(inventory.get(noun).toString());
+            plug = inventory.get(noun).toString();
         }
 
         // allows player to get description of items in room
@@ -246,10 +255,12 @@ public class Player {
             JSONObject item;
             if (roomItems.get(noun) instanceof java.lang.String) {
                 System.out.println(roomItems.get(noun).toString());
+                plug = roomItems.get(noun).toString();
             }
             else {
                 item = (JSONObject) roomItems.get(noun);
                 System.out.println(item.get("description"));
+                plug = item.get("description").toString();
             }
 ////            System.out.println(item.get("description"));
 //            else {
@@ -259,11 +270,13 @@ public class Player {
         // response if player attempts to
         else if (!noun.contains(getCurrentRoom()) && itemEquipped || !roomItems.containsKey(noun) && itemEquipped) {
             System.out.println("You cannot see " + noun + " from here");
+            plug = "You cannot see " + noun + " from here";
         }
         else {
             System.out.println("Too dark to see. Some light would help");
+            plug = "Too dark to see. Some light would help";
         }
-        Utils.pressEnterToContinue();
+        //Utils.pressEnterToContinue();
     }
 
     public List<String> getCurrentInventory(){
@@ -284,5 +297,13 @@ public class Player {
 
     public boolean isItemEquipped() {
         return itemEquipped;
+    }
+
+    public static String getPlug() {
+        return plug;
+    }
+
+    public static void setPlug(String plug) {
+        Player.plug = plug;
     }
 }
