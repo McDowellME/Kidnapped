@@ -39,7 +39,7 @@ public class GameFrame extends JPanel implements ActionListener {
 
     private static final String resetVariable = Player.getInstance().getCurrentRoom().toUpperCase(Locale.ROOT) + "\n" +
             OurJSONParser.getRoom().get("description").toString() + "\nYou see: " +
-            OurJSONParser.getRoomItems().keySet().toString();
+            OurJSONParser.getRoomItems().keySet();
 
     public GameFrame() throws IOException {
         //region params
@@ -51,13 +51,11 @@ public class GameFrame extends JPanel implements ActionListener {
         //endregion
 
         //region Location image
-        InputStream location = classLoaderResourceStream("images/placeholder.png");
-        Image locImg = ImageIO.read(location);
-        ImageIcon imageIcon = new ImageIcon(locImg);
-        Image locImage = imageIcon.getImage();
-        Image locImg2 = locImage.getScaledInstance(1094, 730,  Image.SCALE_SMOOTH);
-        locationLabel = new JLabel(new ImageIcon(locImg2));
+        locationLabel = new JLabel();
         locationLabel.setBounds (136, 20, 822, 400);
+        // set with start location image, changes with location
+        ImageIcon locIcon = createLocIcon(OurJSONParser.getRoom().get("image").toString());
+        locationLabel.setIcon(locIcon);
         //endregion
 
         //region User input
@@ -128,121 +126,44 @@ public class GameFrame extends JPanel implements ActionListener {
         //endregion
 
         //region North button
-        InputStream north  =  classLoaderResourceStream("images/button_n.png");
-        Image nImg = ImageIO.read(north);
-        ImageIcon nIcon = new ImageIcon(nImg);
-        Image nImage = nIcon.getImage();
-        Image nImg2 = nImage.getScaledInstance(33, 33,  Image.SCALE_DEFAULT);
-
         northBtn = new JButton();
-        northBtn.setOpaque(true);
-        northBtn.setBorderPainted(false);
-        northBtn.setFont(txtFont);
-        northBtn.setFocusPainted(false);
-        northBtn.setBorder(null);
-        northBtn.setContentAreaFilled(false);
-        northBtn.addActionListener(this);
-        northBtn.setActionCommand("north");
-        northBtn.setIcon(new ImageIcon(nImg2));
+        String north = "images/button_n.png";
+        buildImgButton(northBtn, north, "north",33);
         northBtn.setBounds (875, 475, 80, 50);
         //endregion
 
         //region East button
-        InputStream east  =  classLoaderResourceStream("images/button_e.png");
-
-        Image eImg = ImageIO.read(east);
-        ImageIcon eIcon = new ImageIcon(eImg);
-        Image eImage = eIcon.getImage();
-        Image eImg2 = eImage.getScaledInstance(33, 33,  Image.SCALE_DEFAULT);
-
+        String east  =  "images/button_e.png";
         eastBtn = new JButton();
-        eastBtn.setOpaque(true);
-        eastBtn.setBorderPainted(false);
-        eastBtn.setFont(txtFont);
-        eastBtn.setFocusPainted(false);
-        eastBtn.setBorder(null);
-        eastBtn.setContentAreaFilled(false);
-        eastBtn.addActionListener(this);
-        eastBtn.setActionCommand("east");
-        eastBtn.setIcon(new ImageIcon(eImg2));
+        buildImgButton(eastBtn, east, "east", 33);
         eastBtn.setBounds (925, 525, 80, 50);
         //endregion
 
         //region South button
-        InputStream south  =  classLoaderResourceStream("images/button_s.png");
-        Image sImg = ImageIO.read(south);
-        ImageIcon sIcon = new ImageIcon(sImg);
-        Image sImage = sIcon.getImage();
-        Image sImg2 = sImage.getScaledInstance(33, 33,  Image.SCALE_DEFAULT);
-
+        String south  =  "images/button_s.png";
         southBtn = new JButton();
-        southBtn.setOpaque(true);
-        southBtn.setBorderPainted(false);
-        southBtn.setFont(txtFont);
-        southBtn.setFocusPainted(false);
-        southBtn.setBorder(null);
-        southBtn.setContentAreaFilled(false);
-        southBtn.addActionListener(this);
-        southBtn.setActionCommand("south");
-        southBtn.setIcon(new ImageIcon(sImg2));
+        buildImgButton(southBtn, south, "south", 33);
         southBtn.setBounds (875, 575, 80, 50);
         //endregion
 
         //region West button
-        InputStream west  =  classLoaderResourceStream("images/button_w.png");
-        Image wImg = ImageIO.read(west);
-        ImageIcon wIcon = new ImageIcon(wImg);
-        Image wImage = wIcon.getImage();
-        Image wImg2 = wImage.getScaledInstance(33, 33,  Image.SCALE_DEFAULT);
-
+        String west  =  "images/button_w.png";
         westBtn = new JButton();
-        westBtn.setOpaque(true);
-        westBtn.setBorderPainted(false);
-        westBtn.setFont(txtFont);
-        westBtn.setFocusPainted(false);
-        westBtn.setBorder(null);
-        westBtn.setContentAreaFilled(false);
-        westBtn.addActionListener(this);
-        westBtn.setActionCommand("west");
-        westBtn.setIcon(new ImageIcon(wImg2));
+        buildImgButton(westBtn, west, "west", 33);
         westBtn.setBounds (825, 525, 80, 50);
         //endregion
 
         // region Help button
-        InputStream help = classLoaderResourceStream("images/button_help.png");
-        Image helpImg = ImageIO.read(help);
-        Image helpImgScaled = helpImg.getScaledInstance(40,40,Image.SCALE_DEFAULT);
-        ImageIcon helpIcon = new ImageIcon(helpImgScaled);
-
+        String help = "images/button_help.png";
         helpBtn = new JButton();
-        helpBtn.setOpaque(true);
-        helpBtn.setBorderPainted(false);
-        helpBtn.setFont(txtFont);
-        helpBtn.setFocusPainted(false);
-        helpBtn.setBorder(null);
-        helpBtn.setContentAreaFilled(false);
-        helpBtn.addActionListener(this);
-        helpBtn.setActionCommand("help");
-        helpBtn.setIcon(helpIcon);
+        buildImgButton(helpBtn, help, "help", 40);
         helpBtn.setBounds (1000, 650, 80, 50);
         //endregion
 
         //region Audio button
-        InputStream audio  =  classLoaderResourceStream("images/play.png");
-        Image audImg = ImageIO.read(audio);
-        ImageIcon audIcon = new ImageIcon(audImg);
-        Image audImage = audIcon.getImage();
-        Image audImg2 = audImage.getScaledInstance(33, 33,  Image.SCALE_DEFAULT);
-
+        String audio  =  "images/play.png";
         audBtn = new JButton();
-        audBtn.setOpaque(true);
-        audBtn.setBorderPainted(false);
-        audBtn.setFocusPainted(false);
-        audBtn.setBorder(null);
-        audBtn.setContentAreaFilled(false);
-        audBtn.addActionListener(this);
-        audBtn.setActionCommand("audToggle");
-        audBtn.setIcon(new ImageIcon(audImg2));
+        buildImgButton(audBtn, audio, "audToggle", 33);
         audBtn.setBounds (1000, 377, 80, 50);
         //endregion
 
@@ -307,6 +228,41 @@ public class GameFrame extends JPanel implements ActionListener {
         return is;
     }
 
+    // create image area icon
+    private static ImageIcon createLocIcon(String file) throws IOException {
+        InputStream location = classLoaderResourceStream(file);
+        Image locImg = ImageIO.read(location);
+        Image locImgScaled = locImg.getScaledInstance(1094, 730,  Image.SCALE_DEFAULT);
+        ImageIcon locImgIcon = new ImageIcon(locImgScaled);
+        return locImgIcon;
+    }
+
+    // create button
+    private static ImageIcon createBtnIcon(String file, int size) throws IOException {
+        InputStream btnIS = classLoaderResourceStream(file);
+        Image btnImg = ImageIO.read(btnIS);
+        Image btnImgScaled = btnImg.getScaledInstance(size,size,Image.SCALE_DEFAULT);
+        ImageIcon btnIcon = new ImageIcon(btnImgScaled);
+        return btnIcon;
+    }
+
+    // build a button with Jbutton, img file, same height/width size, and command name
+    private void buildImgButton(JButton btn, String file, String command, int size) throws IOException {
+        InputStream btnIS = classLoaderResourceStream(file);
+        Image btnImg = ImageIO.read(btnIS);
+        Image btnImgScaled = btnImg.getScaledInstance(size,size,Image.SCALE_DEFAULT);
+        ImageIcon btnIcon = new ImageIcon(btnImgScaled);
+        btn.setOpaque(true);
+        btn.setBorderPainted(false);
+        btn.setFont(txtFont);
+        btn.setFocusPainted(false);
+        btn.setBorder(null);
+        btn.setContentAreaFilled(false);
+        btn.addActionListener(this);
+        btn.setIcon(btnIcon);
+        btn.setActionCommand(command);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
@@ -356,17 +312,25 @@ public class GameFrame extends JPanel implements ActionListener {
 
     private void updateAll() throws IOException, InterruptedException {
         Set item;
+        // create the ImageIcon by finding the file name in json
+        ImageIcon locIcon = createLocIcon(OurJSONParser.getRoom().get("image").toString());
+        // set area with image
+        locationLabel.setIcon(locIcon);
+        // create description by finding in json
+        String locDescription = OurJSONParser.getRoom().get("description").toString();
         if(OurJSONParser.getRoomItems()!=null){
             item = OurJSONParser.getRoomItems().keySet();
-            if(item.size() == 0){
-                textArea.setText(Player.getInstance().getCurrentRoom().toUpperCase(Locale.ROOT) + "\n" + OurJSONParser.getRoom().get("description").toString());
-            } else{
-                textArea.setText(Player.getInstance().getCurrentRoom().toUpperCase(Locale.ROOT) + "\n" + OurJSONParser.getRoom().get("description").toString() + "\nYou see: " + item);
+            // set text area with room description
+            textArea.setText(Player.getInstance().getCurrentRoom().toUpperCase(Locale.ROOT) + "\n" + locDescription);
+            // if there are items in the room, append text area with items
+            if(item.size() != 0){
+                textArea.append("\nYou see: " + item);
             }
         }
         else{
-            textArea.setText(OurJSONParser.getRoom().get("description").toString());
+            textArea.setText(locDescription);
         }
+
         setInventory();
         setResponse();
         textField.setText("");
