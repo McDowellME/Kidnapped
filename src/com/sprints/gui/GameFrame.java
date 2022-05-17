@@ -289,7 +289,11 @@ public class GameFrame extends JPanel implements ActionListener {
         locationLabel.setIcon(locIcon);
         // create description by finding in json
         String locDescription = OurJSONParser.getRoom().get("description").toString();
-        if(OurJSONParser.getRoomItems()!=null){
+
+        if(Player.getIsLook()){
+            textArea.setText(Player.getPlug());
+        }
+        else if(OurJSONParser.getRoomItems()!=null){
             item = OurJSONParser.getRoomItems().keySet();
             // set text area with room description
             textArea.setText(Player.getInstance().getCurrentRoom().toUpperCase(Locale.ROOT) + "\n" + locDescription);
@@ -301,14 +305,19 @@ public class GameFrame extends JPanel implements ActionListener {
         else{
             textArea.setText(locDescription);
         }
-
         setInventory();
         setResponse();
         textField.setText("");
     }
 
     private void setResponse() {
-        responseArea.setText(Player.getPlug());
+        if(Player.getIsLook()){
+            responseArea.setText("");
+        }
+        else {
+            responseArea.setText(Player.getPlug());
+        }
+        Player.setIsLook(false);
     }
 
     private void setInventory() throws IOException, InterruptedException {
@@ -323,7 +332,6 @@ public class GameFrame extends JPanel implements ActionListener {
         int bookSelections = remainingBooks.size() - (remainingBooks.size() - 2);
         if (remainingBooks.size() <= bookSelections && remainingBooks.contains("it")) {
             try {
-                timer.stop();
                 resetGameField();
                 Frame.getLoseScreen();
             } catch (InterruptedException ex) {
