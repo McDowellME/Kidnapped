@@ -120,7 +120,7 @@
     "north": "parlor",
     "item": {
       "note": {
-        "description" : "Welcome to my game! I've been awaiting a player such as yourself. Sadly, it's still a work in progress,\nbut I'd love to hear what you think...if you survive.\nTwo pieces of friendly advice:\nfind my clues and hurry, hurry, hurry.\nYou have 5 minutes before the poison you've been injected with claims your life. The only\nway to survive is to escape, and the only way to escape is to play. I hope you're a fast reader."
+        "description" : "Welcome to my game! I've been awaiting a player such as yourself. Sadly, it's still a work in progress, but I'd love to hear what you think...if you survive. Two pieces of friendly advice: find my clues and hurry, hurry, hurry. You have 5 minutes before the poison you've been injected with claims your life. The only way to survive is to escape, and the only way to escape is to play. I hope you're a fast reader."
       },
       "torch": {
         "description": "The flame shows no signs of giving out, it may be useful.",

@@ -300,6 +300,18 @@ public class GameFrame extends JPanel implements ActionListener {
                 Player.setPlug("");
                 List<String> input = textParser.commandTokenizer(textField.getText());
                 textParser.parseInput(input);
+                if(input.get(0).equals("godmode")){
+                    timer.stop();
+                    countDownLabel.setText("60:00");
+                    countDownLabel.setForeground(Color.RED);
+                    countDownLabel.setBounds(1000, 20, 50, 50);
+                    countDownLabel.setFont(new Font("Times New Roman", Font.BOLD, 20));
+                    seconds = 0;
+                    minutes = 60;
+                    countDown();
+                    timer.start();
+                }
+                System.out.println(input);
                 updateAll();
             } catch (UnsupportedAudioFileException | IOException | LineUnavailableException | InterruptedException ex) {
                 ex.printStackTrace();
