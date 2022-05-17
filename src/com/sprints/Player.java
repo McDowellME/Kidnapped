@@ -13,6 +13,7 @@ public class Player {
     private static Player player = null;
 
     // ******** Fields **********
+    private static boolean isLook = false;
     private String currentRoom = "basement";
     private Map<String, String> inventory = new HashMap<>();
     private boolean itemEquipped = false;
@@ -271,12 +272,15 @@ public class Player {
         else if (!noun.contains(getCurrentRoom()) && itemEquipped || !roomItems.containsKey(noun) && itemEquipped) {
             System.out.println("You cannot see " + noun + " from here");
             plug = "You cannot see " + noun + " from here";
+            return;
         }
         else {
             System.out.println("Too dark to see. Some light would help");
             plug = "Too dark to see. Some light would help";
+            return;
         }
         //Utils.pressEnterToContinue();
+        setIsLook(true);
     }
 
     public List<String> getCurrentInventory(){
@@ -313,5 +317,13 @@ public class Player {
 
     public static void setPlayer(Player player) {
         Player.player = player;
+    }
+
+    public static boolean getIsLook() {
+        return isLook;
+    }
+
+    public static void setIsLook(boolean isLook) {
+        Player.isLook = isLook;
     }
 }
