@@ -42,6 +42,7 @@ public class GameFrame extends JPanel implements ActionListener {
     JSlider audSlider;
     Font txtFont = new Font("Times New Roman", Font.BOLD, 15);
     Font inventoryFont = new Font("Times New Roman", Font.BOLD, 20);
+    private static boolean isHelpDisplayed = false;     // music is ON by default
 
     private static final String resetVariable = firstLine + "\nYou see: " +
             OurJSONParser.getRoomItems().keySet();
@@ -269,7 +270,19 @@ public class GameFrame extends JPanel implements ActionListener {
                     Audio.toggleSound(audBtn, audSlider);
                     break;
                 case "help":
-                    textArea.read(ResourceReader.readText("data/commandsmenu.txt"), null);
+                    if (!isHelpDisplayed) {
+                        textArea.read(ResourceReader.readText("data/commandsmenu.txt"), null);
+                        isHelpDisplayed = true;
+                        // clear response area
+                        setResponse(); // or
+                        // responseArea.setText("");
+
+                    }
+                    else {
+                        updateAll(); // returns current room description
+                        isHelpDisplayed = false;
+                    }
+
                     return;
                 default:
             }

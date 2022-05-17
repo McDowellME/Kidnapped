@@ -11,8 +11,7 @@ class Audio {
     static float currentVolume = -17;
     static float previousVolume = -17;
     static FloatControl fc;
-    private static URL sound = Audio.class.getResource("main.wav");
-//    private static InputStream sound = Audio.class.getResourceAsStream("data/audio/main.wav");
+//    private static URL sound = Audio.class.getResource("main.wav");
 
     // get the audio clip used for sound
     static {
@@ -23,11 +22,10 @@ class Audio {
         }
     }
 
-
     // start in game music
     static void playSound() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
-        AudioInputStream ais = AudioSystem.getAudioInputStream(sound);
-//        AudioInputStream ais = AudioSystem.getAudioInputStream(new BufferedInputStream(sound));
+//        AudioInputStream ais = AudioSystem.getAudioInputStream(sound);
+        AudioInputStream ais = ResourceReader.readAudio("main.wav");
         clip = AudioSystem.getClip();
         clip.open(ais);
         fc = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
