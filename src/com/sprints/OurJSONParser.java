@@ -29,7 +29,7 @@ public class OurJSONParser {
     private static JSONParser jsonParser = new JSONParser();
 
     private static JSONObject commandJSON;
-    private static JSONObject roomsJSON;
+    public static JSONObject roomsJSON;
     private static JSONObject inventoryJSON;
     private static JSONArray synJSON;
 

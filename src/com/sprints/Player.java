@@ -302,6 +302,9 @@ public class Player {
     public boolean isItemEquipped() {
         return itemEquipped;
     }
+    public void setItemEquipped(boolean itemEquipped) {
+        this.itemEquipped = itemEquipped;
+    }
 
     public static String getPlug() {
         return plug;
@@ -326,4 +329,6 @@ public class Player {
     public static void setIsLook(boolean isLook) {
         Player.isLook = isLook;
     }
+
+
 }

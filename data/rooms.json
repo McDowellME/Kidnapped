@@ -39,7 +39,7 @@
   },
   "kitchen":
   {
-    "image": "images/kitchen.jpg",
+    "image": "images/dark_kitchen.jpg",
     "south": "parlor",
     "item": {
       "cabinets": {
