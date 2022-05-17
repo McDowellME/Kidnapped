@@ -14,7 +14,7 @@ class IconBuilder {
     }
     // build location ImageIcon
     public static ImageIcon locationIcon(String file) throws IOException {
-        return IconBuilder.imageIcon(file,822,400, Image.SCALE_SMOOTH);
+        return IconBuilder.imageIcon(file,822,400, Image.SCALE_DEFAULT);
     }
     // build button ImageIcon
     public static ImageIcon buttonIcon(String file, int size) throws IOException {
@@ -22,6 +22,6 @@ class IconBuilder {
     }
     // build title, win, lose ImageIcon
     public static ImageIcon mainIcon(String file) throws IOException {
-        return IconBuilder.imageIcon(file, 1094, 730, Image.SCALE_SMOOTH);
+        return IconBuilder.imageIcon(file, 1094, 730, Image.SCALE_DEFAULT);
     }
 }
