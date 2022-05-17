@@ -76,7 +76,7 @@ public class GameFrame extends JPanel implements ActionListener {
         //region background
         background = new JLabel();
         background.setBounds(0,0,1094, 730);
-        ImageIcon backgroundIcon = IconBuilder.locationIcon(BACKGROUND);
+        ImageIcon backgroundIcon = IconBuilder.mainIcon(BACKGROUND);
         background.setIcon(backgroundIcon);
 
         //region Description
