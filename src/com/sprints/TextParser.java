@@ -1,8 +1,5 @@
 package com.sprints;
 
-import org.json.simple.JSONArray;
-import org.json.simple.parser.JSONParser;
-
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
@@ -30,7 +27,7 @@ public class TextParser {
     }
 
     // split input into tokens
-    private List<String> commandTokenizer(String in) {
+    public List<String> commandTokenizer(String in) {
         List<String> tokens = new ArrayList<>();
         StringTokenizer tokenizer = new StringTokenizer(in);
         // as long as tokenizer has more tokens we will add them to tokens list
@@ -41,13 +38,15 @@ public class TextParser {
     }
 
     // separate verbs and nouns, passing them to JSON command parser
-    private void parseInput(List<String> inputCommand) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+    public void parseInput(List<String> inputCommand) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         String verb;
         String noun;
         List<String> command = new ArrayList<>();
-        List<String> validSingleWords = new ArrayList<>(Arrays.asList("quit", "q", "restart", "no", "yes", "y", "n", "help", "mcdhapwt123", "mute", "play", "volume-up", "volume-down"));
+        List<String> validSingleWords = new ArrayList<>(Arrays.asList("quit", "q", "restart", "no", "yes", "y", "n", "help", "mcdhapwt123", "mute", "play", "volume-up", "volume-down", "godmode"));
 
-        System.out.println(inputCommand.get(0));
+        if(inputCommand.size()==0){
+            return;
+        }
         if(inputCommand.size() ==1 && inputCommand.get(0).equals("godmode")){
             command.add(inputCommand.get(0));
             return;
@@ -77,6 +76,6 @@ public class TextParser {
             command.add(verb);
             command.add(noun);
         }
-        OurJSONParser.instantiate().commandParser(command);
+        OurJSONParser.commandParser(command);
     }
 }

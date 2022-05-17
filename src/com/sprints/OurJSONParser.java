@@ -19,46 +19,72 @@ public class OurJSONParser {
     private static OurJSONParser ourParser = null;
 
     // ******** Constants **********
-    private static final String COMMANDS = "/commands.json";
-    private static final String ROOMS = "/rooms.json";
-    private static final String INVENTORY = "/inventory.json";
-    private static final String SYN = "/synonyms.json";
+    private static String COMMANDS = "/commands.json";
+    private static String ROOMS = "/rooms.json";
+    private static String INVENTORY = "/inventory.json";
+    private static String SYN = "/synonyms.json";
+
 
     // ******** Fields **********
     private static JSONParser jsonParser = new JSONParser();
-    private static JSONObject roomsJSON;
-    private static JSONObject books;
-    private JSONObject commandJSON;
-    private JSONObject inventoryJSON;
-    private JSONArray synJSON;
-    private List<String> commands;
+
+    private static JSONObject commandJSON;
+    public static JSONObject roomsJSON;
+    private static JSONObject inventoryJSON;
+    private static JSONArray synJSON;
+
+    static {
+        try {
+            commandJSON = (JSONObject) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(COMMANDS))));
+            roomsJSON = (JSONObject) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(ROOMS))));
+            inventoryJSON = (JSONObject) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(INVENTORY))));
+            synJSON = (JSONArray) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(SYN))));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
 
 
+    private static JSONObject westHall = (JSONObject) roomsJSON.get("west hall");
+    private static JSONObject hallItems = (JSONObject) westHall.get("item");
+    private static JSONObject bookcase = (JSONObject) hallItems.get("bookcase");
+    private static JSONObject books = (JSONObject) bookcase.get("books");
+    private static List<String> commands = new ArrayList<>();
+
+
+    static JSONArray verbs = (JSONArray) commandJSON.get("verbs");
+    static JSONArray nouns = (JSONArray) commandJSON.get("nouns");
+    static JSONArray items = (JSONArray) commandJSON.get("items");
+    static JSONObject room = (JSONObject) roomsJSON.get(Player.getInstance().getCurrentRoom());
+    static JSONObject roomItems = (JSONObject) room.get("item");
+    static JSONObject clueHolder = null;
+
+
+    private JSONObject getCommandJSON(){
+        return commandJSON;
+    }
     //******** CTOR **********
     // read JSON info as streams and parse
-    private OurJSONParser() throws IOException, ParseException {
-        commandJSON = (JSONObject) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(COMMANDS))));
-        roomsJSON = (JSONObject) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(ROOMS))));
-        inventoryJSON = (JSONObject) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(INVENTORY))));
-        synJSON = (JSONArray) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(SYN))));
-        JSONObject westHall = (JSONObject) roomsJSON.get("west hall");
-        JSONObject hallItems = (JSONObject) westHall.get("item");
-        JSONObject bookcase = (JSONObject) hallItems.get("bookcase");
-        books = (JSONObject) bookcase.get("books");
-        commands = new ArrayList<>();
+    public OurJSONParser() throws IOException, ParseException {
+
     }
 
     // ******** Singleton Instantiation **********
     /* we do not want to instantiate multiple.
     static allows us to use through entire app where needed.*/
-    static OurJSONParser instantiate() {
+    public static OurJSONParser instantiate() {
         if (ourParser == null) {
             try {
                 ourParser = new OurJSONParser();
+                resetAll();
             }
             catch (IOException | ParseException e) {
                 System.out.println(e.getMessage());
                 System.exit(0);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         return ourParser;
@@ -66,17 +92,12 @@ public class OurJSONParser {
 
 
     // ******** Business Methods **********
-    void commandParser(List<String> command) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+    public static void commandParser(List<String> command) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
 
         // clear commands list to ensure there's only ever a singular set of commands present
         commands.clear();
         // access out valid verbs, nouns, and items arrays inside commands.json
-        JSONArray verbs = (JSONArray) commandJSON.get("verbs");
-        JSONArray nouns = (JSONArray) commandJSON.get("nouns");
-        JSONArray items = (JSONArray) commandJSON.get("items");
-        JSONObject room = (JSONObject) roomsJSON.get(Player.getInstance().getCurrentRoom());
-        JSONObject roomItems = (JSONObject) room.get("item");
-        JSONObject clueHolder = null;
+
 
         if (command.size() == 1) {
             commands.add(command.get(0));
@@ -88,16 +109,109 @@ public class OurJSONParser {
         else {
             commands.add(command.get(0));
             commands.add(command.get(1));
-            Player.getInstance().playerActions(commands, room, roomItems, roomsJSON, synJSON, items, inventoryJSON, getBooks(), null);
+            Player.getInstance().playerActions(commands);
         }
     }
 
-    static JSONObject getRoomsJSON() {
+    public static JSONObject getRoomsJSON() {
         return roomsJSON;
     }
 
-    static JSONObject getBooks() {
+    public static JSONObject getInventoryJSON() {
+        return inventoryJSON;
+    }
+
+    public static JSONArray getSynJSON() {
+        return synJSON;
+    }
+
+    public static JSONObject getWestHall() {
+        return westHall;
+    }
+
+    public static JSONObject getHallItems() {
+        return hallItems;
+    }
+
+    public static JSONObject getBookcase() {
+        return bookcase;
+    }
+
+    public static JSONObject getBooks() {
         return books;
+    }
+
+    public static List<String> getCommands() {
+        return commands;
+    }
+
+    public static JSONArray getVerbs() {
+        return verbs;
+    }
+
+    public static JSONArray getNouns() {
+        return nouns;
+    }
+
+    public static JSONArray getItems() {
+        return items;
+    }
+
+    public static JSONObject getRoom() {
+        return room;
+    }
+
+    public static JSONObject getRoomItems() {
+        return roomItems;
+    }
+
+    public static JSONObject getClueHolder() {
+        return clueHolder;
+    }
+
+    public static void setClueHolder(JSONObject clueHolder) {
+        OurJSONParser.clueHolder = clueHolder;
+    }
+
+    public static void setRoom(JSONObject room) {
+        OurJSONParser.room = room;
+    }
+
+    public static void setCommands(List<String> commands) {
+        OurJSONParser.commands = commands;
+    }
+
+    public static OurJSONParser getOurParser() {
+        return ourParser;
+    }
+
+    public static void setOurParser(OurJSONParser ourParser) {
+        OurJSONParser.ourParser = ourParser;
+    }
+
+    public static void setJsonParser(JSONParser jsonParser) {
+        OurJSONParser.jsonParser = jsonParser;
+    }
+
+    public static void setRoomsJSON(JSONObject roomsJSON) {
+        OurJSONParser.roomsJSON = roomsJSON;
+    }
+
+    public static void resetAll() throws Exception{
+        commandJSON = (JSONObject) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(COMMANDS))));
+        roomsJSON = (JSONObject) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(ROOMS))));
+        inventoryJSON = (JSONObject) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(INVENTORY))));
+        synJSON = (JSONArray) jsonParser.parse(new InputStreamReader(Objects.requireNonNull(OurJSONParser.class.getResourceAsStream(SYN))));
+
+        items = (JSONArray) commandJSON.get("items");
+        room = (JSONObject) roomsJSON.get(Player.getInstance().getCurrentRoom());
+        roomItems = (JSONObject) room.get("item");
+        clueHolder = null;
+
+        westHall = (JSONObject) roomsJSON.get("west hall");
+        hallItems = (JSONObject) westHall.get("item");
+        bookcase = (JSONObject) hallItems.get("bookcase");
+        books = (JSONObject) bookcase.get("books");
     }
 }
 

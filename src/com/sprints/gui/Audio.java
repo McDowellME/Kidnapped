@@ -1,12 +1,8 @@
 package com.sprints.gui;
 
-import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
 import javax.swing.*;
-import java.awt.*;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 
 class Audio {
@@ -15,10 +11,7 @@ class Audio {
     static float currentVolume = -17;
     static float previousVolume = -17;
     static FloatControl fc;
-    private static URL sound = Audio.class.getResource("main.wav");
-
-    private static final String soundPath = "data/audio/main.wav";
-    private static File path = new File(soundPath);
+//    private static URL sound = Audio.class.getResource("main.wav");
 
     // get the audio clip used for sound
     static {
@@ -29,10 +22,10 @@ class Audio {
         }
     }
 
-
     // start in game music
     static void playSound() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
-        AudioInputStream ais = AudioSystem.getAudioInputStream(path);
+//        AudioInputStream ais = AudioSystem.getAudioInputStream(sound);
+        AudioInputStream ais = ResourceReader.readAudio("main.wav");
         clip = AudioSystem.getClip();
         clip.open(ais);
         fc = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
@@ -40,6 +33,11 @@ class Audio {
         clip.start();
         fc.setValue(currentVolume);
         clip.loop(Clip.LOOP_CONTINUOUSLY);
+    }
+
+    static void stopSound(){
+        clip.stop();
+        clip.close();
     }
 
     // pause/re-play in game music
@@ -52,8 +50,8 @@ class Audio {
             clip.stop();
             isSound = false;
             String mute = "images/mute.png";
-            Image audImg = img(mute);
-            audBtn.setIcon(new ImageIcon(audImg));
+            ImageIcon audIcon = IconBuilder.buttonIcon(mute,33);
+            audBtn.setIcon(audIcon);
             fc.setValue(currentVolume);
             audSlider.setValue(audSlider.getMinimum());
         } else {
@@ -63,24 +61,10 @@ class Audio {
             clip.start();
             isSound = true;
             String play = "images/play.png";
-            Image audImg = img(play);
-            audBtn.setIcon(new ImageIcon(audImg));
+            ImageIcon audIcon = IconBuilder.buttonIcon(play,33);
+            audBtn.setIcon(audIcon);
             fc.setValue(currentVolume);
             audSlider.setValue((int) currentVolume);
         }
-    }
-
-    private static Image img(String is) throws IOException {
-        InputStream audio  =  classLoaderResourceStream(is);
-        Image audImg = ImageIO.read(audio);
-        ImageIcon audIcon = new ImageIcon(audImg);
-        Image audImage = audIcon.getImage();
-        Image audImg2 = audImage.getScaledInstance(33, 33,  Image.SCALE_DEFAULT);
-        return audImg2;
-    }
-
-    private static InputStream classLoaderResourceStream(String file){
-        InputStream is = GameFrame.class.getClassLoader().getResourceAsStream(file);
-        return is;
     }
 }
