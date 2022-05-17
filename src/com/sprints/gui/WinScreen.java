@@ -25,14 +25,10 @@ class WinScreen extends JPanel implements ActionListener {
         setBackground(Color.BLACK);
 
         // The title background image
-        InputStream main = classLoaderResourceStream("images/win.png");
-        Image mainImg = ImageIO.read(main);
-        ImageIcon imageIcon = new ImageIcon(mainImg);
-        Image image = imageIcon.getImage();
-        Image img2 = image.getScaledInstance(1094, 730,  Image.SCALE_SMOOTH);
+        ImageIcon winIcon = IconBuilder.mainIcon("images/win.png");
 
         // Placing the background image
-        JLabel imageLabel = new JLabel(new ImageIcon(img2));
+        JLabel imageLabel = new JLabel(winIcon);
         imageLabel.setBounds (0, 0, 1094, 730);
 
         // Play Again button
@@ -64,11 +60,6 @@ class WinScreen extends JPanel implements ActionListener {
         add(exitBtn);
         add(playAgainBtn);
         add(imageLabel);
-    }
-
-    private static InputStream classLoaderResourceStream(String file){
-        InputStream is = GameFrame.class.getClassLoader().getResourceAsStream(file);
-        return is;
     }
 
     @Override

@@ -4,7 +4,6 @@ import com.sprints.OurJSONParser;
 import com.sprints.Player;
 import com.sprints.TextParser;
 
-import javax.imageio.ImageIO;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
@@ -54,7 +53,7 @@ public class GameFrame extends JPanel implements ActionListener {
         locationLabel = new JLabel();
         locationLabel.setBounds (136, 20, 822, 400);
         // set with start location image, changes with location
-        ImageIcon locIcon = createLocIcon(OurJSONParser.getRoom().get("image").toString());
+        ImageIcon locIcon = IconBuilder.locationIcon(OurJSONParser.getRoom().get("image").toString());
         locationLabel.setIcon(locIcon);
         //endregion
 
@@ -184,12 +183,12 @@ public class GameFrame extends JPanel implements ActionListener {
         audSlider.setBounds (1025, 250, 31, 120);
         //endregion
 
-//        //region Timer
+        //region Timer
         countDownLabel = new JLabel();
 
-//        //endregion
+        //endregion
 
-        //region Add components
+        // region Add components
         add(countDownLabel);
         add(locationLabel);
         add(textField);
@@ -222,28 +221,9 @@ public class GameFrame extends JPanel implements ActionListener {
         timer.start();
     }
 
-    // for Jar-ing purposes
-    private static InputStream classLoaderResourceStream(String file){
-        return GameFrame.class.getClassLoader().getResourceAsStream(file);
-    }
-
-    // create image area icon
-    private static ImageIcon createLocIcon(String file) throws IOException {
-        return createImageIcon(file,1094,730);
-    }
-
-    // create ImageIcon
-    private static ImageIcon createImageIcon(String file, int width, int height) throws IOException {
-        InputStream imgIS = classLoaderResourceStream(file);
-        Image img = ImageIO.read(imgIS);
-        Image imgScaled = img.getScaledInstance(width,height,Image.SCALE_DEFAULT);
-        ImageIcon imgIcon = new ImageIcon(imgScaled);
-        return imgIcon;
-    }
-
     // build a button with Jbutton, img file, same height/width size, and command name
     private void buildImgButton(JButton btn, String file, String command, int size) throws IOException {
-        ImageIcon btnIcon = createImageIcon(file, size, size);
+        ImageIcon btnIcon = IconBuilder.buttonIcon(file, size);
         btn.setOpaque(true);
         btn.setBorderPainted(false);
         btn.setFont(txtFont);
@@ -276,8 +256,7 @@ public class GameFrame extends JPanel implements ActionListener {
                     Audio.toggleSound(audBtn, audSlider);
                     break;
                 case "help":
-                    BufferedReader input = new BufferedReader(new InputStreamReader(new FileInputStream("data/commandsmenu.txt")));
-                    textArea.read(input, null);
+                    textArea.read(ResourceReader.readText("data/commandsmenu.txt"), null);
                     return;
                 default:
             }
@@ -305,7 +284,7 @@ public class GameFrame extends JPanel implements ActionListener {
     private void updateAll() throws IOException, InterruptedException {
         Set item;
         // create the ImageIcon by finding the file name in json
-        ImageIcon locIcon = createLocIcon(OurJSONParser.getRoom().get("image").toString());
+        ImageIcon locIcon = IconBuilder.locationIcon(OurJSONParser.getRoom().get("image").toString());
         // set area with image
         locationLabel.setIcon(locIcon);
         // create description by finding in json
