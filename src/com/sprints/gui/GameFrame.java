@@ -325,6 +325,7 @@ public class GameFrame extends JPanel implements ActionListener {
             try {
                 timer.stop();
                 resetGameField();
+                Frame.getLoseScreen();
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
