@@ -14,7 +14,7 @@ class IconBuilder {
     }
     // build location ImageIcon
     public static ImageIcon locationIcon(String file) throws IOException {
-        return IconBuilder.imageIcon(file,1094,730, Image.SCALE_SMOOTH);
+        return IconBuilder.imageIcon(file,822,400, Image.SCALE_SMOOTH);
     }
     // build button ImageIcon
     public static ImageIcon buttonIcon(String file, int size) throws IOException {
