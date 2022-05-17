@@ -271,7 +271,7 @@ public class GameFrame extends JPanel implements ActionListener {
                     break;
                 case "help":
                     if (!isHelpDisplayed) {
-                        textArea.read(ResourceReader.readText("data/commandsmenu.txt"), null);
+                        textArea.read(ResourceReader.readText("/commandsmenu.txt"),null);
                         isHelpDisplayed = true;
                         // clear response area
                         setResponse(); // or

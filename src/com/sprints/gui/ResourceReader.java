@@ -21,8 +21,8 @@ class ResourceReader {
     }
 
     // read text file, return BufferedReader
-    public static BufferedReader readText(String file) throws FileNotFoundException {
-        return new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+    public static InputStreamReader readText(String file) {
+        return new InputStreamReader(Objects.requireNonNull(ResourceReader.class.getResourceAsStream(file)));
     }
 
     // read audio file, return AudioInputStream
