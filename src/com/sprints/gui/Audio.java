@@ -1,13 +1,8 @@
 package com.sprints.gui;
 
-import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
 import javax.swing.*;
-import java.awt.*;
-import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 
 class Audio {
@@ -57,8 +52,8 @@ class Audio {
             clip.stop();
             isSound = false;
             String mute = "images/mute.png";
-            Image audImg = img(mute);
-            audBtn.setIcon(new ImageIcon(audImg));
+            ImageIcon audIcon = IconBuilder.buttonIcon(mute,33);
+            audBtn.setIcon(audIcon);
             fc.setValue(currentVolume);
             audSlider.setValue(audSlider.getMinimum());
         } else {
@@ -68,24 +63,10 @@ class Audio {
             clip.start();
             isSound = true;
             String play = "images/play.png";
-            Image audImg = img(play);
-            audBtn.setIcon(new ImageIcon(audImg));
+            ImageIcon audIcon = IconBuilder.buttonIcon(play,33);
+            audBtn.setIcon(audIcon);
             fc.setValue(currentVolume);
             audSlider.setValue((int) currentVolume);
         }
-    }
-
-    private static Image img(String is) throws IOException {
-        InputStream audio  =  classLoaderResourceStream(is);
-        Image audImg = ImageIO.read(audio);
-        ImageIcon audIcon = new ImageIcon(audImg);
-        Image audImage = audIcon.getImage();
-        Image audImg2 = audImage.getScaledInstance(33, 33,  Image.SCALE_DEFAULT);
-        return audImg2;
-    }
-
-    private static InputStream classLoaderResourceStream(String file){
-        InputStream is = GameFrame.class.getClassLoader().getResourceAsStream(file);
-        return is;
     }
 }
