@@ -69,8 +69,6 @@ class WinScreen extends JPanel implements ActionListener {
             case "play":
                 TimeUnit.SECONDS.sleep(1);
                 reset();
-//                //Frame.getTitleScreen();
-//                Frame.resetAll();
                 Frame.getTitleScreen();
                 break;
             case "exit":

@@ -3,6 +3,7 @@ package com.sprints.gui;
 import com.sprints.OurJSONParser;
 import com.sprints.Player;
 import com.sprints.TextParser;
+import org.json.simple.JSONObject;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -19,7 +20,13 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import static com.sprints.OurJSONParser.roomsJSON;
+
 public class GameFrame extends JPanel implements ActionListener {
+    static ImageIcon unlitRoom;
+    private static final String BACKGROUND = "images/background.jpg";
+    private static final String UNLIT = "images/dark.png";
+    private static String firstLine = "Too dark to see everything here, you need some light";
     private static DefaultListModel<String> model;
     TextParser textParser = new TextParser();
     private static Timer timer;
@@ -30,14 +37,13 @@ public class GameFrame extends JPanel implements ActionListener {
     JScrollPane scrollPane;
     JList inventoryList;
     private static JTextArea textArea, responseArea;
-    private static JLabel inventoryLabel, locationLabel, countDownLabel;
+    private static JLabel inventoryLabel, locationLabel, countDownLabel, background;
     JButton enterBtn, northBtn, eastBtn, southBtn, westBtn, helpBtn, audBtn;
     JSlider audSlider;
     Font txtFont = new Font("Times New Roman", Font.BOLD, 15);
     Font inventoryFont = new Font("Times New Roman", Font.BOLD, 20);
 
-    private static final String resetVariable = Player.getInstance().getCurrentRoom().toUpperCase(Locale.ROOT) + "\n" +
-            OurJSONParser.getRoom().get("description").toString() + "\nYou see: " +
+    private static final String resetVariable = firstLine + "\nYou see: " +
             OurJSONParser.getRoomItems().keySet();
 
     public GameFrame() throws IOException {
@@ -53,7 +59,7 @@ public class GameFrame extends JPanel implements ActionListener {
         locationLabel = new JLabel();
         locationLabel.setBounds (136, 20, 822, 400);
         // set with start location image, changes with location
-        ImageIcon locIcon = IconBuilder.locationIcon(OurJSONParser.getRoom().get("image").toString());
+        ImageIcon locIcon = IconBuilder.locationIcon(UNLIT);
         locationLabel.setIcon(locIcon);
         //endregion
 
@@ -66,6 +72,11 @@ public class GameFrame extends JPanel implements ActionListener {
         textField.setBounds(390,663,300,40);
         //endregion
 
+        //region background
+        background = new JLabel();
+        background.setBounds(0,0,1094, 730);
+        ImageIcon backgroundIcon = IconBuilder.locationIcon(BACKGROUND);
+        background.setIcon(backgroundIcon);
 
         //region Description
         textArea = new JTextArea();
@@ -73,7 +84,8 @@ public class GameFrame extends JPanel implements ActionListener {
         textArea.setForeground(Color.BLACK);
         textArea.setFont(txtFont);
         Set item = OurJSONParser.getRoomItems().keySet();
-        textArea.setText(resetVariable);
+        textArea.setText(firstLine);
+        textArea.append("\nYou see: " + item);
         textArea.setEditable(false);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
@@ -204,6 +216,7 @@ public class GameFrame extends JPanel implements ActionListener {
         add(audBtn);
         add(audSlider);
         add(responseArea);
+        add(background);
 
         setVisible(true);
         //endregion
@@ -282,21 +295,41 @@ public class GameFrame extends JPanel implements ActionListener {
     };
 
     private void updateAll() throws IOException, InterruptedException {
-        Set item;
-        // create the ImageIcon by finding the file name in json
-        ImageIcon locIcon = IconBuilder.locationIcon(OurJSONParser.getRoom().get("image").toString());
-        // set area with image
-        locationLabel.setIcon(locIcon);
+        updateImage();
+        setTextArea();
+        setInventory();
+        setResponse();
+        textField.setText("");
+    }
+
+    private static void updateImage() throws IOException {
+        if(!Player.getInstance().isItemEquipped()){
+            unlitRoom = IconBuilder.locationIcon(UNLIT);
+            locationLabel.setIcon(unlitRoom);
+        }
+        else {
+            // create the ImageIcon by finding the file name in json
+            ImageIcon locIcon = IconBuilder.locationIcon(OurJSONParser.getRoom().get("image").toString());
+            // set area with image
+            locationLabel.setIcon(locIcon);
+        }
+    }
+
+    private void setTextArea() {
+        Set item = OurJSONParser.getRoomItems().keySet();
         // create description by finding in json
         String locDescription = OurJSONParser.getRoom().get("description").toString();
-
         if(Player.getIsLook()){
             textArea.setText(Player.getPlug());
         }
         else if(OurJSONParser.getRoomItems()!=null){
-            item = OurJSONParser.getRoomItems().keySet();
             // set text area with room description
-            textArea.setText(Player.getInstance().getCurrentRoom().toUpperCase(Locale.ROOT) + "\n" + locDescription);
+            if(Player.getInstance().isItemEquipped()){
+                textArea.setText(Player.getInstance().getCurrentRoom().toUpperCase(Locale.ROOT) + "\n" + locDescription);
+            }
+            else if (!Player.getInstance().isItemEquipped()){
+                textArea.setText(firstLine);
+            }
             // if there are items in the room, append text area with items
             if(item.size() != 0){
                 textArea.append("\nYou see: " + item);
@@ -305,9 +338,6 @@ public class GameFrame extends JPanel implements ActionListener {
         else{
             textArea.setText(locDescription);
         }
-        setInventory();
-        setResponse();
-        textField.setText("");
     }
 
     private void setResponse() {
@@ -343,14 +373,16 @@ public class GameFrame extends JPanel implements ActionListener {
         }
     }
 
-    private static void resetGameField() throws InterruptedException {
+    private static void resetGameField() throws InterruptedException, IOException {
         TimeUnit.SECONDS.sleep(1);
         Player.setPlug("");
+        Player.getInstance().setItemEquipped(false);
         responseArea.setText(Player.getPlug());
         timer.stop();
         Audio.stopSound();
         textArea.setText(resetVariable);
         model.clear();
+        updateImage();
     }
 
     public static void countDown(){
