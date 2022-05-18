@@ -144,6 +144,7 @@ class GameFrame extends JPanel implements ActionListener {
         String north = "images/button_n.png";
         buildImgButton(northBtn, north, "north",33);
         northBtn.setBounds (875, 475, 80, 50);
+
         //endregion
 
         //region East button
@@ -444,7 +445,4 @@ class GameFrame extends JPanel implements ActionListener {
         });
     }
 
-    public static boolean isGameEnd() {
-        return gameEnd;
-    }
 }
