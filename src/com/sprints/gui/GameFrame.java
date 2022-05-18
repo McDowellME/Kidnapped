@@ -30,13 +30,13 @@ class GameFrame extends JPanel implements ActionListener {
 
     static ImageIcon unlitRoom;
     private static String firstLine = "Too dark to see everything here, you need some light";
-    static DefaultListModel<String> model;
+    static DefaultListModel<String> model = new DefaultListModel<>();
     TextParser textParser = new TextParser();
     static Timer timer;
     private static int seconds, minutes;
     private static String dblSeconds, dblMinutes;
     private static DecimalFormat decimalFormat = new DecimalFormat("00");
-    JTextField textField;
+    private static JTextField textField;
     JScrollPane scrollPane;
     static JList inventoryList;
     private static JTextArea textArea, responseArea;
@@ -298,7 +298,6 @@ class GameFrame extends JPanel implements ActionListener {
                         updateAll(); // returns current room description
                         isHelpDisplayed = false;
                     }
-
                     return;
                 default:
             }
@@ -422,14 +421,14 @@ class GameFrame extends JPanel implements ActionListener {
     }
 
     static void resetGameField() throws InterruptedException, IOException, ParseException, Exception {
-        OurJSONParser.setOurParser(new OurJSONParser());
-        OurJSONParser.resetAll();
         Player.setPlayer(new Player());
+        OurJSONParser.resetAll();
         Player.setPlug("");
 
         timer.stop();
         Audio.stopSound();
         model.clear();
+        textField.setText("");
 
         updateImage();
         responseArea.setText(Player.getPlug());
