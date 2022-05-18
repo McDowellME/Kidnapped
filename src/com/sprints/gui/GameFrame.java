@@ -413,6 +413,8 @@ class GameFrame extends JPanel implements ActionListener {
         if (remainingBooks.size() <= bookSelections && remainingBooks.contains("it")) {
             try {
                 resetGameField();
+                LoseScreen.lossLabel.setText("<html> &ensp &nbsp You feel the floor shift beneath your feet. It opens up, dropping you into a massive pit of spikes.<br/>As you descend you see the bodies of countless others who have played and failed this twisted game.</html>");
+                LoseScreen.lossLabel.setBounds(175,300,1000,50);
                 Frame.getLoseScreen();
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
@@ -462,9 +464,9 @@ class GameFrame extends JPanel implements ActionListener {
                 if (minutes == 0 && seconds == 0){
                     //timer.stop();
                     try {
-                        timer.stop();
-                        Audio.stopSound();
                         resetGameField();
+                        LoseScreen.lossLabel.setText("<html>Your body begins to stiffen and agony takes the name of each breath.<br/> &emsp &emsp &ensp Your world fades to black as you fall to the ground...</html>");
+                        LoseScreen.lossLabel.setBounds(290,300,1000,50);
                         Frame.getLoseScreen();
                     } catch (IOException | InterruptedException | ParseException ex) {
                         ex.printStackTrace();
