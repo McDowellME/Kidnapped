@@ -3,7 +3,6 @@ package com.sprints.gui;
 import com.sprints.OurJSONParser;
 import com.sprints.Player;
 import com.sprints.TextParser;
-import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 import javax.sound.sampled.LineUnavailableException;
@@ -20,8 +19,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
-import static com.sprints.OurJSONParser.roomsJSON;
 
 class GameFrame extends JPanel implements ActionListener {
     // Final Constants
@@ -41,7 +38,7 @@ class GameFrame extends JPanel implements ActionListener {
     static JList inventoryList;
     private static JTextArea textArea, responseArea;
     private static JLabel inventoryLabel, locationLabel, countDownLabel, background;
-    JButton enterBtn, northBtn, eastBtn, southBtn, westBtn, helpBtn, audBtn;
+    JButton enterBtn, northBtn, eastBtn, southBtn, westBtn, helpBtn, backBtn, audBtn;
     JSlider audSlider;
     Font txtFont = new Font("Times New Roman", Font.BOLD, 15);
     Font inventoryFont = new Font("Times New Roman", Font.BOLD, 20);
@@ -147,7 +144,6 @@ class GameFrame extends JPanel implements ActionListener {
         String north = "images/button_n.png";
         buildImgButton(northBtn, north, "north",33);
         northBtn.setBounds (875, 475, 80, 50);
-
         //endregion
 
         //region East button
@@ -171,11 +167,18 @@ class GameFrame extends JPanel implements ActionListener {
         westBtn.setBounds (825, 525, 80, 50);
         //endregion
 
-        // region Help button
+        //region Help button
         String help = "images/button_help.png";
         helpBtn = new JButton();
         buildImgButton(helpBtn, help, "help", 40);
         helpBtn.setBounds (1000, 650, 80, 50);
+        //endregion
+
+        //region Back button
+        String back = "images/button_back.png";
+        backBtn = new JButton();
+        buildImgButton(backBtn, back, "back", 40);
+        backBtn.setBounds (800, 610, 80, 50);
         //endregion
 
         //region Audio button
@@ -210,6 +213,7 @@ class GameFrame extends JPanel implements ActionListener {
         // region Add components
         add(countDownLabel);
         add(locationLabel);
+        add(backBtn);
         add(textField);
         add(scrollPane);
         add(inventoryList);
@@ -275,6 +279,9 @@ class GameFrame extends JPanel implements ActionListener {
                 case "audToggle":
                     Audio.toggleSound(audBtn, audSlider);
                     break;
+                case "back":
+                    updateAll(); // returns current room description
+                    break;
                 case "help":
                     if (!isHelpDisplayed) {
                         textArea.read(ResourceReader.readText("/commandsmenu.txt"),null);
@@ -333,16 +340,25 @@ class GameFrame extends JPanel implements ActionListener {
     }
 
     private static void updateImage() throws IOException {
-        if(!Player.getInstance().isItemEquipped()){
-            unlitRoom = IconBuilder.locationIcon(UNLIT);
-            locationLabel.setIcon(unlitRoom);
+        // if command was to look at item and item has an image, make the location label item image
+        if (Player.getItemHasImage()) {
+            locationLabel.setIcon(IconBuilder.locationIcon(Player.getImage()));
+            Player.setItemHasImage(false);
         }
         else {
-            // create the ImageIcon by finding the file name in json
-            ImageIcon locIcon = IconBuilder.locationIcon(OurJSONParser.getRoom().get("image").toString());
-            // set area with image
-            locationLabel.setIcon(locIcon);
+            if(!Player.getInstance().isItemEquipped()){
+                unlitRoom = IconBuilder.locationIcon(UNLIT);
+                locationLabel.setIcon(unlitRoom);
+            }
+            else {
+                // create the ImageIcon by finding the file name in json
+                ImageIcon locIcon = IconBuilder.locationIcon(OurJSONParser.getRoom().get("image").toString());
+                // set area with image
+                locationLabel.setIcon(locIcon);
+                System.out.println(Player.getImage());
+            }
         }
+
     }
 
     private void setTextArea() {
