@@ -38,7 +38,7 @@ class GameFrame extends JPanel implements ActionListener {
     static JList inventoryList;
     private static JTextArea textArea, responseArea;
     private static JLabel inventoryLabel, locationLabel, countDownLabel, background;
-    JButton enterBtn, northBtn, eastBtn, southBtn, westBtn, helpBtn, audBtn;
+    JButton enterBtn, northBtn, eastBtn, southBtn, westBtn, helpBtn, backBtn, audBtn;
     JSlider audSlider;
     Font txtFont = new Font("Times New Roman", Font.BOLD, 15);
     Font inventoryFont = new Font("Times New Roman", Font.BOLD, 20);
@@ -144,7 +144,6 @@ class GameFrame extends JPanel implements ActionListener {
         String north = "images/button_n.png";
         buildImgButton(northBtn, north, "north",33);
         northBtn.setBounds (875, 475, 80, 50);
-
         //endregion
 
         //region East button
@@ -168,11 +167,18 @@ class GameFrame extends JPanel implements ActionListener {
         westBtn.setBounds (825, 525, 80, 50);
         //endregion
 
-        // region Help button
+        //region Help button
         String help = "images/button_help.png";
         helpBtn = new JButton();
         buildImgButton(helpBtn, help, "help", 40);
         helpBtn.setBounds (1000, 650, 80, 50);
+        //endregion
+
+        //region Back button
+        String back = "images/button_back.png";
+        backBtn = new JButton();
+        buildImgButton(backBtn, back, "back", 40);
+        backBtn.setBounds (800, 610, 80, 50);
         //endregion
 
         //region Audio button
@@ -207,6 +213,7 @@ class GameFrame extends JPanel implements ActionListener {
         // region Add components
         add(countDownLabel);
         add(locationLabel);
+        add(backBtn);
         add(textField);
         add(scrollPane);
         add(inventoryList);
@@ -271,6 +278,9 @@ class GameFrame extends JPanel implements ActionListener {
                     break;
                 case "audToggle":
                     Audio.toggleSound(audBtn, audSlider);
+                    break;
+                case "back":
+                    updateAll(); // returns current room description
                     break;
                 case "help":
                     if (!isHelpDisplayed) {
