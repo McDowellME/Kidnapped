@@ -3,7 +3,6 @@ package com.sprints.gui;
 import com.sprints.OurJSONParser;
 import com.sprints.Player;
 import com.sprints.TextParser;
-import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 import javax.sound.sampled.LineUnavailableException;
@@ -20,8 +19,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
-import static com.sprints.OurJSONParser.roomsJSON;
 
 class GameFrame extends JPanel implements ActionListener {
     // Final Constants
@@ -343,16 +340,25 @@ class GameFrame extends JPanel implements ActionListener {
     }
 
     private static void updateImage() throws IOException {
-        if(!Player.getInstance().isItemEquipped()){
-            unlitRoom = IconBuilder.locationIcon(UNLIT);
-            locationLabel.setIcon(unlitRoom);
+        // if command was to look at item and item has an image, make the location label item image
+        if (Player.getItemHasImage()) {
+            locationLabel.setIcon(IconBuilder.locationIcon(Player.getImage()));
+            Player.setItemHasImage(false);
         }
         else {
-            // create the ImageIcon by finding the file name in json
-            ImageIcon locIcon = IconBuilder.locationIcon(OurJSONParser.getRoom().get("image").toString());
-            // set area with image
-            locationLabel.setIcon(locIcon);
+            if(!Player.getInstance().isItemEquipped()){
+                unlitRoom = IconBuilder.locationIcon(UNLIT);
+                locationLabel.setIcon(unlitRoom);
+            }
+            else {
+                // create the ImageIcon by finding the file name in json
+                ImageIcon locIcon = IconBuilder.locationIcon(OurJSONParser.getRoom().get("image").toString());
+                // set area with image
+                locationLabel.setIcon(locIcon);
+                System.out.println(Player.getImage());
+            }
         }
+
     }
 
     private void setTextArea() {

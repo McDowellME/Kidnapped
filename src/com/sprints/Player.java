@@ -14,11 +14,13 @@ public class Player {
 
     // ******** Fields **********
     private static boolean isLook = false;
+    private static boolean itemHasImage = false;
     private String currentRoom = "basement";
     private Map<String, String> inventory = new HashMap<>();
     private boolean itemEquipped = false;
     private final List<String> locations = Arrays.asList("kitchen", "parlor", "east room", "west hall");
     public static String plug ="";
+    public static String image = "";
 
     JSONArray verbObj1 = (JSONArray) OurJSONParser.getSynJSON().get(0); // go
     JSONArray verbObj2 = (JSONArray) OurJSONParser.getSynJSON().get(1); // get
@@ -216,6 +218,7 @@ public class Player {
             setCurrentRoom((String) OurJSONParser.getRoom().get(noun));
             OurJSONParser.setRoom((JSONObject) getRoomsJSON().get(getCurrentRoom()));
             roomItems =(JSONObject) getRoom().get("item");
+            image = OurJSONParser.getRoom().get("image").toString();
         }
         else {
             System.out.println("You cannot go that way");
@@ -262,6 +265,10 @@ public class Player {
                 item = (JSONObject) roomItems.get(noun);
                 System.out.println(item.get("description"));
                 plug = item.get("description").toString();
+                if (item.containsKey("image")) {
+                    image = item.get("image").toString();
+                    setItemHasImage(true);
+                }
             }
 ////            System.out.println(item.get("description"));
 //            else {
@@ -314,6 +321,14 @@ public class Player {
         Player.plug = plug;
     }
 
+    public static String getImage() {
+        return image;
+    }
+
+    public static void setImage(String image) {
+        Player.image = image;
+    }
+
     public static Player getPlayer() {
         return player;
     }
@@ -331,4 +346,11 @@ public class Player {
     }
 
 
+    public static boolean getItemHasImage() {
+        return itemHasImage;
+    }
+
+    public static void setItemHasImage(boolean isItemImage) {
+        Player.itemHasImage = isItemImage;
+    }
 }
