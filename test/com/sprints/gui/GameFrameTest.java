@@ -28,12 +28,28 @@ public class GameFrameTest {
     }
 
     @Test
-    public void checkWin() throws Exception {
+    public void checkWin_getIT() throws Exception {
         Player.getInstance().setCurrentRoom("west hall");
         Player.getInstance().getItems("it");
         GameFrame.setInventory();
         assertTrue(GameFrame.checkWin());
     }
+
+    @Test
+    public void checkWin_wrongBook() throws Exception {
+        Player.getInstance().setCurrentRoom("west hall");
+        Player.getInstance().getItems("something wicked");
+        GameFrame.setInventory();
+        assertFalse(GameFrame.checkWin());
+    }
+
+    @Test
+    public void checkWin_noBook() throws Exception {
+        GameFrame.setInventory();
+        assertFalse(GameFrame.checkWin());
+    }
+
+
 
     @Test
     public void countDown() {
