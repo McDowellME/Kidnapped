@@ -29,6 +29,11 @@ public class TextParser {
     // split input into tokens
     public List<String> commandTokenizer(String in) {
         List<String> tokens = new ArrayList<>();
+        if(in.length()==0){
+            tokens.add("null");
+            return tokens;
+        }
+
         StringTokenizer tokenizer = new StringTokenizer(in);
         // as long as tokenizer has more tokens we will add them to tokens list
         while (tokenizer.hasMoreTokens()) {
@@ -58,6 +63,7 @@ public class TextParser {
         }
         else if (inputCommand.size() == 1 && !validSingleWords.contains(inputCommand.get(0))) {
             System.out.println("Please clarify command");
+            Player.setPlug("Please clarify command");
             return;
         }
         else if (inputCommand.size() >3) {

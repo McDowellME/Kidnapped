@@ -65,11 +65,11 @@ class WinScreen extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e){
         try {
+        //GameFrame.resetGameField();
         switch (e.getActionCommand()){
             case "play":
-                GameFrame.resetGameField();
                 TimeUnit.SECONDS.sleep(1);
-                reset();
+                //reset();
                 Frame.getTitleScreen();
                 break;
             case "exit":
@@ -84,17 +84,5 @@ class WinScreen extends JPanel implements ActionListener {
         catch (Exception exception) {
             exception.printStackTrace();
         }
-    }
-
-    private void reset() throws Exception{
-        OurJSONParser.setOurParser(new OurJSONParser());
-//        OurJSONParser.setJsonParser(new JSONParser());
-//        Game.setGame(new Game());
-        Player.setPlayer(new Player());
-
-        OurJSONParser.resetAll();
-
-//        System.out.println(Player.getInstance().getCurrentRoom());
-//        System.out.println(OurJSONParser.getRoomItems().toString());
     }
 }

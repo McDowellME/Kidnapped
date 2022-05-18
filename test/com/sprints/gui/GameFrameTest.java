@@ -16,6 +16,8 @@ public class GameFrameTest {
     @Before
     public void setUp() throws Exception {
         new Frame();
+        GameFrame.setCountDown();
+        GameFrame.timer.start();
     }
 
     @Test

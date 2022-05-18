@@ -4,6 +4,7 @@ import com.sprints.OurJSONParser;
 import com.sprints.Player;
 import com.sprints.TextParser;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -23,13 +24,15 @@ import java.util.concurrent.TimeUnit;
 import static com.sprints.OurJSONParser.roomsJSON;
 
 class GameFrame extends JPanel implements ActionListener {
-    static ImageIcon unlitRoom;
+    // Final Constants
     private static final String BACKGROUND = "images/background.jpg";
     private static final String UNLIT = "images/dark.png";
+
+    static ImageIcon unlitRoom;
     private static String firstLine = "Too dark to see everything here, you need some light";
     static DefaultListModel<String> model;
     TextParser textParser = new TextParser();
-    private static Timer timer;
+    static Timer timer;
     private static int seconds, minutes;
     private static String dblSeconds, dblMinutes;
     private static DecimalFormat decimalFormat = new DecimalFormat("00");
@@ -382,38 +385,47 @@ class GameFrame extends JPanel implements ActionListener {
         model = new DefaultListModel<>();
         model.addAll(Player.getInstance().getCurrentInventory());
         inventoryList.setModel(model);
-        checkWin();
+        try {
+            checkWin();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    static boolean checkWin() throws InterruptedException, IOException {
+    static boolean checkWin() throws Exception {
         Set<String> remainingBooks = OurJSONParser.getBooks().keySet();
         int bookSelections = remainingBooks.size() - (remainingBooks.size() - 2);
         if (remainingBooks.size() <= bookSelections && remainingBooks.contains("it")) {
             try {
-                //resetGameField();
+                resetGameField();
                 Frame.getLoseScreen();
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
-        } else if (model.contains("it")) {
-
-           // resetGameField();
+        }
+        else if (model.contains("it")) {
             gameEnd = true;
+            resetGameField();
             Frame.getWinScreen();
         }
         return gameEnd;
     }
 
-    static void resetGameField() throws InterruptedException, IOException {
-        TimeUnit.SECONDS.sleep(1);
+    static void resetGameField() throws InterruptedException, IOException, ParseException, Exception {
+        OurJSONParser.setOurParser(new OurJSONParser());
+        OurJSONParser.resetAll();
+        Player.setPlayer(new Player());
         Player.setPlug("");
-        Player.getInstance().setItemEquipped(false);
-        responseArea.setText(Player.getPlug());
+
         timer.stop();
         Audio.stopSound();
-        textArea.setText(resetVariable);
         model.clear();
+
         updateImage();
+        responseArea.setText(Player.getPlug());
+        textArea.setText(resetVariable);
+
+        TimeUnit.SECONDS.sleep(1);
     }
 
     public static void countDown(){
@@ -433,12 +445,16 @@ class GameFrame extends JPanel implements ActionListener {
                     countDownLabel.setText(dblMinutes + ":" + dblSeconds);
                 }
                 if (minutes == 0 && seconds == 0){
-                    timer.stop();
+                    //timer.stop();
                     try {
+                        timer.stop();
+                        Audio.stopSound();
                         resetGameField();
                         Frame.getLoseScreen();
-                    } catch (IOException | InterruptedException ex) {
+                    } catch (IOException | InterruptedException | ParseException ex) {
                         ex.printStackTrace();
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
                     }
                 }
             }
