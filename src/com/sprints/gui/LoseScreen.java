@@ -65,6 +65,7 @@ class LoseScreen extends JPanel implements ActionListener {
         try {
             switch (e.getActionCommand()){
                 case "play":
+                    GameFrame.resetGameField();
                     TimeUnit.SECONDS.sleep(1);
                     reset();
                     Frame.getTitleScreen();

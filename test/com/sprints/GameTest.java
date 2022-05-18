@@ -16,7 +16,7 @@ public class GameTest {
     public void testPlayerWinGame_ifInventoryHasBookIt() throws LineUnavailableException, UnsupportedAudioFileException, IOException, ParseException, InterruptedException {
 //        Player.getInstance().getInventory().add("it");
         Player.getInstance().getInventory().put("it", "test");
-        Game.getInstance().start();
+        //Game.getInstance().start();
         assertTrue(Game.getInstance().isGameOver());
     }
 }

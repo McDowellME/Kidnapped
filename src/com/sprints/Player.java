@@ -72,7 +72,7 @@ public class Player {
     }
 
     // pick up items
-    void getItems(String noun) {
+    public void getItems(String noun) {
         // check if item is a valid and something we can hold in inventory
 
         if(roomItems!=null && OurJSONParser.getItems().contains(noun) && getInventoryJSON().containsKey(noun)) {

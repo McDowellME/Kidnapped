@@ -22,12 +22,12 @@ import java.util.concurrent.TimeUnit;
 
 import static com.sprints.OurJSONParser.roomsJSON;
 
-public class GameFrame extends JPanel implements ActionListener {
+class GameFrame extends JPanel implements ActionListener {
     static ImageIcon unlitRoom;
     private static final String BACKGROUND = "images/background.jpg";
     private static final String UNLIT = "images/dark.png";
     private static String firstLine = "Too dark to see everything here, you need some light";
-    private static DefaultListModel<String> model;
+    static DefaultListModel<String> model;
     TextParser textParser = new TextParser();
     private static Timer timer;
     private static int seconds, minutes;
@@ -35,7 +35,7 @@ public class GameFrame extends JPanel implements ActionListener {
     private static DecimalFormat decimalFormat = new DecimalFormat("00");
     JTextField textField;
     JScrollPane scrollPane;
-    JList inventoryList;
+    static JList inventoryList;
     private static JTextArea textArea, responseArea;
     private static JLabel inventoryLabel, locationLabel, countDownLabel, background;
     JButton enterBtn, northBtn, eastBtn, southBtn, westBtn, helpBtn, audBtn;
@@ -43,6 +43,7 @@ public class GameFrame extends JPanel implements ActionListener {
     Font txtFont = new Font("Times New Roman", Font.BOLD, 15);
     Font inventoryFont = new Font("Times New Roman", Font.BOLD, 20);
     private static boolean isHelpDisplayed = false;     // music is ON by default
+    private static boolean gameEnd = false;
 
     private static final String resetVariable = firstLine + "\nYou see: " +
             OurJSONParser.getRoomItems().keySet();
@@ -78,6 +79,7 @@ public class GameFrame extends JPanel implements ActionListener {
         background.setBounds(0,0,1094, 730);
         ImageIcon backgroundIcon = IconBuilder.mainIcon(BACKGROUND);
         background.setIcon(backgroundIcon);
+        //endregion
 
         //region Description
         textArea = new JTextArea();
@@ -375,30 +377,33 @@ public class GameFrame extends JPanel implements ActionListener {
         Player.setIsLook(false);
     }
 
-    private void setInventory() throws IOException, InterruptedException {
+    static void setInventory() throws IOException, InterruptedException {
         model = new DefaultListModel<>();
         model.addAll(Player.getInstance().getCurrentInventory());
         inventoryList.setModel(model);
-        checkWin(model);
+        checkWin();
     }
 
-    public void checkWin(DefaultListModel model) throws InterruptedException, IOException {
+    static boolean checkWin() throws InterruptedException, IOException {
         Set<String> remainingBooks = OurJSONParser.getBooks().keySet();
         int bookSelections = remainingBooks.size() - (remainingBooks.size() - 2);
         if (remainingBooks.size() <= bookSelections && remainingBooks.contains("it")) {
             try {
-                resetGameField();
+                //resetGameField();
                 Frame.getLoseScreen();
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
         } else if (model.contains("it")) {
-            resetGameField();
+
+           // resetGameField();
+            gameEnd = true;
             Frame.getWinScreen();
         }
+        return gameEnd;
     }
 
-    private static void resetGameField() throws InterruptedException, IOException {
+    static void resetGameField() throws InterruptedException, IOException {
         TimeUnit.SECONDS.sleep(1);
         Player.setPlug("");
         Player.getInstance().setItemEquipped(false);
@@ -439,4 +444,7 @@ public class GameFrame extends JPanel implements ActionListener {
         });
     }
 
+    public static boolean isGameEnd() {
+        return gameEnd;
+    }
 }
