@@ -39,7 +39,7 @@ class GameFrame extends JPanel implements ActionListener {
     private static JTextArea textArea, responseArea;
     private static JLabel inventoryLabel, locationLabel, countDownLabel, background;
     JButton enterBtn, northBtn, eastBtn, southBtn, westBtn, helpBtn, backBtn, audBtn;
-    private static JButton itBtn, wickedBtn, frankBtn, reprieveBtn;
+    private static JButton itBtn, wickedBtn, frankBtn, reprieveBtn, lightBtn;
     JSlider audSlider;
     Font txtFont = new Font("Times New Roman", Font.BOLD, 15);
     Font inventoryFont = new Font("Times New Roman", Font.BOLD, 20);
@@ -144,49 +144,56 @@ class GameFrame extends JPanel implements ActionListener {
         northBtn = new JButton();
         String north = "images/button_n.png";
         buildImgButton(northBtn, north, "north",33);
-        northBtn.setBounds (875, 475, 80, 50);
+        northBtn.setBounds (935, 455, 33, 33);
         //endregion
 
         //region East button
         String east  =  "images/button_e.png";
         eastBtn = new JButton();
         buildImgButton(eastBtn, east, "east", 33);
-        eastBtn.setBounds (925, 525, 80, 50);
+        eastBtn.setBounds (995, 525, 33, 33);
         //endregion
 
         //region South button
         String south  =  "images/button_s.png";
         southBtn = new JButton();
         buildImgButton(southBtn, south, "south", 33);
-        southBtn.setBounds (875, 575, 80, 50);
+        southBtn.setBounds (935, 595, 33, 33);
         //endregion
 
         //region West button
         String west  =  "images/button_w.png";
         westBtn = new JButton();
         buildImgButton(westBtn, west, "west", 33);
-        westBtn.setBounds (825, 525, 80, 50);
+        westBtn.setBounds (865, 525, 33, 33);
         //endregion
 
         //region Help button
         String help = "images/button_help.png";
         helpBtn = new JButton();
         buildImgButton(helpBtn, help, "help", 40);
-        helpBtn.setBounds (1000, 650, 80, 50);
+        helpBtn.setBounds (1020, 670, 40, 40);
         //endregion
 
         //region Back button
         String back = "images/button_back.png";
         backBtn = new JButton();
         buildImgButton(backBtn, back, "back", 40);
-        backBtn.setBounds (800, 610, 80, 50);
+        backBtn.setBounds (820, 620, 40, 40);
+        //endregion
+
+        //region light button
+        String light = "images/button_light.png";
+        lightBtn = new JButton();
+        buildImgButton(lightBtn, light, "light", 33);
+        lightBtn.setBounds (935, 525, 33, 33);
         //endregion
 
         //region Audio button
         String audio  =  "images/play.png";
         audBtn = new JButton();
         buildImgButton(audBtn, audio, "audToggle", 33);
-        audBtn.setBounds (1000, 377, 80, 50);
+        audBtn.setBounds (1010, 287, 33, 33);
         //endregion
 
         //region Audio slider
@@ -203,7 +210,7 @@ class GameFrame extends JPanel implements ActionListener {
             Audio.fc.setValue(Audio.currentVolume);
         });
         audSlider.setBackground(Color.RED);
-        audSlider.setBounds (1025, 250, 31, 120);
+        audSlider.setBounds (1010, 150, 31, 120);
         //endregion
 
         //region Timer
@@ -257,6 +264,7 @@ class GameFrame extends JPanel implements ActionListener {
         add(southBtn);
         add(westBtn);
         add(helpBtn);
+        add(lightBtn);
         add(audBtn);
         add(audSlider);
         add(responseArea);
@@ -333,6 +341,8 @@ class GameFrame extends JPanel implements ActionListener {
                 case "back":
                     updateAll(); // returns current room description
                     break;
+                case "light":
+                    Player.getInstance().playerActions(Arrays.asList("use", "torch"));
                 // book buttons
                 case "it":
                     Player.getInstance().playerActions(Arrays.asList("look", "it"));
