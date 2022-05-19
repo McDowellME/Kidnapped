@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.SortedMap;
 
@@ -43,6 +44,28 @@ public class GameFrameTest {
         Player.getInstance().getItems("something wicked");
         GameFrame.setInventory();
         assertFalse(GameFrame.checkWin());
+    }
+    @Test
+    public void checkGet_correctItem() throws Exception {
+        Player.getInstance().setCurrentRoom("basement");
+        Player.getInstance().getItems("torch");
+        GameFrame.setInventory();
+        assertEquals("torch picked up", "torch picked up");
+    }
+
+    @Test
+    public void checkGet_wrongItem() throws Exception {
+        Player.getInstance().setCurrentRoom("basement");
+        Player.getInstance().getItems("something wicked");
+        GameFrame.setInventory();
+        assertEquals("You cannot pick up something wicked", "You cannot pick up something wicked");
+    }
+
+    @Test
+    public void checkGo_wrongDirection() throws Exception {
+        Player.getInstance().setCurrentRoom("basement");
+        Player.getInstance().playerActions(Arrays.asList("go", "south"));
+        assertEquals("You cannot go that way", "You cannot go that way");
     }
 
     @Test

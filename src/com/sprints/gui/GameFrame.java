@@ -28,6 +28,7 @@ class GameFrame extends JPanel implements ActionListener {
     static ImageIcon unlitRoom;
     private static String firstLine = "Too dark to see everything here, you need some light";
     static DefaultListModel<String> model = new DefaultListModel<>();
+    static DefaultListModel<String> itemModel = new DefaultListModel<>();
     TextParser textParser = new TextParser();
     static Timer timer;
     private static int seconds, minutes;
@@ -35,9 +36,9 @@ class GameFrame extends JPanel implements ActionListener {
     private static DecimalFormat decimalFormat = new DecimalFormat("00");
     private static JTextField textField;
     JScrollPane scrollPane;
-    static JList inventoryList;
+    static JList inventoryList, itemList;
     private static JTextArea textArea, responseArea;
-    private static JLabel inventoryLabel, locationLabel, countDownLabel, background;
+    private static JLabel inventoryLabel, locationLabel, countDownLabel, background, itemLabel;
     JButton enterBtn, northBtn, eastBtn, southBtn, westBtn, helpBtn, backBtn, audBtn;
     private static JButton itBtn, wickedBtn, frankBtn, reprieveBtn, lightBtn;
     JSlider audSlider;
@@ -46,8 +47,7 @@ class GameFrame extends JPanel implements ActionListener {
     private static boolean isHelpDisplayed = false;     // music is ON by default
     private static boolean gameEnd = false;
 
-    private static final String resetVariable = firstLine + "\nYou see: " +
-            OurJSONParser.getRoomItems().keySet();
+    private static final String resetVariable = firstLine;
 
     public GameFrame() throws IOException {
         //region params
@@ -87,9 +87,7 @@ class GameFrame extends JPanel implements ActionListener {
         textArea.setBackground(Color.WHITE);
         textArea.setForeground(Color.BLACK);
         textArea.setFont(txtFont);
-        Set item = OurJSONParser.getRoomItems().keySet();
         textArea.setText(firstLine);
-        textArea.append("\nYou see: " + item);
         textArea.setEditable(false);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
@@ -125,6 +123,22 @@ class GameFrame extends JPanel implements ActionListener {
         inventoryLabel.setForeground(Color.RED);
         inventoryLabel.setFont(inventoryFont);
         inventoryLabel.setBounds(140,474,160,20);
+        //endregion
+
+        //region Items
+        itemList = new JList();
+        itemList.setBackground(Color.WHITE);
+        itemList.setForeground(Color.BLACK);
+        itemList.setFont(txtFont);
+        itemList.setBorder(new LineBorder(Color.red));
+        itemList.setBounds(2,146,134,180);
+        //endregion
+
+        //region Items Label
+        itemLabel = new JLabel("You See");
+        itemLabel.setForeground(Color.RED);
+        itemLabel.setFont(inventoryFont);
+        itemLabel.setBounds(36,125,134,20);
         //endregion
 
         //region Enter button
@@ -258,6 +272,8 @@ class GameFrame extends JPanel implements ActionListener {
         add(scrollPane);
         add(inventoryList);
         add(inventoryLabel);
+        add(itemList);
+        add(itemLabel);
         add(enterBtn);
         add(northBtn);
         add(eastBtn);
@@ -273,6 +289,8 @@ class GameFrame extends JPanel implements ActionListener {
         setVisible(true);
         //endregion
     //endregion
+        setItems();
+
     }
 
     static void setCountDown(){
@@ -410,6 +428,7 @@ class GameFrame extends JPanel implements ActionListener {
         updateImage();
         setTextArea();
         setInventory();
+        setItems();
         setResponse();
         textField.setText("");
     }
@@ -466,7 +485,6 @@ class GameFrame extends JPanel implements ActionListener {
     }
 
     private void setTextArea() {
-        Set item = OurJSONParser.getRoomItems().keySet();
         // create description by finding in json
         String locDescription = OurJSONParser.getRoom().get("description").toString();
         if(Player.getIsLook()){
@@ -481,9 +499,6 @@ class GameFrame extends JPanel implements ActionListener {
                 textArea.setText(firstLine);
             }
             // if there are items in the room, append text area with items
-            if(item.size() != 0){
-                textArea.append("\nYou see: " + item);
-            }
         }
         else{
             textArea.setText(locDescription);
@@ -509,6 +524,13 @@ class GameFrame extends JPanel implements ActionListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    static void setItems(){
+        Set item = OurJSONParser.getRoomItems().keySet();
+        itemModel = new DefaultListModel<>();
+        itemModel.addAll(item);
+        itemList.setModel(itemModel);
     }
 
     static boolean checkWin() throws Exception {
@@ -572,10 +594,8 @@ class GameFrame extends JPanel implements ActionListener {
                         LoseScreen.lossLabel.setText("<html>Your body begins to stiffen and agony takes the name of each breath.<br/> &emsp &emsp &ensp Your world fades to black as you fall to the ground...</html>");
                         LoseScreen.lossLabel.setBounds(290,300,1000,50);
                         Frame.getLoseScreen();
-                    } catch (IOException | InterruptedException | ParseException ex) {
+                    } catch (Exception ex) {
                         ex.printStackTrace();
-                    } catch (Exception exception) {
-                        exception.printStackTrace();
                     }
                 }
             }
