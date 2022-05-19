@@ -160,56 +160,57 @@ class GameFrame extends JPanel implements ActionListener {
         //region North button
         northBtn = new JButton();
         String north = "images/button_n.png";
-        buildImgButton(northBtn, north, "north",33);
+        buildUserBtn(northBtn, north, "north",33);
         northBtn.setBounds (935, 455, 33, 33);
         //endregion
 
         //region East button
         String east  =  "images/button_e.png";
         eastBtn = new JButton();
-        buildImgButton(eastBtn, east, "east", 33);
+        buildUserBtn(eastBtn, east, "east", 33);
         eastBtn.setBounds (995, 525, 33, 33);
         //endregion
 
         //region South button
         String south  =  "images/button_s.png";
         southBtn = new JButton();
-        buildImgButton(southBtn, south, "south", 33);
+        buildUserBtn(southBtn, south, "south", 33);
         southBtn.setBounds (935, 595, 33, 33);
         //endregion
 
         //region West button
         String west  =  "images/button_w.png";
         westBtn = new JButton();
-        buildImgButton(westBtn, west, "west", 33);
+        buildUserBtn(westBtn, west, "west", 33);
         westBtn.setBounds (865, 525, 33, 33);
         //endregion
 
         //region Help button
         String help = "images/button_help.png";
         helpBtn = new JButton();
-        buildImgButton(helpBtn, help, "help", 40);
+        buildUserBtn(helpBtn, help, "help", 40);
         helpBtn.setBounds (1020, 670, 40, 40);
         //endregion
 
         //region Back button
         String back = "images/button_back.png";
         backBtn = new JButton();
-        buildImgButton(backBtn, back, "back", 40);
+        buildUserBtn(backBtn, back, "back", 40);
         backBtn.setBounds (820, 620, 40, 40);
         //endregion
 
         //region light button
         String light = "images/button_light.png";
         lightBtn = new JButton();
-        buildImgButton(lightBtn, light, "light", 33);
+        buildUserBtn(lightBtn, light, "light", 33);
         lightBtn.setBounds (935, 525, 33, 33);
+        setOff(lightBtn);
         //endregion
 
         //region Audio button
         String audio  =  "images/play.png";
         audBtn = new JButton();
-        buildImgButton(audBtn, audio, "audToggle", 33);
+        buildUserBtn(audBtn, audio, "audToggle", 33);
         audBtn.setBounds (1010, 287, 33, 33);
         //endregion
 
@@ -237,34 +238,42 @@ class GameFrame extends JPanel implements ActionListener {
 
         //region basement
         torchBtn = new JButton();
-        buildBookButton(torchBtn,"images/torch.png","torch", 100,100);
+        buildImgBtn(torchBtn,"images/torch.png","torch", 100,100);
         torchBtn.setBounds(300,315,100,100);
         setOn(torchBtn);
+
+        noteBtn = new JButton();
+        buildImgBtn(noteBtn,"images/note.png","note", 115,86);
+        noteBtn.setBounds(650,150,115,86);
+
+        needleBtn = new JButton();
+        buildImgBtn(needleBtn, "images/needle.png","needle",100,100);
+        needleBtn.setBounds(500,300,100,100);
 
         // region books
         //String it = "images/it.jpg";
         JSONObject itObj = (JSONObject) OurJSONParser.getBooks().get("it");
         String it = itObj.get("image").toString();
         itBtn = new JButton();
-        buildBookButton(itBtn,it,"it", 85, 145);
+        buildImgBtn(itBtn,it,"it", 85, 145);
         itBtn.setBounds(300, 185, 150, 255);
 
         JSONObject wickedObj = (JSONObject) OurJSONParser.getBooks().get("something wicked");
         String wicked = wickedObj.get("image").toString();
         wickedBtn = new JButton();
-        buildBookButton(wickedBtn,wicked,"wicked", 85, 145);
+        buildImgBtn(wickedBtn,wicked,"wicked", 85, 145);
         wickedBtn.setBounds(600, 185, 150, 255);
 
         JSONObject frankObj = (JSONObject) OurJSONParser.getBooks().get("frankenstein");
         String frank = frankObj.get("image").toString();
         frankBtn = new JButton();
-        buildBookButton(frankBtn,frank,"frank", 85, 145);
+        buildImgBtn(frankBtn,frank,"frank", 85, 145);
         frankBtn.setBounds(300, 10, 150, 255);
 
         JSONObject reprieveObj = (JSONObject) OurJSONParser.getBooks().get("reprieve");
         String reprieve = reprieveObj.get("image").toString();
         reprieveBtn = new JButton();
-        buildBookButton(reprieveBtn,reprieve,"reprieve", 85, 145);
+        buildImgBtn(reprieveBtn,reprieve,"reprieve", 85, 145);
         reprieveBtn.setBounds(600, 10, 150, 255);
         //end region
 
@@ -272,7 +281,10 @@ class GameFrame extends JPanel implements ActionListener {
         // region Add components
         add(countDownLabel);
 
+        //basement imgBtns
         add(torchBtn);
+        add(noteBtn);
+        add(needleBtn);
 
         add(itBtn);
         add(wickedBtn);
@@ -327,7 +339,7 @@ class GameFrame extends JPanel implements ActionListener {
     }
 
     // build a button with Jbutton, img file, same height/width size, and command name
-    private void buildImgButton(JButton btn, String file, String command, int size) throws IOException {
+    private void buildUserBtn(JButton btn, String file, String command, int size) throws IOException {
         ImageIcon btnIcon = IconBuilder.buttonIcon(file, size);
         btn.setOpaque(true);
         btn.setBorderPainted(false);
@@ -341,7 +353,7 @@ class GameFrame extends JPanel implements ActionListener {
     }
 
     // build a book button with Jbutton, img file, same height/width size, and command name
-    private void buildBookButton(JButton btn, String file, String command, int width, int height) throws IOException {
+    private void buildImgBtn(JButton btn, String file, String command, int width, int height) throws IOException {
         ImageIcon btnIcon = IconBuilder.imageIcon(file, width, height, Image.SCALE_DEFAULT);
         btn.setOpaque(true);
         btn.setBorderPainted(false);
@@ -418,6 +430,11 @@ class GameFrame extends JPanel implements ActionListener {
                 case "torch":
                     Player.getInstance().playerActions(Arrays.asList("get", "torch"));
                     break;
+                case "note":
+                    Player.getInstance().playerActions(Arrays.asList("look", "note"));
+                    break;
+                case "needle":
+                    Player.getInstance().playerActions(Arrays.asList("look", "needle"));
                 default:
             }
             updateAll();
@@ -486,13 +503,24 @@ class GameFrame extends JPanel implements ActionListener {
     }
 
     private static void updateImage() throws IOException {
-        setOff(torchBtn);
+        setOffAll();
+
         Map<String, JButton> roomItem = new HashMap<>();
         roomItem.put("torch", torchBtn);
+        roomItem.put("note", noteBtn);
+        roomItem.put("needle", needleBtn);
         Set<String> itemKeys = OurJSONParser.getRoomItems().keySet();
-        for (String item : itemKeys) {
-            if(roomItem.containsKey(item)){
-                setOn(roomItem.get(item));
+
+        if(Player.getInstance().getCurrentInventory().contains("torch")) setOn(lightBtn);
+        else setOff(lightBtn);
+
+        if(itemKeys.contains("torch") && !Player.getInstance().getCurrentInventory().contains("torch")) setOn(torchBtn);
+
+        if(Player.getInstance().isItemEquipped()){
+            for (String item : itemKeys) {
+                if(roomItem.containsKey(item)){
+                    setOn(roomItem.get(item));
+                }
             }
         }
         // if command was to look at item and item has an image, make the location label item image
@@ -519,6 +547,12 @@ class GameFrame extends JPanel implements ActionListener {
             }
         }
 
+    }
+
+    private static void setOffAll() {
+        setOff(noteBtn);
+        setOff(torchBtn);
+        setOff(needleBtn);
     }
 
     private void setTextArea() {
