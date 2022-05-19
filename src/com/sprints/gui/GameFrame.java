@@ -3,21 +3,21 @@ package com.sprints.gui;
 import com.sprints.OurJSONParser;
 import com.sprints.Player;
 import com.sprints.TextParser;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
+import javax.swing.Timer;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.text.DecimalFormat;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 class GameFrame extends JPanel implements ActionListener {
@@ -39,6 +39,7 @@ class GameFrame extends JPanel implements ActionListener {
     private static JTextArea textArea, responseArea;
     private static JLabel inventoryLabel, locationLabel, countDownLabel, background;
     JButton enterBtn, northBtn, eastBtn, southBtn, westBtn, helpBtn, backBtn, audBtn;
+    private static JButton itBtn, wickedBtn, frankBtn, reprieveBtn;
     JSlider audSlider;
     Font txtFont = new Font("Times New Roman", Font.BOLD, 15);
     Font inventoryFont = new Font("Times New Roman", Font.BOLD, 20);
@@ -210,8 +211,40 @@ class GameFrame extends JPanel implements ActionListener {
 
         //endregion
 
+        // region books
+        //String it = "images/it.jpg";
+        JSONObject itObj = (JSONObject) OurJSONParser.getBooks().get("it");
+        String it = itObj.get("image").toString();
+        itBtn = new JButton();
+        buildBookButton(itBtn,it,"it", 85, 145);
+        itBtn.setBounds(300, 185, 150, 255);
+
+        JSONObject wickedObj = (JSONObject) OurJSONParser.getBooks().get("something wicked");
+        String wicked = wickedObj.get("image").toString();
+        wickedBtn = new JButton();
+        buildBookButton(wickedBtn,wicked,"wicked", 85, 145);
+        wickedBtn.setBounds(600, 185, 150, 255);
+
+        JSONObject frankObj = (JSONObject) OurJSONParser.getBooks().get("frankenstein");
+        String frank = frankObj.get("image").toString();
+        frankBtn = new JButton();
+        buildBookButton(frankBtn,frank,"frank", 85, 145);
+        frankBtn.setBounds(300, 10, 150, 255);
+
+        JSONObject reprieveObj = (JSONObject) OurJSONParser.getBooks().get("reprieve");
+        String reprieve = reprieveObj.get("image").toString();
+        reprieveBtn = new JButton();
+        buildBookButton(reprieveBtn,reprieve,"reprieve", 85, 145);
+        reprieveBtn.setBounds(600, 10, 150, 255);
+        //end region
+
+
         // region Add components
         add(countDownLabel);
+        add(itBtn);
+        add(wickedBtn);
+        add(frankBtn);
+        add(reprieveBtn);
         add(locationLabel);
         add(backBtn);
         add(textField);
@@ -259,11 +292,28 @@ class GameFrame extends JPanel implements ActionListener {
         btn.setActionCommand(command);
     }
 
+    // build a book button with Jbutton, img file, same height/width size, and command name
+    private void buildBookButton(JButton btn, String file, String command, int width, int height) throws IOException {
+        ImageIcon btnIcon = IconBuilder.imageIcon(file, width, height, Image.SCALE_DEFAULT);
+        btn.setOpaque(true);
+        btn.setBorderPainted(false);
+        btn.setFont(txtFont);
+        btn.setFocusPainted(false);
+        btn.setBorder(null);
+        btn.setContentAreaFilled(false);
+        btn.addActionListener(this);
+        btn.setIcon(btnIcon);
+        btn.setEnabled(false);
+        btn.setVisible(false);
+        btn.setActionCommand(command);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
             Player.setPlug("");
             switch (e.getActionCommand()){
+                // direction buttons
                 case "north":
                     Player.getInstance().playerActions(Arrays.asList("go", "north"));
                     break;
@@ -276,12 +326,27 @@ class GameFrame extends JPanel implements ActionListener {
                 case "west":
                     Player.getInstance().playerActions(Arrays.asList("go", "west"));
                     break;
+                //end direction buttons
                 case "audToggle":
                     Audio.toggleSound(audBtn, audSlider);
                     break;
                 case "back":
                     updateAll(); // returns current room description
                     break;
+                // book buttons
+                case "it":
+                    Player.getInstance().playerActions(Arrays.asList("look", "it"));
+                    break;
+                case "frank":
+                    Player.getInstance().playerActions(Arrays.asList("look", "frankenstein"));
+                    break;
+                case "reprieve":
+                    Player.getInstance().playerActions(Arrays.asList("look", "reprieve"));
+                    break;
+                case "wicked":
+                    Player.getInstance().playerActions(Arrays.asList("look", "something wicked"));
+                    break;
+                // end book buttons
                 case "help":
                     if (!isHelpDisplayed) {
                         textArea.read(ResourceReader.readText("/commandsmenu.txt"),null);
@@ -338,14 +403,41 @@ class GameFrame extends JPanel implements ActionListener {
         setResponse();
         textField.setText("");
     }
+    private static void enableBooks() {
+        Map<String, JButton> books = new HashMap<>();
+        books.put("it", itBtn);
+        books.put("reprieve", reprieveBtn);
+        books.put("frankenstein", frankBtn);
+        books.put("something wicked", wickedBtn);
+        Set<String> bookKeys = OurJSONParser.getBooks().keySet();
+        for (String book : bookKeys) {
+            books.get(book).setEnabled(true);
+            books.get(book).setVisible(true);
+        }
+    }
+
+    private static void disableAllBooks() {
+        itBtn.setEnabled(false);
+        itBtn.setVisible(false);
+        frankBtn.setVisible(false);
+        frankBtn.setEnabled(false);
+        reprieveBtn.setVisible(false);
+        reprieveBtn.setEnabled(false);
+        wickedBtn.setVisible(false);
+        wickedBtn.setEnabled(false);
+    }
 
     private static void updateImage() throws IOException {
+
         // if command was to look at item and item has an image, make the location label item image
-        if (Player.getItemHasImage()) {
+        if (Player.getIsLookBooks()) {
             locationLabel.setIcon(IconBuilder.locationIcon(Player.getImage()));
-            Player.setItemHasImage(false);
+            // enable and show button
+            enableBooks();
+            Player.setIsLookBooks(false);
         }
         else {
+            disableAllBooks();
             if(!Player.getInstance().isItemEquipped()){
                 unlitRoom = IconBuilder.locationIcon(UNLIT);
                 locationLabel.setIcon(unlitRoom);
@@ -355,7 +447,9 @@ class GameFrame extends JPanel implements ActionListener {
                 ImageIcon locIcon = IconBuilder.locationIcon(OurJSONParser.getRoom().get("image").toString());
                 // set area with image
                 locationLabel.setIcon(locIcon);
-                System.out.println(Player.getImage());
+                // below one doesn't work
+                // locationLabel.setIcon(IconBuilder.locationIcon(Player.getImage().toString()));
+                System.out.println(Player.getImage().toString());
             }
         }
 
