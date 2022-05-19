@@ -44,6 +44,8 @@ class GameFrame extends JPanel implements ActionListener {
     private static JButton itBtn, wickedBtn, frankBtn, reprieveBtn, lightBtn;
     // Basement imgButtons
     private static JButton torchBtn, noteBtn, needleBtn;
+    // parlor imgButtons
+    private static JButton portraitBtn, candleholderBtn, corpseBtn, streamersBtn;
     JSlider audSlider;
     Font txtFont = new Font("Times New Roman", Font.BOLD, 15);
     Font inventoryFont = new Font("Times New Roman", Font.BOLD, 20);
@@ -249,6 +251,25 @@ class GameFrame extends JPanel implements ActionListener {
         needleBtn = new JButton();
         buildImgBtn(needleBtn, "images/needle.png","needle",100,100);
         needleBtn.setBounds(500,300,100,100);
+        // end region
+
+        //region parlor
+        portraitBtn = new JButton();
+        buildImgBtn(portraitBtn, "images/portrait.png", "portrait", 75, 75);
+        portraitBtn.setBounds(715, 130, 75, 75);
+
+        candleholderBtn = new JButton();
+        buildImgBtn(candleholderBtn, "images/candleholder.png", "candleholder", 65, 95);
+        candleholderBtn.setBounds(520, 170, 65, 95);
+
+        corpseBtn = new JButton();
+        buildImgBtn(corpseBtn, "images/corpse.png", "corpse", 200, 84);
+        corpseBtn.setBounds(300, 300, 200, 84);
+
+        streamersBtn = new JButton();
+        buildImgBtn(streamersBtn, "images/streamers.png", "streamers", 308, 93);
+        streamersBtn.setBounds(200, 30, 308, 93);
+        //end region
 
         // region books
         //String it = "images/it.jpg";
@@ -285,6 +306,12 @@ class GameFrame extends JPanel implements ActionListener {
         add(torchBtn);
         add(noteBtn);
         add(needleBtn);
+
+        //parlor imgBtns
+        add(portraitBtn);
+        add(candleholderBtn);
+        add(streamersBtn);
+        add(corpseBtn);
 
         add(itBtn);
         add(wickedBtn);
@@ -435,6 +462,19 @@ class GameFrame extends JPanel implements ActionListener {
                     break;
                 case "needle":
                     Player.getInstance().playerActions(Arrays.asList("look", "needle"));
+                    break;
+                case "portrait":
+                    Player.getInstance().playerActions(Arrays.asList("look", "portrait"));
+                    break;
+                case "candleholder":
+                    Player.getInstance().playerActions(Arrays.asList("look", "candle holders"));
+                    break;
+                case "corpse":
+                    Player.getInstance().playerActions(Arrays.asList("look", "corpse"));
+                    break;
+                case "streamers":
+                    Player.getInstance().playerActions(Arrays.asList("look", "streamers"));
+                    break;
                 default:
             }
             updateAll();
@@ -509,6 +549,10 @@ class GameFrame extends JPanel implements ActionListener {
         roomItem.put("torch", torchBtn);
         roomItem.put("note", noteBtn);
         roomItem.put("needle", needleBtn);
+        roomItem.put("portrait", portraitBtn);
+        roomItem.put("candle holders", candleholderBtn);
+        roomItem.put("streamers", streamersBtn);
+        roomItem.put("corpse", corpseBtn);
         Set<String> itemKeys = OurJSONParser.getRoomItems().keySet();
 
         if(Player.getInstance().getCurrentInventory().contains("torch")) setOn(lightBtn);
@@ -553,6 +597,10 @@ class GameFrame extends JPanel implements ActionListener {
         setOff(noteBtn);
         setOff(torchBtn);
         setOff(needleBtn);
+        setOff(portraitBtn);
+        setOff(candleholderBtn);
+        setOff(corpseBtn);
+        setOff(streamersBtn);
     }
 
     private void setTextArea() {
