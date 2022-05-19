@@ -15,6 +15,7 @@ public class Player {
     // ******** Fields **********
     private static boolean isLook = false;
     private static boolean itemHasImage = false;
+    private static boolean isLookBooks = false;
     private String currentRoom = "basement";
     private Map<String, String> inventory = new HashMap<>();
     private boolean itemEquipped = false;
@@ -218,7 +219,6 @@ public class Player {
             setCurrentRoom((String) OurJSONParser.getRoom().get(noun));
             OurJSONParser.setRoom((JSONObject) getRoomsJSON().get(getCurrentRoom()));
             roomItems =(JSONObject) getRoom().get("item");
-            image = OurJSONParser.getRoom().get("image").toString();
         }
         else {
             System.out.println("You cannot go that way");
@@ -229,18 +229,22 @@ public class Player {
     // look at room and items in room
     private void look(String noun) {
         Set<String> bookKeys = OurJSONParser.getBooks().keySet();
+        JSONObject books = (JSONObject) OurJSONParser.getBooks();
 
         // checks location as west hall the only place books keyword is valid and
         // outputs the title of the books on the bookcase for player
         if ("west hall".equals(getCurrentRoom()) && "books".equals(noun) && itemEquipped) {
             System.out.println("You see " + bookKeys);
             plug = "You see " + bookKeys;
+            image = "images/bookcase.png";
+            setIsLookBooks(true);
         }
         else if ("west hall".equals(getCurrentRoom()) && bookKeys.contains(noun) && itemEquipped) {
             JSONObject book = (JSONObject) OurJSONParser.getBooks().get(noun);
             String description = (String) book.get("description");
             System.out.println(description);
             plug = description;
+            setIsLookBooks(true);
         }
         // gives description if so prints out that room description
         else if (noun.equals(getCurrentRoom()) || "here".equals(noun) && itemEquipped) {
@@ -350,7 +354,15 @@ public class Player {
         return itemHasImage;
     }
 
-    public static void setItemHasImage(boolean isItemImage) {
-        Player.itemHasImage = isItemImage;
+    public static void setItemHasImage(boolean itemHasImage) {
+        Player.itemHasImage = itemHasImage;
+    }
+
+    public static boolean getIsLookBooks() {
+        return isLookBooks;
+    }
+
+    public static void setIsLookBooks(boolean isLookBooks) {
+        Player.isLookBooks = isLookBooks;
     }
 }
