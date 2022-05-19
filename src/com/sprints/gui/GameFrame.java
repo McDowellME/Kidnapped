@@ -40,7 +40,10 @@ class GameFrame extends JPanel implements ActionListener {
     private static JTextArea textArea, responseArea;
     private static JLabel inventoryLabel, locationLabel, countDownLabel, background, itemLabel;
     JButton enterBtn, northBtn, eastBtn, southBtn, westBtn, helpBtn, backBtn, audBtn;
+    // Bookcase imgButtons
     private static JButton itBtn, wickedBtn, frankBtn, reprieveBtn, lightBtn;
+    // Basement imgButtons
+    private static JButton torchBtn, noteBtn, needleBtn;
     JSlider audSlider;
     Font txtFont = new Font("Times New Roman", Font.BOLD, 15);
     Font inventoryFont = new Font("Times New Roman", Font.BOLD, 20);
@@ -232,6 +235,12 @@ class GameFrame extends JPanel implements ActionListener {
 
         //endregion
 
+        //region basement
+        torchBtn = new JButton();
+        buildBookButton(torchBtn,"images/torch.png","torch", 100,100);
+        torchBtn.setBounds(300,315,100,100);
+        setOn(torchBtn);
+
         // region books
         //String it = "images/it.jpg";
         JSONObject itObj = (JSONObject) OurJSONParser.getBooks().get("it");
@@ -262,10 +271,14 @@ class GameFrame extends JPanel implements ActionListener {
 
         // region Add components
         add(countDownLabel);
+
+        add(torchBtn);
+
         add(itBtn);
         add(wickedBtn);
         add(frankBtn);
         add(reprieveBtn);
+
         add(locationLabel);
         add(backBtn);
         add(textField);
@@ -291,6 +304,15 @@ class GameFrame extends JPanel implements ActionListener {
     //endregion
         setItems();
 
+    }
+
+    private static void setOn(JButton imgBtn) {
+        imgBtn.setVisible(true);
+        imgBtn.setEnabled(true);
+    }
+    private static void setOff(JButton imgBtn) {
+        imgBtn.setVisible(false);
+        imgBtn.setEnabled(false);
     }
 
     static void setCountDown(){
@@ -360,7 +382,11 @@ class GameFrame extends JPanel implements ActionListener {
                     updateAll(); // returns current room description
                     break;
                 case "light":
-                    Player.getInstance().playerActions(Arrays.asList("use", "torch"));
+                    if(Player.getInstance().getCurrentInventory().contains("torch") && Player.getInstance().isItemEquipped()){
+                        Player.getInstance().setItemEquipped(false);
+                    }
+                    else Player.getInstance().playerActions(Arrays.asList("use", "torch"));
+                    break;
                 // book buttons
                 case "it":
                     Player.getInstance().playerActions(Arrays.asList("look", "it"));
@@ -389,6 +415,9 @@ class GameFrame extends JPanel implements ActionListener {
                         isHelpDisplayed = false;
                     }
                     return;
+                case "torch":
+                    Player.getInstance().playerActions(Arrays.asList("get", "torch"));
+                    break;
                 default:
             }
             updateAll();
@@ -457,7 +486,15 @@ class GameFrame extends JPanel implements ActionListener {
     }
 
     private static void updateImage() throws IOException {
-
+        setOff(torchBtn);
+        Map<String, JButton> roomItem = new HashMap<>();
+        roomItem.put("torch", torchBtn);
+        Set<String> itemKeys = OurJSONParser.getRoomItems().keySet();
+        for (String item : itemKeys) {
+            if(roomItem.containsKey(item)){
+                setOn(roomItem.get(item));
+            }
+        }
         // if command was to look at item and item has an image, make the location label item image
         if (Player.getIsLookBooks()) {
             locationLabel.setIcon(IconBuilder.locationIcon(Player.getImage()));
