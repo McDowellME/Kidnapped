@@ -57,7 +57,7 @@ class GameFrame extends JPanel implements ActionListener {
     Font inventoryFont = new Font("Times New Roman", Font.BOLD, 20);
     private static boolean isHelpDisplayed = false;     // music is ON by default
     private static boolean gameEnd = false;
-    private static boolean lookingAtBooks = false;
+    private static boolean lookingAtBooks = false; // for the bookcase icon
 
     private static final String resetVariable = firstLine;
 
@@ -574,10 +574,10 @@ class GameFrame extends JPanel implements ActionListener {
                 }
                 textParser.parseInput(input);
 
-                System.out.println(Player.getInstance().getBLEH().toString());
+                System.out.println(Player.getInstance().getFinalBookList().toString());
 
-                if(textParser.getCommand().size()>=2 && textParser.getCommand().get(0).equals("get") && Player.getInstance().getBLEH().contains(textParser.getCommand().get(1))){
-                    checkBooksLook();
+                if(textParser.getCommand().size()>=2 && textParser.getCommand().get(0).equals("get")
+                        && Player.getInstance().getFinalBookList().contains(textParser.getCommand().get(1))){
                     updateAllButImage();
                     return;
                 }
