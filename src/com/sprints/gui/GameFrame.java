@@ -57,6 +57,7 @@ class GameFrame extends JPanel implements ActionListener {
     Font inventoryFont = new Font("Times New Roman", Font.BOLD, 20);
     private static boolean isHelpDisplayed = false;     // music is ON by default
     private static boolean gameEnd = false;
+    private static boolean lookingAtBooks = false;
 
     private static final String resetVariable = firstLine;
 
@@ -261,7 +262,7 @@ class GameFrame extends JPanel implements ActionListener {
         needleBtn = new JButton();
         buildImgBtn(needleBtn, "images/needle.png","needle",100,100);
         needleBtn.setBounds(500,300,100,100);
-        // end region
+        // endregion
 
         //region parlor
         portraitBtn = new JButton();
@@ -279,7 +280,7 @@ class GameFrame extends JPanel implements ActionListener {
         streamersBtn = new JButton();
         buildImgBtn(streamersBtn, "images/streamers.png", "streamers", 308, 93);
         streamersBtn.setBounds(200, 30, 308, 93);
-        //end region
+        //endregion
 
         // region east room
         vaseBtn = new JButton();
@@ -290,7 +291,7 @@ class GameFrame extends JPanel implements ActionListener {
         buildImgBtn(swordBtn, "images/sword.png", "sword", 101, 58);
         swordBtn.setBounds(700, 320, 101, 58);
 
-        //end region
+        //endregion
 
         // region kitchen
         cabinetsBtn = new JButton();
@@ -303,15 +304,15 @@ class GameFrame extends JPanel implements ActionListener {
 
         windowBtn = new JButton();
         buildImgBtn(windowBtn, "images/look.png", "window", 33, 33);
-        windowBtn.setBounds(350, 30, 33, 33);
+        windowBtn.setBounds(490, 120, 33, 33);
 
-        //end region
+        //endregion
 
         // region west hall
         bookcaseBtn = new JButton();
         buildImgBtn(bookcaseBtn, "images/look.png", "bookcase", 33, 33);
         bookcaseBtn.setBounds(600, 200, 33, 33);
-        //end region
+        //endregion
 
         // region books
         //String it = "images/it.jpg";
@@ -338,8 +339,7 @@ class GameFrame extends JPanel implements ActionListener {
         reprieveBtn = new JButton();
         buildImgBtn(reprieveBtn,reprieve,"reprieve", 85, 145);
         reprieveBtn.setBounds(600, 10, 150, 255);
-        //end region
-
+        //endregion
 
         // region Add components
         add(countDownLabel);
@@ -394,6 +394,7 @@ class GameFrame extends JPanel implements ActionListener {
 
         setVisible(true);
         //endregion
+
         //endregion
         setItems();
 
@@ -470,9 +471,9 @@ class GameFrame extends JPanel implements ActionListener {
                 //end direction buttons
                 case "audToggle":
                     Audio.toggleSound(audBtn, audSlider);
-                    break;
+
+                    return;
                 case "back":
-                    updateAll(); // returns current room description
                     break;
                 case "light":
                     if(Player.getInstance().getCurrentInventory().contains("torch") && Player.getInstance().isItemEquipped()){
@@ -483,16 +484,20 @@ class GameFrame extends JPanel implements ActionListener {
                 // book buttons
                 case "it":
                     Player.getInstance().playerActions(Arrays.asList("look", "it"));
-                    break;
+                    updateAllButImage();
+                    return;
                 case "frank":
                     Player.getInstance().playerActions(Arrays.asList("look", "frankenstein"));
-                    break;
+                    updateAllButImage();
+                    return;
                 case "reprieve":
                     Player.getInstance().playerActions(Arrays.asList("look", "reprieve"));
-                    break;
+                    updateAllButImage();
+                    return;
                 case "wicked":
                     Player.getInstance().playerActions(Arrays.asList("look", "something wicked"));
-                    break;
+                    updateAllButImage();
+                    return;
                 // end book buttons
                 case "help":
                     if (!isHelpDisplayed) {
@@ -532,7 +537,7 @@ class GameFrame extends JPanel implements ActionListener {
                 case "bookcase":
                     Player.getInstance().playerActions(Arrays.asList("look", "bookcase"));
                     break;
-                case "sword" :
+                case "sword":
                     Player.getInstance().playerActions(Arrays.asList("look", "sword"));
                     break;
                 case "vase" :
@@ -549,6 +554,8 @@ class GameFrame extends JPanel implements ActionListener {
                     break;
                 default:
             }
+            Player.setIsLookBooks(false);
+            lookingAtBooks = false;
             updateAll();
         } catch (IOException | LineUnavailableException | UnsupportedAudioFileException | InterruptedException ex) {
             ex.printStackTrace();
@@ -562,7 +569,19 @@ class GameFrame extends JPanel implements ActionListener {
             try {
                 Player.setPlug("");
                 List<String> input = textParser.commandTokenizer(textField.getText());
+                if(input.size()>=2 && input.get(0).equals("look") && input.get(1).equals("books")){
+                    lookingAtBooks=true;
+                }
                 textParser.parseInput(input);
+
+                System.out.println(Player.getInstance().getBLEH().toString());
+
+                if(textParser.getCommand().size()>=2 && textParser.getCommand().get(0).equals("get") && Player.getInstance().getBLEH().contains(textParser.getCommand().get(1))){
+                    checkBooksLook();
+                    updateAllButImage();
+                    return;
+                }
+
                 if(input.get(0).equals("godmode")){
                     timer.stop();
                     countDownLabel.setText("60:00");
@@ -590,7 +609,17 @@ class GameFrame extends JPanel implements ActionListener {
         setResponse();
         textField.setText("");
     }
+    private void updateAllButImage() throws IOException, InterruptedException {
+        checkBooksLook();
+        setTextArea();
+        setInventory();
+        setItems();
+        setResponse();
+        textField.setText("");
+    }
+
     private static void enableBooks() {
+        disableAllBooks();
         Map<String, JButton> books = new HashMap<>();
         books.put("it", itBtn);
         books.put("reprieve", reprieveBtn);
@@ -645,12 +674,17 @@ class GameFrame extends JPanel implements ActionListener {
                 }
             }
         }
+        checkBooksLook();
+    }
+
+    private static void checkBooksLook() throws IOException {
         // if command was to look at item and item has an image, make the location label item image
-        if (Player.getIsLookBooks()) {
+        if (Player.getIsLookBooks() && !Player.getImage().equals("")) {
             locationLabel.setIcon(IconBuilder.locationIcon(Player.getImage()));
             // enable and show button
             enableBooks();
-            Player.setIsLookBooks(false);
+//            lookingAtBooks = true;
+            //Player.setIsLookBooks(false);
         }
         else {
             disableAllBooks();
@@ -668,7 +702,7 @@ class GameFrame extends JPanel implements ActionListener {
                 System.out.println(Player.getImage().toString());
             }
         }
-
+        if(lookingAtBooks) setOff(bookcaseBtn);
     }
 
     private static void setOffAll() {
@@ -760,6 +794,7 @@ class GameFrame extends JPanel implements ActionListener {
         Player.setPlayer(new Player());
         OurJSONParser.resetAll();
         Player.setPlug("");
+        Player.setIsLookBooks(false);
 
         timer.stop();
         Audio.stopSound();
