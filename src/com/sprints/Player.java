@@ -2,7 +2,6 @@ package com.sprints;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.w3c.dom.ls.LSOutput;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -25,7 +24,7 @@ public class Player {
     public static String plug ="";
     public static String image = "";
 
-    private final List<String> BLEH = new ArrayList<>(OurJSONParser.getBooks().keySet());
+    private final List<String> finalBookList = new ArrayList<>(OurJSONParser.getBooks().keySet());
 
 
     JSONArray verbObj1 = (JSONArray) OurJSONParser.getSynJSON().get(0); // go
@@ -247,6 +246,7 @@ public class Player {
             JSONObject book = (JSONObject) OurJSONParser.getBooks().get(noun);
             String description = (String) book.get("description");
             System.out.println(description);
+
             plug = description;
             setIsLookBooks(true);
         }
@@ -298,7 +298,7 @@ public class Player {
         setIsLook(true);
     }
 
-    public List<String> getCurrentInventory(){
+    public static List<String> getCurrentInventory(){
         return new ArrayList<String>(Player.getInstance().getInventory().keySet());
     }
 
@@ -370,7 +370,7 @@ public class Player {
         Player.isLookBooks = isLookBooks;
     }
 
-    public List<String> getBLEH() {
-        return BLEH;
+    public List<String> getFinalBookList() {
+        return finalBookList;
     }
 }
