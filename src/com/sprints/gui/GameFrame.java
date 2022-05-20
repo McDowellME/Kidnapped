@@ -45,7 +45,7 @@ class GameFrame extends JPanel implements ActionListener {
     // Basement imgButtons
     private static JButton torchBtn, noteBtn, needleBtn;
     JSlider audSlider;
-    Font txtFont = new Font("Times New Roman", Font.BOLD, 15);
+    Font txtFont = new Font("Times New Roman", Font.BOLD, 16);
     Font inventoryFont = new Font("Times New Roman", Font.BOLD, 20);
     private static boolean isHelpDisplayed = false;     // music is ON by default
     private static boolean gameEnd = false;
@@ -80,7 +80,7 @@ class GameFrame extends JPanel implements ActionListener {
 
         //region background
         background = new JLabel();
-        background.setBounds(0,0,1094, 730);
+        background.setBounds(0,0,1094, 732);
         ImageIcon backgroundIcon = IconBuilder.mainIcon(BACKGROUND);
         background.setIcon(backgroundIcon);
         //endregion
@@ -97,7 +97,7 @@ class GameFrame extends JPanel implements ActionListener {
 
         scrollPane = new JScrollPane(textArea);
         scrollPane.setBorder(new LineBorder(Color.RED));
-        scrollPane.setBounds(310,475,500,180);
+        scrollPane.setBounds(310,460,500,195);
         //endregion
 
         //region response area
@@ -109,11 +109,13 @@ class GameFrame extends JPanel implements ActionListener {
         responseArea.setLineWrap(true);
         responseArea.setWrapStyleWord(true);
         responseArea.setBorder(new LineBorder(Color.red));
-        responseArea.setBounds(310,427,500,42);
+        responseArea.setBounds(310,427,500,28);
         //endregion
 
         //region Inventory
         inventoryList = new JList();
+        DefaultListCellRenderer inventoryRender = (DefaultListCellRenderer) inventoryList.getCellRenderer();
+        inventoryRender.setHorizontalAlignment(SwingConstants.CENTER);
         inventoryList.setBackground(Color.WHITE);
         inventoryList.setForeground(Color.BLACK);
         inventoryList.setFont(txtFont);
@@ -130,6 +132,8 @@ class GameFrame extends JPanel implements ActionListener {
 
         //region Items
         itemList = new JList();
+        DefaultListCellRenderer itemRender = (DefaultListCellRenderer) itemList.getCellRenderer();
+        itemRender.setHorizontalAlignment(SwingConstants.CENTER);
         itemList.setBackground(Color.WHITE);
         itemList.setForeground(Color.BLACK);
         itemList.setFont(txtFont);
@@ -313,7 +317,7 @@ class GameFrame extends JPanel implements ActionListener {
 
         setVisible(true);
         //endregion
-    //endregion
+        //endregion
         setItems();
 
     }
