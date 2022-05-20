@@ -8,23 +8,17 @@ import java.io.IOException;
 public class Frame implements ActionListener {
     private static JFrame frame;
     private static TitleFrame titleFrame;
-    private static GameFrame gameFrame;
-    private static LoseScreen loseScreen;
-    private static WinScreen winScreen;
 
     static {
         try {
             titleFrame = new TitleFrame();
-            gameFrame = new GameFrame();
-            loseScreen = new LoseScreen();
-            winScreen = new WinScreen();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
 
-    public Frame() throws IOException, InterruptedException {
+    public Frame() {
         frame = new JFrame("KIDNAPPED!");
         frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(titleFrame);
@@ -34,30 +28,9 @@ public class Frame implements ActionListener {
 
     }
 
-    public static void getTitleScreen(){
+    public static void getScreen(JPanel panel){
         frame.getContentPane().removeAll();
-        frame.getContentPane().add(titleFrame);
-        frame.revalidate();
-        frame.repaint();
-    }
-
-    public static void getGameFrame() throws IOException, InterruptedException {
-        frame.getContentPane().removeAll();
-        frame.getContentPane().add(gameFrame);
-        frame.revalidate();
-        frame.repaint();
-    }
-
-    public static void getLoseScreen() throws IOException, InterruptedException {
-        frame.getContentPane().removeAll();
-        frame.getContentPane().add(loseScreen);
-        frame.revalidate();
-        frame.repaint();
-    }
-
-    public static void getWinScreen() throws IOException, InterruptedException {
-        frame.getContentPane().removeAll();
-        frame.getContentPane().add(winScreen);
+        frame.getContentPane().add(panel);
         frame.revalidate();
         frame.repaint();
     }

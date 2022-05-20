@@ -8,6 +8,14 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 class WinScreen extends JPanel implements ActionListener {
+    static TitleFrame titleFrame;
+    static {
+        try {
+            titleFrame = new TitleFrame();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     Font labelFont = new Font("Times New Roman", Font.BOLD, 17);
     Font btnFont = new Font("Times New Roman", Font.BOLD, 30);
 
@@ -84,7 +92,7 @@ class WinScreen extends JPanel implements ActionListener {
             case "play":
                 TimeUnit.SECONDS.sleep(1);
                 //reset();
-                Frame.getTitleScreen();
+                Frame.getScreen(titleFrame);
                 break;
             case "exit":
                 TimeUnit.SECONDS.sleep(1);

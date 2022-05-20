@@ -21,6 +21,18 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 class GameFrame extends JPanel implements ActionListener {
+    static LoseScreen loseScreen;
+    static WinScreen winScreen;
+
+    static {
+        try {
+            loseScreen = new LoseScreen();
+            winScreen = new WinScreen();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     // Final Constants
     private static final String BACKGROUND = "images/background.jpg";
     private static final String UNLIT = "images/dark.png";
@@ -777,7 +789,7 @@ class GameFrame extends JPanel implements ActionListener {
                 resetGameField();
                 LoseScreen.lossLabel.setText("<html> &ensp &nbsp You feel the floor shift beneath your feet. It opens up, dropping you into a massive pit of spikes.<br/>As you descend you see the bodies of countless others who have played and failed this twisted game.</html>");
                 LoseScreen.lossLabel.setBounds(175,300,1000,50);
-                Frame.getLoseScreen();
+                Frame.getScreen(loseScreen);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
@@ -785,7 +797,7 @@ class GameFrame extends JPanel implements ActionListener {
         else if (model.contains("it")) {
             gameEnd = true;
             resetGameField();
-            Frame.getWinScreen();
+            Frame.getScreen(winScreen);
         }
         return gameEnd;
     }
@@ -830,7 +842,7 @@ class GameFrame extends JPanel implements ActionListener {
                         resetGameField();
                         LoseScreen.lossLabel.setText("<html>Your body begins to stiffen and agony takes the name of each breath.<br/> &emsp &emsp &ensp Your world fades to black as you fall to the ground...</html>");
                         LoseScreen.lossLabel.setBounds(290,300,1000,50);
-                        Frame.getLoseScreen();
+                        Frame.getScreen(loseScreen);
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
@@ -838,5 +850,4 @@ class GameFrame extends JPanel implements ActionListener {
             }
         });
     }
-
 }
