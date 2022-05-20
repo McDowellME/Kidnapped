@@ -46,6 +46,12 @@ class GameFrame extends JPanel implements ActionListener {
     private static JButton torchBtn, noteBtn, needleBtn;
     // parlor imgButtons
     private static JButton portraitBtn, candleholderBtn, corpseBtn, streamersBtn;
+    // east room imgButtons
+    private static JButton vaseBtn, swordBtn;
+    // kitchen imgButtons
+    private static JButton cabinetsBtn, sinkBtn, windowBtn;
+    // west hall imgButtons
+    private static JButton bookcaseBtn;
     JSlider audSlider;
     Font txtFont = new Font("Times New Roman", Font.BOLD, 15);
     Font inventoryFont = new Font("Times New Roman", Font.BOLD, 20);
@@ -271,6 +277,38 @@ class GameFrame extends JPanel implements ActionListener {
         streamersBtn.setBounds(200, 30, 308, 93);
         //end region
 
+        // region east room
+        vaseBtn = new JButton();
+        buildImgBtn(vaseBtn, "images/vase.png", "vase", 89, 68);
+        vaseBtn.setBounds(300, 175, 89, 68);
+
+        swordBtn = new JButton();
+        buildImgBtn(swordBtn, "images/sword.png", "sword", 101, 58);
+        swordBtn.setBounds(700, 320, 101, 58);
+
+        //end region
+
+        // region kitchen
+        cabinetsBtn = new JButton();
+        buildImgBtn(cabinetsBtn, "images/look.png", "cabinets", 33, 33);
+        cabinetsBtn.setBounds(220, 320, 33, 33);
+
+        sinkBtn = new JButton();
+        buildImgBtn(sinkBtn, "images/look.png", "sink", 33, 33);
+        sinkBtn.setBounds(170, 210, 33, 33);
+
+        windowBtn = new JButton();
+        buildImgBtn(windowBtn, "images/look.png", "window", 33, 33);
+        windowBtn.setBounds(300, 30, 33, 33);
+
+        //end region
+
+        // region west hall
+        bookcaseBtn = new JButton();
+        buildImgBtn(bookcaseBtn, "images/look.png", "bookcase", 33, 33);
+        bookcaseBtn.setBounds(600, 200, 33, 33);
+        //end region
+
         // region books
         //String it = "images/it.jpg";
         JSONObject itObj = (JSONObject) OurJSONParser.getBooks().get("it");
@@ -312,6 +350,18 @@ class GameFrame extends JPanel implements ActionListener {
         add(candleholderBtn);
         add(streamersBtn);
         add(corpseBtn);
+
+        //kitchen imgBtns
+        add(cabinetsBtn);
+        add(sinkBtn);
+        add(windowBtn);
+
+        //east room imgBtns
+        add(swordBtn);
+        add(vaseBtn);
+
+        //west hall imgBtns
+        add(bookcaseBtn);
 
         add(itBtn);
         add(wickedBtn);
@@ -475,6 +525,24 @@ class GameFrame extends JPanel implements ActionListener {
                 case "streamers":
                     Player.getInstance().playerActions(Arrays.asList("look", "streamers"));
                     break;
+                case "bookcase":
+                    Player.getInstance().playerActions(Arrays.asList("look", "bookcase"));
+                    break;
+                case "sword" :
+                    Player.getInstance().playerActions(Arrays.asList("look", "sword"));
+                    break;
+                case "vase" :
+                    Player.getInstance().playerActions(Arrays.asList("look", "vase"));
+                    break;
+                case "window" :
+                    Player.getInstance().playerActions(Arrays.asList("look", "window"));
+                    break;
+                case "cabinets" :
+                    Player.getInstance().playerActions(Arrays.asList("look", "cabinets"));
+                    break;
+                case "sink" :
+                    Player.getInstance().playerActions(Arrays.asList("look", "sink"));
+                    break;
                 default:
             }
             updateAll();
@@ -553,6 +621,12 @@ class GameFrame extends JPanel implements ActionListener {
         roomItem.put("candle holders", candleholderBtn);
         roomItem.put("streamers", streamersBtn);
         roomItem.put("corpse", corpseBtn);
+        roomItem.put("bookcase", bookcaseBtn);
+        roomItem.put("sword", swordBtn);
+        roomItem.put("vase", vaseBtn);
+        roomItem.put("cabinets", cabinetsBtn);
+        roomItem.put("sink", sinkBtn);
+        roomItem.put("window", windowBtn);
         Set<String> itemKeys = OurJSONParser.getRoomItems().keySet();
 
         if(Player.getInstance().getCurrentInventory().contains("torch")) setOn(lightBtn);
@@ -601,7 +675,12 @@ class GameFrame extends JPanel implements ActionListener {
         setOff(candleholderBtn);
         setOff(corpseBtn);
         setOff(streamersBtn);
-    }
+        setOff(bookcaseBtn);
+        setOff(swordBtn);
+        setOff(vaseBtn);
+        setOff(cabinetsBtn);
+        setOff(sinkBtn);
+        setOff(windowBtn);    }
 
     private void setTextArea() {
         // create description by finding in json
