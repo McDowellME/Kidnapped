@@ -2,6 +2,8 @@ package com.sprints;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.w3c.dom.ls.LSOutput;
+
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
@@ -22,6 +24,9 @@ public class Player {
     private final List<String> locations = Arrays.asList("kitchen", "parlor", "east room", "west hall");
     public static String plug ="";
     public static String image = "";
+
+    private final List<String> BLEH = new ArrayList<>(OurJSONParser.getBooks().keySet());
+
 
     JSONArray verbObj1 = (JSONArray) OurJSONParser.getSynJSON().get(0); // go
     JSONArray verbObj2 = (JSONArray) OurJSONParser.getSynJSON().get(1); // get
@@ -185,7 +190,6 @@ public class Player {
         if (noun.equals("torch")) {
             itemEquipped = false;
         }
-
     }
 
     // allow player to equip items (only torch at this moment)
@@ -364,5 +368,9 @@ public class Player {
 
     public static void setIsLookBooks(boolean isLookBooks) {
         Player.isLookBooks = isLookBooks;
+    }
+
+    public List<String> getBLEH() {
+        return BLEH;
     }
 }
