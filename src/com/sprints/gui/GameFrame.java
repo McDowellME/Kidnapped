@@ -303,7 +303,7 @@ class GameFrame extends JPanel implements ActionListener {
 
         windowBtn = new JButton();
         buildImgBtn(windowBtn, "images/look.png", "window", 33, 33);
-        windowBtn.setBounds(300, 30, 33, 33);
+        windowBtn.setBounds(350, 30, 33, 33);
 
         //end region
 
