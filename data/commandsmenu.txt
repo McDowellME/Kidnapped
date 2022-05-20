@@ -1,7 +1,6 @@
 ================= COMMANDS =================
 go [direction] - moves into room in that direction
 get [item] - puts item into inventory
-look - gets details about room
 look [item] - gets more details about item
 equip [item] - uses the item
 drop [item] - removes item from inventory
