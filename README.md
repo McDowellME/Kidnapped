@@ -9,3 +9,4 @@ icons from
 <a href="https://www.flaticon.com/free-icons/back" title="back icons">Back icons created by Andrean Prabowo - Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/torch" title="torch icons">Torch icons created by Freepik - Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/flashlight" title="flashlight icons">Flashlight icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/inspiration" title="inspiration icons">Inspiration icons created by Freepik - Flaticon</a>
