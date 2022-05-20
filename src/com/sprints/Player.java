@@ -236,6 +236,9 @@ public class Player {
 
         // checks location as west hall the only place books keyword is valid and
         // outputs the title of the books on the bookcase for player
+        if ("bookcase".equals(noun) && itemEquipped) {
+           roomItems.put("books", "books");
+        }
         if ("west hall".equals(getCurrentRoom()) && "books".equals(noun) && itemEquipped) {
             System.out.println("You see " + bookKeys);
             plug = "You see " + bookKeys;

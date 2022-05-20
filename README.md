@@ -10,3 +10,5 @@ icons from
 <a href="https://www.flaticon.com/free-icons/torch" title="torch icons">Torch icons created by Freepik - Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/flashlight" title="flashlight icons">Flashlight icons created by Freepik - Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/inspiration" title="inspiration icons">Inspiration icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/book" title="book icons">Book icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/remember" title="remember icons">Remember icons created by Freepik - Flaticon</a>
