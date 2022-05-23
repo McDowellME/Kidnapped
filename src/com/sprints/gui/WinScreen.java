@@ -1,21 +1,22 @@
 package com.sprints.gui;
 
-import com.sprints.Game;
-import com.sprints.OurJSONParser;
-import com.sprints.Player;
-import org.json.simple.parser.JSONParser;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
 class WinScreen extends JPanel implements ActionListener {
-
+    static TitleFrame titleFrame;
+    static {
+        try {
+            titleFrame = new TitleFrame();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    Font labelFont = new Font("Times New Roman", Font.BOLD, 17);
     Font btnFont = new Font("Times New Roman", Font.BOLD, 30);
 
     public WinScreen() throws IOException {
@@ -30,6 +31,24 @@ class WinScreen extends JPanel implements ActionListener {
         // Placing the background image
         JLabel imageLabel = new JLabel(winIcon);
         imageLabel.setBounds (0, 0, 1094, 730);
+
+        //Label for reason behind win
+        JLabel winLabel = new JLabel();
+        winLabel.setOpaque(true);
+        winLabel.setBorder(null);
+        winLabel.setFont(labelFont);
+        winLabel.setBackground(new Color(0,0,0,0));
+        winLabel.setForeground(Color.white);
+        winLabel.setText("<html> &emsp &emsp &emsp &emsp &emsp You pull the book from the shelf and hear the faint sound of gears rotating.<br/> The shelf slides left, revealing a door. You step through and awake once more...It was all a terrible dream.</html>");
+        winLabel.setBounds(160, 300, 1000, 50);
+
+
+        JLabel blackLabel = new JLabel();
+        blackLabel.setOpaque(true);
+        blackLabel.setBorder(null);
+        blackLabel.setFont(labelFont);
+        blackLabel.setBackground(Color.BLACK);
+        blackLabel.setBounds(560, 309, 28, 36);
 
         // Play Again button
         JButton playAgainBtn = new JButton("PLAY AGAIN");
@@ -57,19 +76,23 @@ class WinScreen extends JPanel implements ActionListener {
         exitBtn.setActionCommand("exit");
         exitBtn.setBounds (465, 560, 150, 60);
 
+        add(winLabel);
         add(exitBtn);
         add(playAgainBtn);
+        add(blackLabel);
         add(imageLabel);
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e){
         try {
+        //GameFrame.resetGameField();
         switch (e.getActionCommand()){
             case "play":
                 TimeUnit.SECONDS.sleep(1);
-                reset();
-                Frame.getTitleScreen();
+                //reset();
+                Frame.getScreen(titleFrame);
                 break;
             case "exit":
                 TimeUnit.SECONDS.sleep(1);
@@ -83,17 +106,5 @@ class WinScreen extends JPanel implements ActionListener {
         catch (Exception exception) {
             exception.printStackTrace();
         }
-    }
-
-    private void reset() throws Exception{
-        OurJSONParser.setOurParser(new OurJSONParser());
-//        OurJSONParser.setJsonParser(new JSONParser());
-//        Game.setGame(new Game());
-        Player.setPlayer(new Player());
-
-        OurJSONParser.resetAll();
-
-//        System.out.println(Player.getInstance().getCurrentRoom());
-//        System.out.println(OurJSONParser.getRoomItems().toString());
     }
 }

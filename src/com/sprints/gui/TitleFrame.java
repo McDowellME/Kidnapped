@@ -15,7 +15,7 @@ import java.text.ParseException;
 import java.util.concurrent.TimeUnit;
 
 public class TitleFrame extends JPanel implements ActionListener {
-
+    InstructionFrame instructionFrame = new InstructionFrame();
     Font btnFont = new Font("Times New Roman", Font.BOLD, 30);
 
     public TitleFrame() throws IOException {
@@ -53,11 +53,8 @@ public class TitleFrame extends JPanel implements ActionListener {
         if(e.getActionCommand().equals("start")) {
             try {
                 TimeUnit.SECONDS.sleep(1);
-
-                Frame.getGameFrame();
-                Audio.playSound();
-                GameFrame.setCountDown();
-            } catch (IOException | InterruptedException | LineUnavailableException | UnsupportedAudioFileException ex) {
+                Frame.getScreen(instructionFrame);
+            } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
         }

@@ -11,6 +11,7 @@ import java.util.StringTokenizer;
 public class TextParser {
     // ********** Fields **********
     private List<String> inputCommand;
+    private List<String> command;
 
     // ******** Business Methods **********
     /* checks input and passes to Tokenizer to break apart, then pass to parseInput
@@ -29,6 +30,11 @@ public class TextParser {
     // split input into tokens
     public List<String> commandTokenizer(String in) {
         List<String> tokens = new ArrayList<>();
+        if(in.length()==0){
+            tokens.add("null");
+            return tokens;
+        }
+
         StringTokenizer tokenizer = new StringTokenizer(in);
         // as long as tokenizer has more tokens we will add them to tokens list
         while (tokenizer.hasMoreTokens()) {
@@ -41,7 +47,7 @@ public class TextParser {
     public void parseInput(List<String> inputCommand) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         String verb;
         String noun;
-        List<String> command = new ArrayList<>();
+        command = new ArrayList<>();
         List<String> validSingleWords = new ArrayList<>(Arrays.asList("quit", "q", "restart", "no", "yes", "y", "n", "help", "mcdhapwt123", "mute", "play", "volume-up", "volume-down", "godmode"));
 
         if(inputCommand.size()==0){
@@ -58,6 +64,7 @@ public class TextParser {
         }
         else if (inputCommand.size() == 1 && !validSingleWords.contains(inputCommand.get(0))) {
             System.out.println("Please clarify command");
+            Player.setPlug("Please clarify command");
             return;
         }
         else if (inputCommand.size() >3) {
@@ -77,5 +84,8 @@ public class TextParser {
             command.add(noun);
         }
         OurJSONParser.commandParser(command);
+    }
+    public List<String> getCommand() {
+        return command;
     }
 }

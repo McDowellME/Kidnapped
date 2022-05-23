@@ -9,25 +9,29 @@
         "description2": "You see many books, all tattered and worn. Some appear to have been recently read.\n",
         "clue": {
           "name": "clue 4",
-          "description": "I'm every nightmare you've ever had. (good luck)"
+          "description": "Reading is fundamental, but WHAT you read is the key."
         },
         "books": {
           "something wicked": {
+            "image": "images/somethingwicked.jpg",
             "name": "Something Wicked This Way Comes",
             "description": "A book about two 13-year-old best friends and their nightmarish experience with a traveling carnival that comes to their Midwestern town.",
             "author": "Ray Bradbury"
           },
           "it": {
+            "image": "images/it.jpg",
             "name": "It",
             "description": "The story follows the experiences of seven children as they are terrorized by an evil entity that exploits the fears of its victims to disguise itself while hunting its prey.",
             "author": "Stephen King"
           },
           "frankenstein": {
+            "image": "images/frankenstein.jpg",
             "name": "Frankenstein",
             "description": "The book tells the story of Victor Frankenstein, a Swiss student of natural science who creates an artificial man from pieces of corpses and brings his creature to life.",
             "author": "Mary Shelly"
           },
           "reprieve": {
+            "image" : "images/reprieve.jpg",
             "name": "Reprieve",
             "description": "A novel about otherness, loneliness, racism, and identity wrapped in a gory tale about a full-contact escape room attraction.",
             "author": "James Ham Mattson"
@@ -35,7 +39,7 @@
         }
       }
     },
-    "description":"This hall has a natural stone floor that has been polished smooth. A mouse scatters across the floor. There is a bookcase at the end of the hall. The air smells stale. The only way out is the parlor, to the east.\n"
+    "description":"This hall has a natural stone floor that has been polished smooth. A mouse scatters across the floor. There is a bookcase at the end of the hall. The air smells stale. \nThe only way out of this hall is east, to the parlor."
   },
   "kitchen":
   {
@@ -47,7 +51,7 @@
         "description2" : "The cabinets are time-worn, hanging loosely by their hinges. The rats appear to have made a meal of them.",
         "clue": {
           "name": "clue 3",
-          "description": "Reading is fundamental, but WHAT you read is the key. (strikes)"
+          "description": "There may be 99 red balloons, but you only have 2 chances."
         }
       },
       "sink" : {
@@ -57,7 +61,7 @@
         "description" : "The window is barred from the outside, There is no way to get out."
       }
     },
-    "description": "The room is covered in dust and cobwebs. Glass shards cover the floor, and the smell of rust, mildew, and spoiled food is pungent. The air is so thick you can almost taste it. Roaches run up every wall and the faint sound of rats squeaking can be heard all around. The only way out is south, to the parlor.\n"
+    "description": "The room is covered in dust and cobwebs. Glass shards cover the floor, and the smell of rust, mildew, and spoiled food is pungent. The air is so thick you can almost taste it. Roaches run up every wall and the faint sound of rats squeaking can be heard all around. \nThe only way out of the kitchen is south, to the parlor."
   },
   "east hall":
   {
@@ -65,7 +69,7 @@
     "item": {},
     "east": "east room",
     "west": "parlor",
-    "description":"This hall has a natural stone floor that has been polished smooth. There is a room to the east and the parlor to the west.\n"
+    "description":"This hall has a natural stone floor that has been polished smooth. \nThere is a room to the east and the parlor to the west."
   },
   "east room":
   {
@@ -80,11 +84,11 @@
         "description2": "Like everything else in the house this vase is old and time-worn.",
         "clue": {
           "name": "clue 2",
-          "description": "Pale skin and bright red lips curled in a grin can terrify. (two)"
+          "description": "Penny for your thoughts? Be wise how you spend it."
         }
       }
     },
-    "description": "There is nothing warm about that place. It smells of something evil and the darkness is surreal. Not merely the type of darkness that comes from the absence of light, but much more sinister. The only way out is west, to the hall.\n"
+    "description": "There is nothing warm about that place. It smells of something evil and the darkness is surreal. Not merely the type of darkness that comes from the absence of light, but much more sinister. \nThe only way out of this room is west, to the hall."
   },
   "parlor":
   {
@@ -108,11 +112,11 @@
         "description2": "Eerily, the eyes of the portrait seem to follow you around the room.",
         "clue": {
           "name": "clue 1",
-          "description": "Heavy is the head that wears the crown. (you get)"
+          "description": "Don't go looking for answers in the drain."
         }
       }
     },
-    "description": "This room is large, bleak, and cold. It is quiet and somber and you feel a chill as the darkness engulfs you. You can hear the sound of your heart beat echo throughout the room. The ceiling is a vaulted, cathedral ceiling with the tattered remains of what once must have been colorful streamers hanging down. The room smells of mildew and decay. A corpse covered in webs lay against the north wall right next to the entrance of what appears to be a kitchen. To the east lies a long dark hall and the west, another.\n"
+    "description": "This room is large, bleak, and cold. It is quiet and somber and you feel a chill as the darkness engulfs you. You can hear the sound of your heart beat echo throughout the room. The ceiling is decorated with the tattered remains of what must have once been colorful streamers hanging down. The room smells of mildew and decay. A corpse covered in webs lay against the wall next to the entrance of what appears to be a kitchen. \nThe kitchen is to the north, to the east lies a long dark hall, and to the west, another."
   },
   "basement":
   {
@@ -130,6 +134,6 @@
         "description": "A small needle protrudes from a crack in the ground where you awoke."
       }
     },
-    "description": "There is a smell of decay and mold in the room. The pitch-black atmosphere is nearly impenetrable. You stretch your eyes as wide as possible but can barely make out a feeble outline of some distant objects. There is little light except for the for a small strip below the door at the top of the stairs, to the north, and the torch which illuminates only what is in its immediate vicinity.\n"
+    "description": "There is a smell of decay and mold in the room. The pitch-black atmosphere is nearly impenetrable. You stretch your eyes as wide as possible but can barely make out a feeble outline of some distant objects. There is little light except for the for the torch which illuminates only what is in its immediate vicinity and \na small strip below the door at the top of the stairs, to the north."
   }
 }

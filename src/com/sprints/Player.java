@@ -2,6 +2,7 @@ package com.sprints;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
@@ -14,11 +15,17 @@ public class Player {
 
     // ******** Fields **********
     private static boolean isLook = false;
+    private static boolean itemHasImage = false;
+    private static boolean isLookBooks = false;
     private String currentRoom = "basement";
     private Map<String, String> inventory = new HashMap<>();
     private boolean itemEquipped = false;
     private final List<String> locations = Arrays.asList("kitchen", "parlor", "east room", "west hall");
     public static String plug ="";
+    public static String image = "";
+
+    private final List<String> finalBookList = new ArrayList<>(OurJSONParser.getBooks().keySet());
+
 
     JSONArray verbObj1 = (JSONArray) OurJSONParser.getSynJSON().get(0); // go
     JSONArray verbObj2 = (JSONArray) OurJSONParser.getSynJSON().get(1); // get
@@ -72,7 +79,7 @@ public class Player {
     }
 
     // pick up items
-    void getItems(String noun) {
+    public void getItems(String noun) {
         // check if item is a valid and something we can hold in inventory
 
         if(roomItems!=null && OurJSONParser.getItems().contains(noun) && getInventoryJSON().containsKey(noun)) {
@@ -182,7 +189,6 @@ public class Player {
         if (noun.equals("torch")) {
             itemEquipped = false;
         }
-
     }
 
     // allow player to equip items (only torch at this moment)
@@ -226,18 +232,26 @@ public class Player {
     // look at room and items in room
     private void look(String noun) {
         Set<String> bookKeys = OurJSONParser.getBooks().keySet();
+        JSONObject books = (JSONObject) OurJSONParser.getBooks();
 
         // checks location as west hall the only place books keyword is valid and
         // outputs the title of the books on the bookcase for player
+        if ("bookcase".equals(noun) && itemEquipped) {
+           roomItems.put("books", "books");
+        }
         if ("west hall".equals(getCurrentRoom()) && "books".equals(noun) && itemEquipped) {
             System.out.println("You see " + bookKeys);
             plug = "You see " + bookKeys;
+            image = "images/bookcase.png";
+            setIsLookBooks(true);
         }
         else if ("west hall".equals(getCurrentRoom()) && bookKeys.contains(noun) && itemEquipped) {
             JSONObject book = (JSONObject) OurJSONParser.getBooks().get(noun);
             String description = (String) book.get("description");
             System.out.println(description);
+
             plug = description;
+            setIsLookBooks(true);
         }
         // gives description if so prints out that room description
         else if (noun.equals(getCurrentRoom()) || "here".equals(noun) && itemEquipped) {
@@ -262,6 +276,10 @@ public class Player {
                 item = (JSONObject) roomItems.get(noun);
                 System.out.println(item.get("description"));
                 plug = item.get("description").toString();
+                if (item.containsKey("image")) {
+                    image = item.get("image").toString();
+                    setItemHasImage(true);
+                }
             }
 ////            System.out.println(item.get("description"));
 //            else {
@@ -283,7 +301,7 @@ public class Player {
         setIsLook(true);
     }
 
-    public List<String> getCurrentInventory(){
+    public static List<String> getCurrentInventory(){
         return new ArrayList<String>(Player.getInstance().getInventory().keySet());
     }
 
@@ -314,6 +332,14 @@ public class Player {
         Player.plug = plug;
     }
 
+    public static String getImage() {
+        return image;
+    }
+
+    public static void setImage(String image) {
+        Player.image = image;
+    }
+
     public static Player getPlayer() {
         return player;
     }
@@ -331,4 +357,23 @@ public class Player {
     }
 
 
+    public static boolean getItemHasImage() {
+        return itemHasImage;
+    }
+
+    public static void setItemHasImage(boolean itemHasImage) {
+        Player.itemHasImage = itemHasImage;
+    }
+
+    public static boolean getIsLookBooks() {
+        return isLookBooks;
+    }
+
+    public static void setIsLookBooks(boolean isLookBooks) {
+        Player.isLookBooks = isLookBooks;
+    }
+
+    public List<String> getFinalBookList() {
+        return finalBookList;
+    }
 }

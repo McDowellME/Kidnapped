@@ -1,18 +1,23 @@
 package com.sprints.gui;
 
-import com.sprints.OurJSONParser;
-import com.sprints.Player;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
 class LoseScreen extends JPanel implements ActionListener {
+    static TitleFrame titleFrame;
+    static {
+        try {
+            titleFrame = new TitleFrame();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static JLabel lossLabel;
+    Font labelFont = new Font("Times New Roman", Font.BOLD, 17);
     Font btnFont = new Font("Times New Roman", Font.BOLD, 30);
 
     public LoseScreen() throws IOException {
@@ -27,6 +32,15 @@ class LoseScreen extends JPanel implements ActionListener {
         // Placing the background image
         JLabel imageLabel = new JLabel(loseIcon);
         imageLabel.setBounds (0, 0, 1094, 730);
+
+        //Label for reason behind losing
+        lossLabel = new JLabel();
+        lossLabel.setOpaque(true);
+        lossLabel.setBorder(null);
+        lossLabel.setFont(labelFont);
+        lossLabel.setBackground(new Color(0,0,0,0));
+        lossLabel.setForeground(Color.WHITE);
+
 
         // Play Again button
         JButton playAgainBtn = new JButton("PLAY AGAIN");
@@ -55,19 +69,22 @@ class LoseScreen extends JPanel implements ActionListener {
         exitBtn.setActionCommand("exit");
         exitBtn.setBounds (450, 530, 150, 60);
 
+        add(lossLabel);
         add(exitBtn);
         add(playAgainBtn);
         add(imageLabel);
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e){
         try {
+            //GameFrame.resetGameField();
             switch (e.getActionCommand()){
                 case "play":
                     TimeUnit.SECONDS.sleep(1);
-                    reset();
-                    Frame.getTitleScreen();
+                    //reset();
+                    Frame.getScreen(titleFrame);
                     break;
                 case "exit":
                     TimeUnit.SECONDS.sleep(1);
@@ -81,15 +98,5 @@ class LoseScreen extends JPanel implements ActionListener {
             exception.printStackTrace();
         }
     }
-    private void reset() throws Exception{
-        OurJSONParser.setOurParser(new OurJSONParser());
-//        OurJSONParser.setJsonParser(new JSONParser());
-//        Game.setGame(new Game());
-        Player.setPlayer(new Player());
 
-        OurJSONParser.resetAll();
-
-//        System.out.println(Player.getInstance().getCurrentRoom());
-//        System.out.println(OurJSONParser.getRoomItems().toString());
-    }
 }
