@@ -63,7 +63,7 @@ class GameFrame extends JPanel implements ActionListener {
     // kitchen imgButtons
     private static JButton cabinetsBtn, sinkBtn, windowBtn;
     // west hall imgButtons
-    private static JButton bookcaseBtn;
+    private static JButton bookcaseBtn, booksBtn;
     JSlider audSlider;
     Font txtFont = new Font("Times New Roman", Font.BOLD, 16);
     Font inventoryFont = new Font("Times New Roman", Font.BOLD, 20);
@@ -302,7 +302,6 @@ class GameFrame extends JPanel implements ActionListener {
         swordBtn = new JButton();
         buildImgBtn(swordBtn, "images/sword.png", "sword", 101, 58);
         swordBtn.setBounds(700, 320, 101, 58);
-
         //endregion
 
         // region kitchen
@@ -317,13 +316,16 @@ class GameFrame extends JPanel implements ActionListener {
         windowBtn = new JButton();
         buildImgBtn(windowBtn, "images/look.png", "window", 33, 33);
         windowBtn.setBounds(490, 120, 33, 33);
-
         //endregion
 
         // region west hall
         bookcaseBtn = new JButton();
         buildImgBtn(bookcaseBtn, "images/look.png", "bookcase", 33, 33);
         bookcaseBtn.setBounds(600, 200, 33, 33);
+
+        booksBtn = new JButton();
+        buildImgBtn(booksBtn, "images/books.png", "books", 33, 33);
+        booksBtn.setBounds(550, 200, 33, 33);
         //endregion
 
         // region books
@@ -378,6 +380,7 @@ class GameFrame extends JPanel implements ActionListener {
 
         //west hall imgBtns
         add(bookcaseBtn);
+        add(booksBtn);
 
         add(itBtn);
         add(wickedBtn);
@@ -549,6 +552,11 @@ class GameFrame extends JPanel implements ActionListener {
                 case "bookcase":
                     Player.getInstance().playerActions(Arrays.asList("look", "bookcase"));
                     break;
+                case "books":
+                    Player.getInstance().playerActions(Arrays.asList("look", "books"));
+                    lookingAtBooks = true;
+                    updateAll();
+                    return;
                 case "sword":
                     Player.getInstance().playerActions(Arrays.asList("look", "sword"));
                     break;
@@ -667,6 +675,7 @@ class GameFrame extends JPanel implements ActionListener {
         roomItem.put("streamers", streamersBtn);
         roomItem.put("corpse", corpseBtn);
         roomItem.put("bookcase", bookcaseBtn);
+        roomItem.put("books", booksBtn);
         roomItem.put("sword", swordBtn);
         roomItem.put("vase", vaseBtn);
         roomItem.put("cabinets", cabinetsBtn);
@@ -714,7 +723,10 @@ class GameFrame extends JPanel implements ActionListener {
                 System.out.println(Player.getImage().toString());
             }
         }
-        if(lookingAtBooks) setOff(bookcaseBtn);
+        if(lookingAtBooks) {
+            setOff(bookcaseBtn);
+            setOff(booksBtn);
+        }
     }
 
     private static void setOffAll() {
@@ -726,6 +738,7 @@ class GameFrame extends JPanel implements ActionListener {
         setOff(corpseBtn);
         setOff(streamersBtn);
         setOff(bookcaseBtn);
+        setOff(booksBtn);
         setOff(swordBtn);
         setOff(vaseBtn);
         setOff(cabinetsBtn);
